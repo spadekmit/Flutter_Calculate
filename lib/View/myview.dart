@@ -34,7 +34,7 @@ class TextView extends StatelessWidget {
     Clipboard.setData(new ClipboardData(text: text));
     Scaffold.of(context).showSnackBar(SnackBar(
       duration: Duration(milliseconds: 1000),
-      content: new Text('内容已复制到剪切板'),
+      content: new Text(XiaomingLocalizations.of(context).CopyHint),
     ));
   }
 }
@@ -44,22 +44,30 @@ void methodRoute(BuildContext context) {
   Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
     final List<Card> tiles = <Card>[];
     Locale myLocale = Localizations.localeOf(context);
-    
+    String funName;
+    String funDescrip;
+
     for (CmdMethod method in cmdMethods) {
+      if (myLocale.countryCode == 'CH') {
+        funName = method.name;
+        funDescrip = method.methodDescription;
+      } else {
+        funName = method.Ename;
+        funDescrip = method.EmethodDescription;
+      }
       tiles.add(new Card(
-        color: Colors.amber,
+        color: Colors.yellow,
         child: new ListTile(
           leading: new Text(
-            method.name,
+            funName,
           ),
-          title: new Text(method.methodValue),
-          subtitle: new Text(method.methodDescription),
+          title: new Text(funDescrip),
         ),
       ));
     }
     for (UserFunction u in userFunctions) {
       tiles.add(new Card(
-        color: Colors.amber,
+        color: Colors.purple,
         child: new ListTile(
           leading: new Text(
             u.funName,
@@ -77,8 +85,7 @@ void methodRoute(BuildContext context) {
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(XiaomingLocalizations.of(context).Saved_function)
-      ),
+          title: new Text(XiaomingLocalizations.of(context).Saved_function)),
       body: new ListView(
         children: divided,
       ),
@@ -148,7 +155,8 @@ class _SettingRouteState extends State<SettingRoute> {
                 child: new Row(
                   children: <Widget>[
                     Expanded(
-                      child: Text(XiaomingLocalizations.of(context).decimal_digits),
+                      child: Text(
+                          XiaomingLocalizations.of(context).decimal_digits),
                     ),
                     Text(fixedNum.toString()),
                     CupertinoSlider(
@@ -174,7 +182,8 @@ class _SettingRouteState extends State<SettingRoute> {
               child: new Row(
                 children: <Widget>[
                   Expanded(
-                    child: Text(XiaomingLocalizations.of(context).MethodButtonsView),
+                    child: Text(
+                        XiaomingLocalizations.of(context).MethodButtonsView),
                   ),
                   Text(XiaomingLocalizations.of(context).Horizontal),
                   Switch(
@@ -219,50 +228,38 @@ class HelpItem {
 
 ///控制帮助界面的状态
 class _helpViewState extends State<helpView> {
-  List<HelpItem> items = <HelpItem>[
-    new HelpItem(
-        false,
-        '矩阵赋值',
-        Container(
-          margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-          child: new Text('矩阵赋值的语句格式为：a=[1,2,3;4,5,6;7,8,9],'
-              ' 名称可以由字母和数字组成,但必须以字母开头。'
-              '每一行的多个值用逗号分隔开，行之间用分号分隔开。输入框的上方有方便输入的'
-              '逗号和分号按钮。矩阵和实数会自动保存到文件，同名的数据会被替换（输入a=2也会替换'
-              '原有的a=[1,2,3;4,5,6])'),
-        )),
-    new HelpItem(
-        false,
-        '函数调用',
-        Container(
-          margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-          child: new Text('输入函数名及其参数即可调用函数。例：b=inv(a).函数可以嵌套调用，'
-              '例：c=tran(inv(a)。在自定义函数中也可以调用内置函数，输入框的上方有方便输入函数名的按钮列'
-              '点击主界面左上角的按钮可以打开抽屉，点击抽屉中的保存的函数按钮可以打开函数介绍界面，里面有内置函数的'
-              '详细介绍，还有用户的自定义函数'),
-        )),
-    new HelpItem(
-        false,
-        '自定义函数',
-        Container(
-          margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-          child: new Text(
-              '示例： Fun test(a,b,c):d=a*b/(b+c);r=factorial(d)自定义函数可以由多个命令语句或单个命令语句组成，多个命令语句之间用'
-              '分号分隔开，最后一条命令为函数的返回结果。自定义函数会保存在文件中，方便下次使用，同名的自定义函数只会保留最新定义的'
-              '那个函数。自定义函数名不能为内置函数的名称。在调用自定义函数时传入参数， 例：test(3,2,-1)。注：示例中使用到的阶乘函数'
-              '会自动将小数部分四舍五入成整数再求阶乘。'),
-        )),
-    new HelpItem(
-        false,
-        '设置小数位数',
-        Container(
-          margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-          child: new Text('在抽屉界面中点击设置按钮可以跳转到设置界面，滑动滑块选择保留小数到小数点后第几位'),
-        )),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    List<HelpItem> items = <HelpItem>[
+    new HelpItem(
+        false,
+        XiaomingLocalizations.of(context).HelpTab1,
+        Container(
+          margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          child: new Text(XiaomingLocalizations.of(context).HelpTabData1),
+        )),
+    new HelpItem(
+        false,
+        XiaomingLocalizations.of(context).HelpTab2,
+        Container(
+          margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          child: new Text(XiaomingLocalizations.of(context).HelpTabData2),
+        )),
+    new HelpItem(
+        false,
+        XiaomingLocalizations.of(context).HelpTab3,
+        Container(
+          margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          child: new Text(XiaomingLocalizations.of(context).HelpTabData3),
+        )),
+    new HelpItem(
+        false,
+        XiaomingLocalizations.of(context).HelpTab4,
+        Container(
+          margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          child: new Text(XiaomingLocalizations.of(context).HelpTabData4),
+        )),
+  ];
     return new Scaffold(
       appBar: new AppBar(
         title: const Text('帮助'),

@@ -3,7 +3,7 @@
 .idea/
 .packages
 .pub/
-
+.vscode/
 build/
 
 .flutter-plugins

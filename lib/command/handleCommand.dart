@@ -393,6 +393,8 @@ String _handleOperStrs(List<String> operStrs) {
   //先乘除再加减
   for (String oper in operStrs) {
     if (oper == '^') return oper;
+  }
+  for (String oper in operStrs) {
     if (oper == '*' || oper == '/') return oper;
   }
   return operStrs[0];

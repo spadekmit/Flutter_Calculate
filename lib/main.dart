@@ -160,45 +160,45 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    _buildButtonCard('Fun', width: double.infinity),
-                    _buildButtonCard('inv(', width: double.infinity),
-                    _buildButtonCard('tran(', width: double.infinity),
-                    _buildButtonCard('value(', width: double.infinity),
+                    _buildTextButton('Fun', width: double.infinity),
+                    _buildTextButton('inv(', width: double.infinity),
+                    _buildTextButton('tran(', width: double.infinity),
+                    _buildTextButton('value(', width: double.infinity),
                   ],
                 ),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    _buildButtonCard('sum(', width: double.infinity),
-                    _buildButtonCard('average(', width: double.infinity),
-                    _buildButtonCard('factorial(', width: double.infinity),
-                    _buildButtonCard('sin(', width: double.infinity),
+                    _buildTextButton('sum(', width: double.infinity),
+                    _buildTextButton('average(', width: double.infinity),
+                    _buildTextButton('factorial(', width: double.infinity),
+                    _buildTextButton('sin(', width: double.infinity),
                   ],
                 ),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    _buildButtonCard('cos(', width: double.infinity),
-                    _buildButtonCard('tan(', width: double.infinity),
-                    _buildButtonCard('asin(', width: double.infinity),
-                    _buildButtonCard('acos(', width: double.infinity),
+                    _buildTextButton('cos(', width: double.infinity),
+                    _buildTextButton('tan(', width: double.infinity),
+                    _buildTextButton('asin(', width: double.infinity),
+                    _buildTextButton('acos(', width: double.infinity),
                   ],
                 ),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    _buildButtonCard('atan(', width: double.infinity),
-                    _buildButtonCard('formatDeg(', width: double.infinity),
-                    _buildButtonCard('reForDeg(', width: double.infinity),
-                    _buildButtonCard('absSum(', width: double.infinity),
+                    _buildTextButton('atan(', width: double.infinity),
+                    _buildTextButton('formatDeg(', width: double.infinity),
+                    _buildTextButton('reForDeg(', width: double.infinity),
+                    _buildTextButton('absSum(', width: double.infinity),
                   ],
                 ),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    _buildButtonCard('absAverage(', width: double.infinity),
-                    _buildButtonCard('radToDeg(', width: double.infinity),
-                    _buildButtonCard('lagrange(', width: double.infinity),
+                    _buildTextButton('absAverage(', width: double.infinity),
+                    _buildTextButton('radToDeg(', width: double.infinity),
+                    _buildTextButton('lagrange(', width: double.infinity),
                   ],
                 )
               ],
@@ -213,25 +213,25 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
         scrollDirection: Axis.horizontal,
         cacheExtent: 0.0,
         children: <Widget>[
-          _buildButtonCard('Fun', width: 50.0),
-          _buildButtonCard('inv(', width: 50.0),
-          _buildButtonCard('tran(', width: 50.0),
-          _buildButtonCard('value(', width: 60.0),
-          _buildButtonCard('sum(', width: 50.0),
-          _buildButtonCard('average(', width: 80.0),
-          _buildButtonCard('factorial(', width: 80.0),
-          _buildButtonCard('sin(', width: 50.0),
-          _buildButtonCard('cos(', width: 50.0),
-          _buildButtonCard('tan(', width: 50.0),
-          _buildButtonCard('asin(', width: 55.0),
-          _buildButtonCard('acos(', width: 55.0),
-          _buildButtonCard('atan(', width: 55.0),
-          _buildButtonCard('formatDeg(', width: 90.0),
-          _buildButtonCard('reForDeg(', width: 80.0),
-          _buildButtonCard('absSum(', width: 80.0),
-          _buildButtonCard('absAverage(', width: 90.0),
-          _buildButtonCard('radToDeg(', width: 90.0),
-          _buildButtonCard('lagrange(', width: 80.0),
+          _buildTextButton('Fun', width: 50.0),
+          _buildTextButton('inv(', width: 50.0),
+          _buildTextButton('tran(', width: 50.0),
+          _buildTextButton('value(', width: 60.0),
+          _buildTextButton('sum(', width: 50.0),
+          _buildTextButton('average(', width: 80.0),
+          _buildTextButton('factorial(', width: 80.0),
+          _buildTextButton('sin(', width: 50.0),
+          _buildTextButton('cos(', width: 50.0),
+          _buildTextButton('tan(', width: 50.0),
+          _buildTextButton('asin(', width: 55.0),
+          _buildTextButton('acos(', width: 55.0),
+          _buildTextButton('atan(', width: 55.0),
+          _buildTextButton('formatDeg(', width: 90.0),
+          _buildTextButton('reForDeg(', width: 80.0),
+          _buildTextButton('absSum(', width: 80.0),
+          _buildTextButton('absAverage(', width: 90.0),
+          _buildTextButton('radToDeg(', width: 90.0),
+          _buildTextButton('lagrange(', width: 80.0),
         ],
       ),
     );
@@ -249,19 +249,19 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
       child: new ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[
-          _buildButtonCard(','),
-          _buildButtonCard(';'),
-          _buildButtonCard(':'),
-          _buildButtonCard('['),
-          _buildButtonCard(']'),
-          _buildButtonCard('='),
-          _buildButtonCard('('),
-          _buildButtonCard(')'),
-          _buildButtonCard('^'),
-          _buildButtonCard('+'),
-          _buildButtonCard('-'),
-          _buildButtonCard('*'),
-          _buildButtonCard('/'),
+          _buildTextButton(','),
+          _buildTextButton(';'),
+          _buildTextButton(':'),
+          _buildTextButton('['),
+          _buildTextButton(']'),
+          _buildTextButton('='),
+          _buildTextButton('('),
+          _buildTextButton(')'),
+          _buildTextButton('^'),
+          _buildTextButton('+'),
+          _buildTextButton('-'),
+          _buildTextButton('*'),
+          _buildTextButton('/'),
         ],
       ),
     );
@@ -269,7 +269,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   }
 
   /// 传入标签，创建便捷输入按钮
-  Widget _buildButtonCard(String label, {double width = 50.0}) {
+  Widget _buildTextButton(String label, {double width = 50.0}) {
     Widget buttonCard = new LimitedBox(
       maxWidth: width,
       child: new FlatButton(
@@ -350,7 +350,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   }
 
   /// 处理便捷输入按钮的点击事件
-  void _handleTextButton(String text) {
+  void _handleTextButton(String text, {bool isExpanded = false}) {
     if (_textController.selection.isValid) {
       int index = _textController.value.selection.extentOffset;
       String newStr = _textController.text.substring(0, index) +

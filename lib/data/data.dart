@@ -13,37 +13,37 @@ List<UserFunction> userFunctions = [];
 var UFtemp = new Map();
 
 List<CmdMethod> cmdMethods = [
-  new CmdMethod('矩阵求逆','inv', 'inv', '该函数为内置函数', '用法：inv(A)， A必须为方阵，且行列式的值不为零'),
-  new CmdMethod('矩阵转置', 'tran', '该函数为内置函数', '用法：tran(A),  A必须为矩阵'),
-  new CmdMethod('矩阵求值', 'value', '该函数为内置函数', '用法：value(A), A必须为方阵'),
-  new CmdMethod('拉格朗日插值法', 'lagrange(', '该函数为内置函数',
+  new CmdMethod('矩阵求逆','matrix inversion', 'inv', 'Usage: inv(A), A must be a square matrix, and the value of the determinant is not zero', '用法：inv(A)， A必须为方阵，且行列式的值不为零'),
+  new CmdMethod('矩阵转置', 'matrix transposition' , 'tran', 'Usage: tran(A), A must be a matrix', '用法：tran(A),  A必须为矩阵'),
+  new CmdMethod('矩阵求值', 'evaluation of deteminant' ,'value', 'Usage: value(A), A must be a square matrix', '用法：value(A), A必须为方阵'),
+  new CmdMethod('拉格朗日插值法', 'Lagrange\'s interpolation', 'lagrange', 'Usage: lagrange(A,B,C), A is the x-value column of the node, B is the y-value column of the node, and C is the x-value column of the desired point',
       '用法：lagrange(A,B,C), A为节点的x值列，B为节点的y值列，C为所求点的x值列'),
-  new CmdMethod('求和', 'sum', '该函数为内置函数', '用法：sum(A), A必须为矩阵，求矩阵内所有值的和'),
+  new CmdMethod('求和','sum', 'sum', 'Usage: sum(A), A must be a matrix, find the sum of all the values in the matrix', '用法：sum(A), A必须为矩阵，求矩阵内所有值的和'),
   new CmdMethod(
-      '求绝对值之和', 'absSum', '该函数为内置函数', '用法：absSum(A), A必须为矩阵，求矩阵内所有值的绝对值之和'),
+      '求绝对值之和', 'absolute sum','absSum', 'Usage: absSum(A), A must be a matrix, find the sum of the absolute values of all the values in the matrix', '用法：absSum(A), A必须为矩阵，求矩阵内所有值的绝对值之和'),
   new CmdMethod(
-      '平均值', 'average', '该函数为内置函数', '用法：average(A), A必须为矩阵，求矩阵内所有值的平均值'),
-  new CmdMethod('绝对值的平均值', 'absAverage', '该函数为内置函数',
+      '平均值','average', 'average', 'Usage: average(A), A must be a matrix, find the average of all values in the matrix', '用法：average(A), A必须为矩阵，求矩阵内所有值的平均值'),
+  new CmdMethod('绝对值的平均值','absolute average', 'absAverage', 'Usage: absAverage(A), A must be a matrix, find the average of the absolute values of all values in the matrix',
       '用法：absAverage(A), A必须为矩阵，求矩阵内所有值的绝对值的平均值'),
-  new CmdMethod('阶乘', 'factorial', '该函数为内置函数',
+  new CmdMethod('阶乘','factorial', 'factorial', 'Usage: factorial(A), A must be a positive integer, find the factorial of the number (if the decimal is passed, it will be rounded to an integer)',
       '用法：factorial(A), A必须为正整数，求该数的阶乘(若传入小数会四舍五入转成整数'),
-  new CmdMethod('sin', 'sin', '该函数为内置函数',
+  new CmdMethod('sin','sin', 'sin', 'Usage: sin(A), A must be angle Example: 134.9824 or reForDeg(134.59(minutes)57(seconds)',
       "用法：sin(A), A必须为角度 例：'134.9824'或'reForDeg(134.59(分）57（秒）'"),
-  new CmdMethod('cos', 'cos', '该函数为内置函数',
+  new CmdMethod('cos','cos', 'cos', 'Usage: cos(A), A must be angle Example: 134.9824 or reForDeg(134.59(minutes)57(seconds)',
       "用法：cos(A), A必须为角度 例：'134.9824'或'reForDeg(134.59(分）57（秒）'"),
-  new CmdMethod('tan', 'tan', '该函数为内置函数',
+  new CmdMethod('tan', 'tan','tan', 'Usage: tan(A), A must be angle Example: 134.9824 or reForDeg(134.59(minutes)57(seconds)',
       "用法：tan(A), A必须为角度 例：'134.9824'或'reForDeg(134.59(分）57（秒）'"),
-  new CmdMethod('asin', 'asin', '该函数为内置函数',
+  new CmdMethod('asin', 'asin','asin', 'Usage: asin(A), A must be a number Example: 0.5, return angle, use formatDeg(asin(0.5)) if you want to display degrees and minutes.',
       "用法：asin(A), A必须为数字 例：'0.5 ，返回角度，若需显示度分秒则使用 formatDeg(asin(0.5))"),
-  new CmdMethod('acos', 'acos', '该函数为内置函数',
+  new CmdMethod('acos','acos' ,'acos', 'Usage: acos(A), A must be a number Example: 0.5, return angle, use formatDeg(acos(0.5)) if you want to display degrees and minutes.',
       "用法：acos(A), A必须为数字 例：'0.5，返回角度，若需显示度分秒则使用 formatDeg(acos(0.5))"),
-  new CmdMethod('atan', 'atan', '该函数为内置函数',
+  new CmdMethod('atan','atan' ,'atan', 'Usage: atan(A), A must be a number Example: 0.5, return angle, use formatDeg(atan(0.5)) if you want to display degrees and minutes.',
       "用法：atan(A), A必须为数字 例：'0.5，返回角度，若需显示度分秒则使用 formatDeg(atan(0.5))"),
-  new CmdMethod('格式化角度', 'formatDeg', '该函数为内置函数',
+  new CmdMethod('格式化角度','format degree' ,'formatDeg', 'Usage: formatDeg(A), A must be a number Example: formatDeg(134.9824) = 134°59′57″',
       "用法：formatDeg(A), A必须为数字 例：'formatDeg(134.9824) = 134°59′57″ "),
-  new CmdMethod('反格式化角度', 'reForDeg', '该函数为内置函数',
+  new CmdMethod('反格式化角度','unformat degree' ,'reForDeg', 'Usage: reForDeg(A), A must be a number Example: reForDeg(134.5957) = 134.9824',
       "用法：reForDeg(A), A必须为数字 例：'reForDeg(134.5957) = 134.9824 "),
-  new CmdMethod('弧度转角度', 'radToDeg', '该函数为内置函数',
+  new CmdMethod('弧度转角度','radians to degrees', 'radToDeg', 'Usage: radToDeg(A), A must be a number Example: reForDeg(1) = 57.29578',
       "用法：radToDeg(A), A必须为数字 例：'reForDeg(1) = 57.29578 "),
 ];
 
@@ -51,7 +51,7 @@ class CmdMethod {
   String name; //函数名
   String Ename;
   String cmdText; //函数命令
-  String methodValue; //函数操作文本
+  String EmethodDescription; //函数操作文本
   String methodDescription; //函数详细描述
 
   CmdMethod(this.name,this.Ename , this.cmdText, this.methodValue, this.methodDescription);
