@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:xiaoming/command/handleCommand.dart';
 import 'package:xiaoming/View/myview.dart';
 import 'package:xiaoming/data/data.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:xiaoming/language/xiaomingLocalizations.dart';
 
 void main() => runApp(new MyApp());
 
@@ -9,7 +11,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: '小明同学',
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        XiaomingLocalizationsDelegate.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'),
+        const Locale('zh', 'CH'),
+      ],
+      onGenerateTitle: (context) {
+        return XiaomingLocalizations.of(context).AppName;
+      },
       theme: new ThemeData(
         primaryColor: Colors.white, //使用白色的颜色主题
       ),
@@ -37,38 +50,43 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return new Scaffold(
         drawer: new Drawer(
           child: new ListView(
+            padding: EdgeInsets.all(0.0),
             children: <Widget>[
               DrawerHeader(
                   decoration: BoxDecoration(
                     color: Colors.grey,
                   ),
                   child: new Center(
-                    child: new Text('小明同学'),
+                    child: new Text(
+                      'K',
+                      style: TextStyle(
+                          fontSize: 35.0, fontStyle: FontStyle.italic),
+                    ),
                   )),
               ListTile(
                 leading: Icon(Icons.settings),
-                title: Text('设置'),
+                title: Text(XiaomingLocalizations.of(context).Setting),
                 onTap: () => settingRoute(context),
               ),
               ListTile(
                 leading: Icon(Icons.bookmark),
-                title: Text('保存的函数'),
+                title: Text(XiaomingLocalizations.of(context).Saved_function),
                 onTap: () => methodRoute(context),
               ),
               ListTile(
                 leading: Icon(Icons.bookmark),
-                title: Text('保存的数据'),
+                title: Text(XiaomingLocalizations.of(context).Saved_Data),
                 onTap: () => dataRoute(context),
               ),
             ],
           ),
         ),
         appBar: new AppBar(
-          title: new Text('小明同学'),
+          title: new Text(XiaomingLocalizations.of(context).AppName),
           actions: <Widget>[
             new IconButton(
               icon: new Icon(Icons.help),
@@ -121,8 +139,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   Widget _buildMethodButtons() {
     Widget buttonsH;
     Widget buttonsV;
-    buttonsV = new Card(
-        child: new ExpansionPanelList(
+    buttonsV = new ExpansionPanelList(
       expansionCallback: (int i, bool b) => setState(() {
             isExpanded = !isExpanded;
           }),
@@ -130,7 +147,8 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
         new ExpansionPanel(
           headerBuilder: (context, isExpanded) {
             return new ListTile(
-              leading: new Text('内置的函数',
+              leading: new Text(
+                  XiaomingLocalizations.of(context).Built_in_function,
                   style: TextStyle(fontSize: 18.0, color: Colors.deepOrange)),
             );
           },
@@ -188,7 +206,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
           ),
         ),
       ],
-    ));
+    );
     buttonsH = new LimitedBox(
       maxHeight: 40.0,
       child: new ListView(
@@ -267,36 +285,39 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   Widget _buildTextComposer(BuildContext context) {
     return new IconTheme(
         data: new IconThemeData(color: Theme.of(context).accentColor),
-        child: new Container(
-            margin: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: new Row(children: <Widget>[
-              new Flexible(
-                  child: new Container(
-                      margin: new EdgeInsets.only(left: 25.0),
-                      child: new TextField(
-                        focusNode: _textFocusNode,
-                        maxLines: null,
-                        controller: _textController,
-                        onChanged: (String text) {
-                          setState(() {
-                            _isComposing = text.length > 0;
-                          });
-                        },
-                        onSubmitted: (String text) =>
-                            _handleSubmitted(context, text),
-                        decoration:
-                            new InputDecoration.collapsed(hintText: '输入命令'),
-                      ))),
-              new Container(
-                margin: new EdgeInsets.symmetric(horizontal: 4.0),
-                child: new IconButton(
-                  icon: new Icon(Icons.send),
-                  onPressed: _isComposing
-                      ? () => _handleSubmitted(context, _textController.text)
-                      : null,
-                ),
-              )
-            ])));
+        child: new SafeArea(
+            child: new Container(
+                margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: new Row(children: <Widget>[
+                  new Flexible(
+                      child: new Container(
+                          margin: new EdgeInsets.only(left: 15.0),
+                          child: new TextField(
+                            focusNode: _textFocusNode,
+                            maxLines: null,
+                            controller: _textController,
+                            onChanged: (String text) {
+                              setState(() {
+                                _isComposing = text.length > 0;
+                              });
+                            },
+                            onSubmitted: (String text) =>
+                                _handleSubmitted(context, text),
+                            decoration: new InputDecoration.collapsed(
+                                hintText: XiaomingLocalizations.of(context)
+                                    .InputHint),
+                          ))),
+                  new Container(
+                    margin: new EdgeInsets.symmetric(horizontal: 4.0),
+                    child: new IconButton(
+                      icon: new Icon(Icons.send),
+                      onPressed: _isComposing
+                          ? () =>
+                              _handleSubmitted(context, _textController.text)
+                          : null,
+                    ),
+                  )
+                ]))));
   }
 
   ///处理发送按钮的点击事件
@@ -360,6 +381,8 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
 }
 
 class TextScreen extends StatefulWidget {
+  TextScreen({Key key}) : super(key: key);
+
   @override
-  State createState() => new TextScreenState();
+  TextScreenState createState() => new TextScreenState();
 }

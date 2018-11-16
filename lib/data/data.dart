@@ -8,7 +8,7 @@ Map<String, num> dbs = new Map(); //存储浮点数变量
 
 Map<String, List<List<num>>> matrixs = new Map(); //存储矩阵变量
 double fixedNum=6.0; //存储小数位值
-bool isHorizontalBottons = true;
+bool isHorizontalBottons = false;
 List<UserFunction> userFunctions = [];
 var UFtemp = new Map();
 

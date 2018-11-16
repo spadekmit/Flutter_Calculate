@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:xiaoming/data/data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:xiaoming/command/Matrix.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:xiaoming/language/xiaomingLocalizations.dart';
 
 ///单个输出文本的视图
 class TextView extends StatelessWidget {
@@ -132,7 +134,7 @@ class _SettingRouteState extends State<SettingRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('设置'),
+        title: Text(XiaomingLocalizations.of(context).Setting),
       ),
       body: ListView(
         children: <Widget>[
@@ -144,7 +146,7 @@ class _SettingRouteState extends State<SettingRoute> {
                 child: new Row(
                   children: <Widget>[
                     Expanded(
-                      child: Text('显示小数位数'),
+                      child: Text(XiaomingLocalizations.of(context).decimal_digits),
                     ),
                     Text(fixedNum.toString()),
                     CupertinoSlider(
@@ -170,9 +172,9 @@ class _SettingRouteState extends State<SettingRoute> {
               child: new Row(
                 children: <Widget>[
                   Expanded(
-                    child: Text('内置函数快捷输入显示方式'),
+                    child: Text(XiaomingLocalizations.of(context).MethodButtonsView),
                   ),
-                  Text('横轴'),
+                  Text(XiaomingLocalizations.of(context).Horizontal),
                   Switch(
                     value: isHorizontalBottons,
                     onChanged: (newValue) {
