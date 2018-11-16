@@ -43,6 +43,8 @@ class TextView extends StatelessWidget {
 void methodRoute(BuildContext context) {
   Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
     final List<Card> tiles = <Card>[];
+    Locale myLocale = Localizations.localeOf(context);
+    
     for (CmdMethod method in cmdMethods) {
       tiles.add(new Card(
         color: Colors.amber,
@@ -75,7 +77,7 @@ void methodRoute(BuildContext context) {
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('保存的函数'),
+        title: new Text(XiaomingLocalizations.of(context).Saved_function)
       ),
       body: new ListView(
         children: divided,
@@ -113,7 +115,7 @@ void dataRoute(BuildContext context) {
     ).toList();
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('保存的数据'),
+        title: new Text(XiaomingLocalizations.of(context).Saved_Data),
       ),
       body: new ListView(
         children: divided,

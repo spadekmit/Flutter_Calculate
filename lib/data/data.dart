@@ -13,7 +13,7 @@ List<UserFunction> userFunctions = [];
 var UFtemp = new Map();
 
 List<CmdMethod> cmdMethods = [
-  new CmdMethod('矩阵求逆', 'inv', '该函数为内置函数', '用法：inv(A)， A必须为方阵，且行列式的值不为零'),
+  new CmdMethod('矩阵求逆','inv', 'inv', '该函数为内置函数', '用法：inv(A)， A必须为方阵，且行列式的值不为零'),
   new CmdMethod('矩阵转置', 'tran', '该函数为内置函数', '用法：tran(A),  A必须为矩阵'),
   new CmdMethod('矩阵求值', 'value', '该函数为内置函数', '用法：value(A), A必须为方阵'),
   new CmdMethod('拉格朗日插值法', 'lagrange(', '该函数为内置函数',
@@ -49,11 +49,12 @@ List<CmdMethod> cmdMethods = [
 
 class CmdMethod {
   String name; //函数名
+  String Ename;
   String cmdText; //函数命令
   String methodValue; //函数操作文本
   String methodDescription; //函数详细描述
 
-  CmdMethod(this.name, this.cmdText, this.methodValue, this.methodDescription);
+  CmdMethod(this.name,this.Ename , this.cmdText, this.methodValue, this.methodDescription);
 
 }
 
