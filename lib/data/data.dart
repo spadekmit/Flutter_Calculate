@@ -54,7 +54,7 @@ class CmdMethod {
   String EmethodDescription; //函数操作文本
   String methodDescription; //函数详细描述
 
-  CmdMethod(this.name,this.Ename , this.cmdText, this.methodValue, this.methodDescription);
+  CmdMethod(this.name,this.Ename , this.cmdText, this.EmethodDescription, this.methodDescription);
 
 }
 
