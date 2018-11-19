@@ -32,7 +32,7 @@ dev_dependencies:
 flutter_icons:
   android: true 
   ios: "Example-Icon"
-  image_path: "C://Users//spade//Pictures//kk.png"
+  image_path: "assets/icon/icon_android.png"
   # image_path_android: "assets/icon/icon_android.png"
   # image_path_ios: "assets/icon/icon_ios.png"
   # adaptive_icon_background: "#000000"
