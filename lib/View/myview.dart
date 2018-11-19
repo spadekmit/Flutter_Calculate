@@ -225,14 +225,14 @@ class HelpItem {
 
 ///控制帮助界面的状态
 class _helpViewState extends State<helpView> {
-  @override
-  Widget build(BuildContext context) {
-    List<HelpItem> items = <HelpItem>[
+  List<HelpItem> items = <HelpItem>[
       new HelpItem(false),
       new HelpItem(false),
       new HelpItem(false),
       new HelpItem(false),
     ];
+  @override
+  Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
         title: const Text('帮助'),
@@ -273,7 +273,7 @@ class _helpViewState extends State<helpView> {
                               fontSize: 18.0, color: Colors.deepOrange)),
                     );
                   },
-                  isExpanded: items[0].isExpanded,
+                  isExpanded: items[1].isExpanded,
                   body: Container(
                     margin:
                         EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
@@ -290,7 +290,7 @@ class _helpViewState extends State<helpView> {
                               fontSize: 18.0, color: Colors.deepOrange)),
                     );
                   },
-                  isExpanded: items[0].isExpanded,
+                  isExpanded: items[2].isExpanded,
                   body: Container(
                     margin:
                         EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
@@ -307,7 +307,7 @@ class _helpViewState extends State<helpView> {
                               fontSize: 18.0, color: Colors.deepOrange)),
                     );
                   },
-                  isExpanded: items[0].isExpanded,
+                  isExpanded: items[3].isExpanded,
                   body: Container(
                     margin:
                         EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
