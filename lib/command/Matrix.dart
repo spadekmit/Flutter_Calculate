@@ -204,7 +204,7 @@ List<List<num>> getAdjoint(List<List<num>> list) {
   return newdata;
 }
 
-/// 静态方法，获取给定方阵中 （h,v）位置的代数余子式
+/// 获取给定方阵中 （h,v）位置的代数余子式
 List<List<num>> getConfactor(List<List<num>> list, int h, int v) {
   if (!(h < list.length)) {
     throw FormatException('h: $h 标签值越界  H: ${list.length}');
@@ -225,7 +225,7 @@ List<List<num>> getConfactor(List<List<num>> list, int h, int v) {
   return newlist;
 }
 
-/// 静态方法，传入源矩阵，返回对应的转置矩阵
+/// 传入源矩阵，返回对应的转置矩阵
 List<List<num>> transList(List<List<num>> list) {
   List<List<num>> newlist = [];
   for (int i = 0; i < list[0].length; i++) {
@@ -233,6 +233,49 @@ List<List<num>> transList(List<List<num>> list) {
     for (int j = 0; j < list.length; j++) {
       newlist[i].add(list[j][i]);
     }
+  }
+  return newlist;
+}
+
+/// 获取传入矩阵的上三角矩阵
+List<List<num>> upperTriangular(List<List<num>> list){
+  var divisor = new List(list.length);
+  int index = 0;
+  for(int i=0;i<list.length;i++){
+    for(int j=0;j<list.length;j++){
+      if(list[index][index] == 0){
+        var temp;
+        for(int k=index +1;k<list.length;k++){
+          if(list[k][index] != 0){
+            temp = list[k];
+            list[k] = list[index];
+            list[index] = temp;
+          }
+        }
+      }
+      for(int k=index+1;k<list.length;k++){
+        divisor[k] = list[k][index] / list[index][index];
+      }
+
+    }
+  }
+} 
+///返回list除以d的结果
+List<num> _listDivide(List<num> list, num d){
+  var newlist = [];
+  for(num n in list){
+    newlist.add(n / d);
+  }
+  return newlist;
+}
+///返回list1减list2的结果
+List<num> _listMinus(List<num> list1, List<num> list2){
+  List newlist = [];
+  if(list1.length != list2.length){
+    throw FormatException('相减数组的长度不相等');
+  }
+  for(int i=0;i<list1.length;i++){
+    newlist.add(list1[i] - list2[i]);
   }
   return newlist;
 }
