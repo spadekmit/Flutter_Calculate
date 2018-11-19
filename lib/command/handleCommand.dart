@@ -3,6 +3,7 @@ import 'dart:math';
 import 'Matrix.dart';
 import 'CmdMethod.dart';
 import 'package:xiaoming/data/data.dart';
+
 ///处理字符命令
 String handleCommand(String command) {
   String cmd = command.trim();
@@ -254,6 +255,7 @@ UserFunction getUfByName(String funName) {
   }
   return null;
 }
+
 ///判断传入的函数名是否为用户已定义函数
 bool UFcontain(String funName) {
   for (UserFunction u in userFunctions) {
@@ -287,7 +289,7 @@ dynamic handleCaculStr(String caculStr) {
   if (num.tryParse(caculStr) != null) {
     return num.tryParse(caculStr);
   }
-  if(UFtemp.containsKey(caculStr)){
+  if (UFtemp.containsKey(caculStr)) {
     return UFtemp[caculStr];
   }
   if (caculStr.contains('(')) {
@@ -319,6 +321,8 @@ dynamic handleCaculStr(String caculStr) {
         RegExp inlayMethod = new RegExp(r'[A-Za-z]+\(' +
             caculStrs[i]
                 .toString()
+                .replaceAll('+', '\\+')
+                .replaceAll('*', '\\*')
                 .replaceAll('(', '\\(')
                 .replaceAll(')', '\\)') +
             r'\)');
@@ -348,7 +352,7 @@ dynamic handleCaculStr(String caculStr) {
   List nums = [];
   for (String str in varibales) {
     if (num.tryParse(str) == null) {
-      if(!UFtemp.containsKey(str)){
+      if (!UFtemp.containsKey(str)) {
         if (!matrixs.containsKey(str)) {
           if (!dbs.containsKey(str)) {
             if (!temp.containsKey(str)) {
@@ -362,10 +366,9 @@ dynamic handleCaculStr(String caculStr) {
         } else {
           nums.add(matrixs[str]);
         }
-      }else {
+      } else {
         nums.add(UFtemp[str]);
       }
-
     } else {
       nums.add(num.tryParse(str));
     }

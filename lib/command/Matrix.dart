@@ -187,7 +187,7 @@ List<List<num>> getAdjoint(List<List<num>> list) {
     newdata[0].add(-list[0][1]);
     newdata[1].add(-list[1][0]);
     newdata[1].add(list[0][0]);
-    newdata = m2dDivide(list, A);
+    newdata = m2dDivide(newdata, A);
     return newdata;
   }
   for (int i = 0; i < list.length; i++) {
