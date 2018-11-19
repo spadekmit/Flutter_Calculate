@@ -42,7 +42,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   final FocusNode _textFocusNode = new FocusNode();
   final List<TextView> _texts = <TextView>[]; //存储消息的列表
   bool _isComposing = false;
-  bool isExpanded = false;
+  bool _isExpanded = false;
   @override
   void initState() {
     super.initState();
@@ -141,7 +141,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
     Widget buttonsV;
     buttonsV = new ExpansionPanelList(
       expansionCallback: (int i, bool b) => setState(() {
-            isExpanded = !isExpanded;
+            _isExpanded = !_isExpanded;
           }),
       children: <ExpansionPanel>[
         new ExpansionPanel(
@@ -152,7 +152,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                   style: TextStyle(fontSize: 18.0, color: Colors.deepOrange)),
             );
           },
-          isExpanded: isExpanded,
+          isExpanded: _isExpanded,
           body: LimitedBox(
             maxHeight: 200.0,
             child: ListView(
@@ -324,6 +324,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   void _handleSubmitted(BuildContext context, String text) {
     _textController.clear();
     setState(() {
+      _isExpanded = false;
       _isComposing = false;
     });
     TextView textView1 = new TextView(

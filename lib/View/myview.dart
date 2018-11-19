@@ -220,9 +220,7 @@ class helpView extends StatefulWidget {
 
 class HelpItem {
   bool isExpanded;
-  final String header;
-  final Widget body;
-  HelpItem(this.isExpanded, this.header, this.body);
+  HelpItem(this.isExpanded);
 }
 
 ///控制帮助界面的状态
@@ -230,35 +228,11 @@ class _helpViewState extends State<helpView> {
   @override
   Widget build(BuildContext context) {
     List<HelpItem> items = <HelpItem>[
-    new HelpItem(
-        false,
-        XiaomingLocalizations.of(context).HelpTab1,
-        Container(
-          margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-          child: new Text(XiaomingLocalizations.of(context).HelpTabData1),
-        )),
-    new HelpItem(
-        false,
-        XiaomingLocalizations.of(context).HelpTab2,
-        Container(
-          margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-          child: new Text(XiaomingLocalizations.of(context).HelpTabData2),
-        )),
-    new HelpItem(
-        false,
-        XiaomingLocalizations.of(context).HelpTab3,
-        Container(
-          margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-          child: new Text(XiaomingLocalizations.of(context).HelpTabData3),
-        )),
-    new HelpItem(
-        false,
-        XiaomingLocalizations.of(context).HelpTab4,
-        Container(
-          margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-          child: new Text(XiaomingLocalizations.of(context).HelpTabData4),
-        )),
-  ];
+      new HelpItem(false),
+      new HelpItem(false),
+      new HelpItem(false),
+      new HelpItem(false),
+    ];
     return new Scaffold(
       appBar: new AppBar(
         title: const Text('帮助'),
@@ -272,19 +246,76 @@ class _helpViewState extends State<helpView> {
               expansionCallback: (int i, bool b) => setState(() {
                     items[i].isExpanded = !items[i].isExpanded;
                   }),
-              children: items.map((HelpItem item) {
-                return new ExpansionPanel(
+              children: <ExpansionPanel>[
+                new ExpansionPanel(
                   headerBuilder: (context, isExpanded) {
                     return new ListTile(
-                      leading: new Text(item.header,
+                      leading: new Text(
+                          XiaomingLocalizations.of(context).HelpTab1,
                           style: TextStyle(
                               fontSize: 18.0, color: Colors.deepOrange)),
                     );
                   },
-                  isExpanded: item.isExpanded,
-                  body: item.body,
-                );
-              }).toList(),
+                  isExpanded: items[0].isExpanded,
+                  body: Container(
+                    margin:
+                        EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+                    child: new Text(
+                        XiaomingLocalizations.of(context).HelpTabData1),
+                  ),
+                ),
+                new ExpansionPanel(
+                  headerBuilder: (context, isExpanded) {
+                    return new ListTile(
+                      leading: new Text(
+                          XiaomingLocalizations.of(context).HelpTab2,
+                          style: TextStyle(
+                              fontSize: 18.0, color: Colors.deepOrange)),
+                    );
+                  },
+                  isExpanded: items[0].isExpanded,
+                  body: Container(
+                    margin:
+                        EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+                    child: new Text(
+                        XiaomingLocalizations.of(context).HelpTabData2),
+                  ),
+                ),
+                new ExpansionPanel(
+                  headerBuilder: (context, isExpanded) {
+                    return new ListTile(
+                      leading: new Text(
+                          XiaomingLocalizations.of(context).HelpTab3,
+                          style: TextStyle(
+                              fontSize: 18.0, color: Colors.deepOrange)),
+                    );
+                  },
+                  isExpanded: items[0].isExpanded,
+                  body: Container(
+                    margin:
+                        EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+                    child: new Text(
+                        XiaomingLocalizations.of(context).HelpTabData3),
+                  ),
+                ),
+                new ExpansionPanel(
+                  headerBuilder: (context, isExpanded) {
+                    return new ListTile(
+                      leading: new Text(
+                          XiaomingLocalizations.of(context).HelpTab4,
+                          style: TextStyle(
+                              fontSize: 18.0, color: Colors.deepOrange)),
+                    );
+                  },
+                  isExpanded: items[0].isExpanded,
+                  body: Container(
+                    margin:
+                        EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+                    child: new Text(
+                        XiaomingLocalizations.of(context).HelpTabData4),
+                  ),
+                ),
+              ],
             ))
           ],
         ),
