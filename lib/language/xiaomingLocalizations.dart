@@ -10,7 +10,7 @@ class XiaomingLocalizations {
 
   static Map<String, Map<String, String>> _localizedValues = {
     'en': {
-      'AppName': 'Account clerk',
+      'AppName': 'Computing assistant',
       'Built-in function': 'Built-in function',
       'Setting': 'Setting',
       'Saved function': 'Saved function',
@@ -32,7 +32,7 @@ class XiaomingLocalizations {
       'HelpTabData4': 'Click the Settings button in the drawer interface to jump to the settings interface, and slide the slider to select the number of decimals to the decimal point.',
     },
     'zh': {
-      'AppName': '计算小秘书',
+      'AppName': '计算小助手',
       'Built-in function': '内置的函数',
       'Setting': '设置',
       'Saved function': '保存的函数',

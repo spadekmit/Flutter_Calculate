@@ -204,7 +204,7 @@ List<List<num>> getAdjoint(List<List<num>> list) {
   return newdata;
 }
 
-/// 静态方法，获取给定方阵中 （h,v）位置的伴随阵
+/// 静态方法，获取给定方阵中 （h,v）位置的代数余子式
 List<List<num>> getConfactor(List<List<num>> list, int h, int v) {
   if (!(h < list.length)) {
     throw FormatException('h: $h 标签值越界  H: ${list.length}');

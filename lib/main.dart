@@ -5,11 +5,15 @@ import 'package:xiaoming/data/data.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:xiaoming/language/xiaomingLocalizations.dart';
 
-void main() => runApp(new MyApp());
+void main() {
+  readSettingData();
+  runApp(new MyApp());
+} 
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    loadData();
     return new MaterialApp(
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
@@ -43,11 +47,6 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   final List<TextView> _texts = <TextView>[]; //存储消息的列表
   bool _isComposing = false;
   bool _isExpanded = false;
-  @override
-  void initState() {
-    super.initState();
-    loadData();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -169,33 +168,37 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
+                    _buildTextButton('cofa(', width: double.infinity),
                     _buildTextButton('sum(', width: double.infinity),
                     _buildTextButton('average(', width: double.infinity),
                     _buildTextButton('factorial(', width: double.infinity),
-                    _buildTextButton('sin(', width: double.infinity),
+                    
                   ],
                 ),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
+                    _buildTextButton('sin(', width: double.infinity),
                     _buildTextButton('cos(', width: double.infinity),
                     _buildTextButton('tan(', width: double.infinity),
                     _buildTextButton('asin(', width: double.infinity),
-                    _buildTextButton('acos(', width: double.infinity),
+                    
                   ],
                 ),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
+                    _buildTextButton('acos(', width: double.infinity),
                     _buildTextButton('atan(', width: double.infinity),
                     _buildTextButton('formatDeg(', width: double.infinity),
                     _buildTextButton('reForDeg(', width: double.infinity),
-                    _buildTextButton('absSum(', width: double.infinity),
+                    
                   ],
                 ),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
+                    _buildTextButton('absSum(', width: double.infinity),
                     _buildTextButton('absAverage(', width: double.infinity),
                     _buildTextButton('radToDeg(', width: double.infinity),
                     _buildTextButton('lagrange(', width: double.infinity),
@@ -217,6 +220,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
           _buildTextButton('inv(', width: 50.0),
           _buildTextButton('tran(', width: 50.0),
           _buildTextButton('value(', width: 60.0),
+          _buildTextButton('cofa(', width: 50.0),
           _buildTextButton('sum(', width: 50.0),
           _buildTextButton('average(', width: 80.0),
           _buildTextButton('factorial(', width: 80.0),
