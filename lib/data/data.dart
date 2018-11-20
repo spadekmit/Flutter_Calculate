@@ -179,7 +179,12 @@ Future readSettingData() async {
   File settingDataFile = new File('$dir/settingdata.txt');
   if (settingDataFile.existsSync()) {
     String data = settingDataFile.readAsStringSync();
-    fixedNum = double.parse(data);
+    try{
+      fixedNum = double.parse(data);
+    }catch(e){
+      fixedNum = 6.0;
+    }
+    
   }else{
     fixedNum = 6.0;
   }

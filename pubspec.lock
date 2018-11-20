@@ -14,7 +14,7 @@ packages:
       name: args
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.5.1"
+    version: "1.5.0"
   async:
     dependency: transitive
     description:
@@ -227,5 +227,5 @@ packages:
     source: hosted
     version: "2.1.15"
 sdks:
-  dart: ">=2.0.0 <=2.1.0-dev.9.3.flutter-9c07fb64c4"
+  dart: ">=2.0.0 <=2.1.0-dev.9.4.flutter-f9ebf21297"
   flutter: ">=0.1.4 <2.0.0"

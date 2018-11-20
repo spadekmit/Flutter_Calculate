@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:xiaoming/View/DataRoute.dart';
 import 'package:xiaoming/View/HelpRoute.dart';
+import 'package:xiaoming/View/LineEquationRoute.dart';
 import 'package:xiaoming/View/MethodRoute.dart';
 import 'package:xiaoming/View/MyTextView.dart';
 import 'package:xiaoming/View/SettingRoute.dart';
@@ -80,6 +81,11 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                 leading: Icon(Icons.bookmark),
                 title: Text(XiaomingLocalizations.of(context).Saved_Data),
                 onTap: () => dataRoute(context),
+              ),
+              ListTile(
+                leading: Icon(Icons.extension),
+                title: Text('方程组求解'),
+                onTap: () => lineQuations(context),
               ),
             ],
           ),
