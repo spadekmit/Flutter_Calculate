@@ -20,6 +20,7 @@ class _LineQuationsViewState extends State<LineQuationsView> {
   final TextEditingController _varController = TextEditingController();
   final FocusNode _lineQuasFocusNode = new FocusNode();
   final FocusNode _varFocusNode = new FocusNode();
+  String result = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,6 +105,12 @@ class _LineQuationsViewState extends State<LineQuationsView> {
                   onPressed: () => _handleLineQuationCacul(),
                   child: Text('计算'),
                 ),
+              ),
+              Container(
+                child: TextView(
+                  context: context,
+                  text: result,
+                ),
               )
             ],
           ),
@@ -114,7 +121,9 @@ class _LineQuationsViewState extends State<LineQuationsView> {
 
   void _handleLineQuationCacul() {
     EquationsUtil handle = EquationsUtil.getInstance();
-    var result = handle.handleLineEquations(_lineQuasController.text, _varController.text);
-    EquationsUtil e = new EquationsUtil();
+    var re = handle.handleLineEquations(_lineQuasController.text, _varController.text);
+    setState(() {
+          result = re;
+        });
   }
 }

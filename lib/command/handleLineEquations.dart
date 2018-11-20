@@ -12,22 +12,24 @@ class EquationsUtil{
 
 
   String handleLineEquations(String raweuations,String rawvars){
+    String result = '';
     var equations = raweuations.split(',');
     var vars = rawvars.split(',');
     for(var equation in equations){
       var reg = RegExp(r'=');
       var matchs = reg.allMatches(equation);
       if(matchs.length != 1){
-        throw FormatException('方程中等号数量错误');
+        return '方程中等号数量错误';
       }
       if(equation.contains(RegExp(r'\*|/'))){
-        throw FormatException('线性方程组不处理乘除运算');
+        return '线性方程组不处理乘除运算';
       }
       var lr = equation.split('=');
       var leftEquation = lr[0];
       var rightEquation = lr[1];
       var vs = leftEquation.split(RegExp(r'\+|-'));
     }
+    return result;
   }
 
   simplifiedEquation(String equation){
