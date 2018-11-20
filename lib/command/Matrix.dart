@@ -239,30 +239,30 @@ List<List<num>> transList(List<List<num>> list) {
 
 /// 获取传入矩阵的上三角矩阵
 List<List<num>> upperTriangular(List<List<num>> list){
+  var newlist = copyMatrix(list);
   var divisor = new List(list.length);
   int index = 0;
-  for(int i=0;i<list.length;i++){
-    for(int j=0;j<list.length;j++){
-      if(list[index][index] == 0){
+  for(int i=0;i<newlist.length;i++){
+      if(newlist[i][i] == 0){
         var temp;
-        for(int k=index +1;k<list.length;k++){
-          if(list[k][index] != 0){
-            temp = list[k];
-            list[k] = list[index];
-            list[index] = temp;
+        for(int k=i +1;k<newlist.length;k++){
+          if(newlist[k][i] != 0){
+            temp = newlist[k];
+            newlist[k] = newlist[i];
+            newlist[i] = temp;
           }
         }
       }
-      for(int k=index+1;k<list.length;k++){
-        divisor[k] = list[k][index] / list[index][index];
+      for(int k=i+1;k<newlist.length;k++){
+        divisor[k] = newlist[k][i] / newlist[i][i];
+        newlist[k] = _listMinus(_listDivide(newlist[k], divisor[k]), newlist[i]); 
       }
-
-    }
   }
+  return newlist;
 } 
 ///返回list除以d的结果
 List<num> _listDivide(List<num> list, num d){
-  var newlist = [];
+  List<num> newlist = [];
   for(num n in list){
     newlist.add(n / d);
   }
@@ -270,7 +270,7 @@ List<num> _listDivide(List<num> list, num d){
 }
 ///返回list1减list2的结果
 List<num> _listMinus(List<num> list1, List<num> list2){
-  List newlist = [];
+  List<num> newlist = [];
   if(list1.length != list2.length){
     throw FormatException('相减数组的长度不相等');
   }

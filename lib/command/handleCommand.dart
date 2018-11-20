@@ -216,11 +216,20 @@ dynamic _invocationMethod(String cmd) {
       if (vals.length != 1 || vals[0] is! num)
         throw FormatException('reForDeg函数参数传递错误');
       return reForDeg(vals[0]);
-      case 'cofa':
-      if(vals.length != 3 || vals[0] is! List<List<num>> || vals[1] is! num || vals[2] is! num){
+    case 'cofa':
+      if (vals.length != 3 ||
+          vals[0] is! List<List<num>> ||
+          vals[1] is! num ||
+          vals[2] is! num) {
         throw FormatException('cofa函数参数传递错误');
       }
       return getConfactor(vals[0], vals[1], vals[2]);
+    case 'upmat':
+      if (vals.length != 1 ||
+          vals[0] is! List<List<num>>) {
+        throw FormatException('upmat函数参数传递错误');
+      }
+      return upperTriangular(vals[0]);
     default:
       throw FormatException('$methodName 为未知命令');
   }

@@ -7,7 +7,6 @@ Map<String, num> dbs = new Map(); //存储浮点数变量
 
 Map<String, List<List<num>>> matrixs = new Map(); //存储矩阵变量
 double fixedNum = 6.0; //存储小数位值
-bool isHorizontalBottons = false;
 List<UserFunction> userFunctions = [];
 var UFtemp = new Map();
 
@@ -22,6 +21,12 @@ List<CmdMethod> cmdMethods = [
       'Usage: tran(A), A must be a matrix', '用法：tran(A),  A必须为矩阵'),
   new CmdMethod('矩阵求值', 'evaluation of deteminant', 'value',
       'Usage: value(A), A must be a square matrix', '用法：value(A), A必须为方阵'),
+  new CmdMethod(
+      '上三角矩阵',
+      'upper triangular matrix',
+      'upmat',
+      'Usage: upmat(A), A must be a Square matrix or augmented matrix',
+      '用法：upmat(A), A必须为方阵或增广矩阵'),
   new CmdMethod(
       '求代数余子式',
       'Matrix complementary',
@@ -165,8 +170,7 @@ Future writeSettingData() async {
     settingDataFile.delete();
   }
   settingDataFile.createSync();
-  settingDataFile.writeAsStringSync(
-      fixedNum.toString() + '|' + isHorizontalBottons.toString());
+  settingDataFile.writeAsStringSync(fixedNum.toString());
 }
 
 ///从文件读取到设置界面的数据
@@ -175,14 +179,8 @@ Future readSettingData() async {
   File settingDataFile = new File('$dir/settingdata.txt');
   if (settingDataFile.existsSync()) {
     String data = settingDataFile.readAsStringSync();
-    var vals = data.split('|');
-    fixedNum = double.parse(vals[0]);
-    if (vals[1].trim() == 'true') {
-      isHorizontalBottons = true;
-    } else {
-      isHorizontalBottons = false;
-    }
-  } else {
+    fixedNum = double.parse(data);
+  }else{
     fixedNum = 6.0;
   }
 }

@@ -8,7 +8,7 @@ import 'package:xiaoming/language/xiaomingLocalizations.dart';
 void main() {
   readSettingData();
   runApp(new MyApp());
-} 
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -136,7 +136,6 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
 
   ///创建方便输入方法名的按钮列
   Widget _buildMethodButtons() {
-    Widget buttonsH;
     Widget buttonsV;
     buttonsV = new ExpansionPanelList(
       expansionCallback: (int i, bool b) => setState(() {
@@ -168,80 +167,55 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
+                    _buildTextButton('upmat(', width: double.infinity),
                     _buildTextButton('cofa(', width: double.infinity),
                     _buildTextButton('sum(', width: double.infinity),
                     _buildTextButton('average(', width: double.infinity),
-                    _buildTextButton('factorial(', width: double.infinity),
                     
                   ],
                 ),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
+                    _buildTextButton('factorial(', width: double.infinity),
                     _buildTextButton('sin(', width: double.infinity),
                     _buildTextButton('cos(', width: double.infinity),
                     _buildTextButton('tan(', width: double.infinity),
-                    _buildTextButton('asin(', width: double.infinity),
                     
                   ],
                 ),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
+                    _buildTextButton('asin(', width: double.infinity),
                     _buildTextButton('acos(', width: double.infinity),
                     _buildTextButton('atan(', width: double.infinity),
                     _buildTextButton('formatDeg(', width: double.infinity),
-                    _buildTextButton('reForDeg(', width: double.infinity),
                     
                   ],
                 ),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
+                    _buildTextButton('reForDeg(', width: double.infinity),
                     _buildTextButton('absSum(', width: double.infinity),
                     _buildTextButton('absAverage(', width: double.infinity),
                     _buildTextButton('radToDeg(', width: double.infinity),
+                    
+                  ],
+                ),
+                new Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
                     _buildTextButton('lagrange(', width: double.infinity),
                   ],
-                )
+                ),
               ],
             ),
           ),
         ),
       ],
     );
-    buttonsH = new LimitedBox(
-      maxHeight: 40.0,
-      child: new ListView(
-        scrollDirection: Axis.horizontal,
-        cacheExtent: 0.0,
-        children: <Widget>[
-          _buildTextButton('Fun', width: 50.0),
-          _buildTextButton('inv(', width: 50.0),
-          _buildTextButton('tran(', width: 50.0),
-          _buildTextButton('value(', width: 60.0),
-          _buildTextButton('cofa(', width: 50.0),
-          _buildTextButton('sum(', width: 50.0),
-          _buildTextButton('average(', width: 80.0),
-          _buildTextButton('factorial(', width: 80.0),
-          _buildTextButton('sin(', width: 50.0),
-          _buildTextButton('cos(', width: 50.0),
-          _buildTextButton('tan(', width: 50.0),
-          _buildTextButton('asin(', width: 55.0),
-          _buildTextButton('acos(', width: 55.0),
-          _buildTextButton('atan(', width: 55.0),
-          _buildTextButton('formatDeg(', width: 90.0),
-          _buildTextButton('reForDeg(', width: 80.0),
-          _buildTextButton('absSum(', width: 80.0),
-          _buildTextButton('absAverage(', width: 90.0),
-          _buildTextButton('radToDeg(', width: 90.0),
-          _buildTextButton('lagrange(', width: 80.0),
-        ],
-      ),
-    );
-    if (isHorizontalBottons) {
-      return buttonsH;
-    }
     return buttonsV;
   }
 

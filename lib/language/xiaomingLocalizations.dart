@@ -17,8 +17,6 @@ class XiaomingLocalizations {
       'Saved Data': 'Saved Data',
       'InputHint': 'Input command',
       'decimal digits': 'decimal digits',
-      'MethodButtonsView': 'Built-in function shortcut input',
-      'Horizontal': 'isHorizontal',
       'CopyHint': 'The content has been copied to the clipboard',
       'HelpTab1': 'Matrix assignment',
       'HelpTab2': 'function call',
@@ -39,8 +37,6 @@ class XiaomingLocalizations {
       'Saved Data': '保存的数据',
       'InputHint': '输入命令',
       'decimal digits': '小数保留位数',
-      'MethodButtonsView': '内置函数快捷输入栏显示方式',
-      'Horizontal': '水平',
       'CopyHint': '内容已复制到剪切板',
       'HelpTab1': '矩阵赋值',
       'HelpTab2': '函数调用',
@@ -90,14 +86,6 @@ class XiaomingLocalizations {
 
   get decimal_digits {
     return _localizedValues[locale.languageCode]['decimal digits'];
-  }
-
-  get MethodButtonsView {
-    return _localizedValues[locale.languageCode]['MethodButtonsView'];
-  }
-
-  get Horizontal {
-    return _localizedValues[locale.languageCode]['Horizontal'];
   }
 
   get CopyHint {

@@ -173,31 +173,6 @@ class _SettingRouteState extends State<SettingRoute> {
                   ],
                 )),
           ),
-          Card(
-            elevation: 5.0,
-            margin: const EdgeInsets.all(8.0),
-            child: new Container(
-              margin: const EdgeInsets.all(12.0),
-              child: new Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                        XiaomingLocalizations.of(context).MethodButtonsView),
-                  ),
-                  Text(XiaomingLocalizations.of(context).Horizontal),
-                  Switch(
-                    value: isHorizontalBottons,
-                    onChanged: (newValue) {
-                      setState(() {
-                        isHorizontalBottons = !isHorizontalBottons;
-                      });
-                      writeSettingData();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
         ],
       ),
     );
