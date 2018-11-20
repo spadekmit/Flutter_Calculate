@@ -20,9 +20,17 @@ class EquationsUtil{
       if(matchs.length != 1){
         throw FormatException('方程中等号数量错误');
       }
+      if(equation.contains(RegExp(r'\*|/'))){
+        throw FormatException('线性方程组不处理乘除运算');
+      }
       var lr = equation.split('=');
       var leftEquation = lr[0];
       var rightEquation = lr[1];
+      var vs = leftEquation.split(RegExp(r'\+|-'));
     }
+  }
+
+  simplifiedEquation(String equation){
+    var vs = equation.split(RegExp(r'\+|-|\*|/'));
   }
 }
