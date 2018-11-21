@@ -1,4 +1,4 @@
-import 'package:xiaoming/command/Matrix.dart';
+import 'package:xiaoming/command/matrix.dart';
 import 'package:xiaoming/data/data.dart';
 
 class EquationsUtil {

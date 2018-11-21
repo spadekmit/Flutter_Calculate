@@ -3,20 +3,20 @@ import 'package:xiaoming/command/handleLineEquations.dart';
 import 'package:flutter/services.dart';
 import 'package:xiaoming/language/xiaomingLocalizations.dart';
 
-void poplineQuationsRoute(BuildContext context) {
+void popCaculusRoute(BuildContext context) {
   Navigator.of(context)
       .push(new MaterialPageRoute<void>(builder: (BuildContext context) {
-    return new LineQuationsView();
+    return new CaculusView();
   }));
 }
 
-class LineQuationsView extends StatefulWidget {
-  LineQuationsView({Key key}) : super(key: key);
+class CaculusView extends StatefulWidget {
+  CaculusView({Key key}) : super(key: key);
   @override
-  _LineQuationsViewState createState() => _LineQuationsViewState();
+  _CaculusViewState createState() => _CaculusViewState();
 }
 
-class _LineQuationsViewState extends State<LineQuationsView> {
+class _CaculusViewState extends State<CaculusView> {
   final TextEditingController _lineQuasController = TextEditingController();
   final TextEditingController _varController = TextEditingController();
   final FocusNode _lineQuasFocusNode = new FocusNode();
@@ -26,7 +26,7 @@ class _LineQuationsViewState extends State<LineQuationsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('求解方程组'),
+        title: Text('求解微积分'),
       ),
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,

@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'Matrix.dart';
-import 'CmdMethod.dart';
+import 'package:xiaoming/command/matrix.dart';
+import 'package:xiaoming/command/cmdMethod.dart';
 import 'package:xiaoming/data/data.dart';
 
 ///处理字符命令

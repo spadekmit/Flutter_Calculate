@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:xiaoming/command/Matrix.dart';
+import 'package:xiaoming/command/matrix.dart';
 import 'package:xiaoming/data/data.dart';
 import 'package:xiaoming/language/xiaomingLocalizations.dart';
 
 ///保存的数据界面
-void dataRoute(BuildContext context) {
+void popdataRoute(BuildContext context) {
   Navigator.of(context)
       .push(new MaterialPageRoute<void>(builder: (BuildContext context) {
     List<Card> tiles = <Card>[];

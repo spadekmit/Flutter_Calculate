@@ -3,7 +3,7 @@ import 'package:xiaoming/data/data.dart';
 import 'package:xiaoming/language/xiaomingLocalizations.dart';
 
 ///保存的方法界面
-void methodRoute(BuildContext context) {
+void popmethodRoute(BuildContext context) {
   Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
     final List<Card> tiles = <Card>[];
     Locale myLocale = Localizations.localeOf(context);

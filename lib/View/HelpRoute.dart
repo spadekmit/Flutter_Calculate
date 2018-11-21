@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:xiaoming/language/xiaomingLocalizations.dart';
 
+
+void pophelpRoute(BuildContext context) {
+  Navigator.of(context)
+      .push(new MaterialPageRoute<void>(builder: (BuildContext context) {
+    return new helpView();
+  }));
+}
+
 ///帮助界面
 class helpView extends StatefulWidget {
   helpView({Key key}) : super(key: key);
@@ -114,9 +122,4 @@ class _helpViewState extends State<helpView> {
   }
 }
 
-void helpRoute(BuildContext context) {
-  Navigator.of(context)
-      .push(new MaterialPageRoute<void>(builder: (BuildContext context) {
-    return new helpView();
-  }));
-}
+

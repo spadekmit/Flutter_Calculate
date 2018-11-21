@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:xiaoming/View/DataRoute.dart';
-import 'package:xiaoming/View/HelpRoute.dart';
-import 'package:xiaoming/View/LineEquationRoute.dart';
-import 'package:xiaoming/View/MethodRoute.dart';
-import 'package:xiaoming/View/MyTextView.dart';
-import 'package:xiaoming/View/SettingRoute.dart';
+import 'package:xiaoming/view/dataRoute.dart';
+import 'package:xiaoming/view/helpRoute.dart';
+import 'package:xiaoming/view/lineEquationRoute.dart';
+import 'package:xiaoming/view/methodRoute.dart';
+import 'package:xiaoming/view/myTextView.dart';
+import 'package:xiaoming/view/settingRoute.dart';
+import 'package:xiaoming/view/caculusRoute.dart';
 import 'package:xiaoming/command/handleCommand.dart';
 import 'package:xiaoming/data/data.dart';
 import 'package:xiaoming/language/xiaomingLocalizations.dart';
@@ -75,17 +76,22 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
               ListTile(
                 leading: Icon(Icons.bookmark),
                 title: Text(XiaomingLocalizations.of(context).Saved_function),
-                onTap: () => methodRoute(context),
+                onTap: () => popmethodRoute(context),
               ),
               ListTile(
                 leading: Icon(Icons.bookmark),
                 title: Text(XiaomingLocalizations.of(context).Saved_Data),
-                onTap: () => dataRoute(context),
+                onTap: () => popdataRoute(context),
               ),
               ListTile(
                 leading: Icon(Icons.extension),
                 title: Text('方程组求解'),
-                onTap: () => lineQuations(context),
+                onTap: () => poplineQuationsRoute(context),
+              ),
+              ListTile(
+                leading: Icon(Icons.extension),
+                title: Text('微积分求解'),
+                onTap: () => popCaculusRoute(context),
               ),
             ],
           ),
@@ -95,7 +101,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
           actions: <Widget>[
             new IconButton(
               icon: new Icon(Icons.help),
-              onPressed: () => helpRoute(context),
+              onPressed: () => pophelpRoute(context),
             )
           ],
           //AppBar显示的标题
