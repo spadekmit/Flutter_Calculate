@@ -7,6 +7,9 @@ String mtoString({String name, List<List<num>> list}) {
   }
   for (List<num> l in list) {
     for (num d in l) {
+      if(d == 0.0){
+        d = 0.0;
+      }
       buffer.write('   ');
       buffer.write(d.toStringAsFixed(fixedNum.round()) + '  ');
     }
@@ -238,33 +241,41 @@ List<List<num>> transList(List<List<num>> list) {
 }
 
 /// 获取传入矩阵的上三角矩阵
-List<List<num>> upperTriangular(List<List<num>> list){
-  var newlist = copyMatrix(list);
-  var divisor = new List(list.length);
+List<List<num>> upperTriangular(List<List<num>> list){ //(n-1)!*2n  (n-1)!n
+  var newlist = copyMatrix(list);//拷贝出一个新矩阵
+  var divisor = new List(list.length); //记录对角线下的每一行的倍数
   int index = 0;
-  for(int i=0;i<newlist.length;i++){
-      if(newlist[i][i] == 0){
-        var temp;
-        for(int k=i +1;k<newlist.length;k++){
-          if(newlist[k][i] != 0){
-            temp = newlist[k];
-            newlist[k] = newlist[i];
-            newlist[i] = temp;
-          }
+  for (int i = 0; i < newlist.length; i++) {
+    if (newlist[i][i] == 0) {
+      //如果该对角线上的元素为零，将最近的不为零的一行换上来
+      var temp;
+      for (int k = i + 1; k < newlist.length; k++) {
+        if (newlist[k][i] != 0) {
+          temp = newlist[k];
+          newlist[k] = newlist[i];
+          newlist[i] = temp;
         }
       }
-      for(int k=i+1;k<newlist.length;k++){
-        divisor[k] = newlist[k][i] / newlist[i][i];
-        newlist[k] = _listMinus(_listDivide(newlist[k], divisor[k]), newlist[i]); 
+    }
+    for (int k = i + 1; k < newlist.length; k++) {
+      if (newlist[k][i] == 0) {
+        continue;
       }
+      divisor[k] = newlist[k][i] / newlist[i][i]; //存储k行与i行首位的倍数
+      newlist[k] =
+          _listMinus(_listDivide(newlist[k], divisor[k], i), newlist[i]);
+    }
   }
   return newlist;
 } 
 ///返回list除以d的结果
-List<num> _listDivide(List<num> list, num d){
+List<num> _listDivide(List<num> list, num d, int index) {
   List<num> newlist = [];
-  for(num n in list){
-    newlist.add(n / d);
+  for (int i = 0; i < index; i++) {
+    newlist.add(0);
+  }
+  for (int i = index; i < list.length; i++) {
+    newlist.add(list[i] / d);
   }
   return newlist;
 }
@@ -278,4 +289,22 @@ List<num> _listMinus(List<num> list1, List<num> list2){
     newlist.add(list1[i] - list2[i]);
   }
   return newlist;
+}
+///传入上三角增广矩阵，输出结果列
+List<num> getResult(List<List<num>> list){
+  final n = list.length; //矩阵行数
+  List<num> result = []; //存储结果列
+  for (int i = 0; i < n; i++) {
+    var minus = 0.0; 
+    int index = n - 1 - i; // 当前所求解的行号
+    for (int j = index + 1; j < n; j++) {
+      minus += list[index][j] * result[n -j - 1];  //系数阵中的常数项之和
+    }
+    result.add((list[index][n] - minus) / list[index][index]);
+  }
+  List<num> newresult = [];  //将结果列反转回正确的顺序
+  for (int i = 0; i < result.length; i++) {
+    newresult.add(result[result.length - i - 1]);
+  }
+  return newresult;
 }
