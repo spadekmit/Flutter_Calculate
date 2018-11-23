@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:xiaoming/command/matrix.dart';
-import 'package:xiaoming/command/cmdMethod.dart';
-import 'package:xiaoming/data/data.dart';
+import 'package:xiaoming/src/command/matrix.dart';
+import 'package:xiaoming/src/command/cmdMethod.dart';
+import 'package:xiaoming/src/data/data.dart';
 
 ///处理字符命令
 String handleCommand(String command) {
@@ -305,6 +305,16 @@ dynamic handleCaculStr(String caculStr) {
   }
   if (UFtemp.containsKey(caculStr)) {
     return UFtemp[caculStr];
+  }
+  var negative = new RegExp(r'(([^A-Za-z0-9]-)|(^-))[A-Za-z0-9]+[^\)]');
+  var minus = new RegExp(r'(([^A-Za-z0-9]-)|(^-))[A-Za-z0-9]+');
+  while(negative.hasMatch(caculStr)){
+    String str1 = negative.firstMatch(caculStr).group(0);
+    var str2 = minus.firstMatch(str1).group(0);
+    var str3 = str1.replaceAll(str2, '');
+    int index = str1.indexOf('-');
+    caculStr = caculStr.replaceFirst(negative, str1.substring(0, index) +
+        '(' + str1.substring(index).replaceAll(str3, '') + ')' + str3);
   }
   if (caculStr.contains('(')) {
     var caculStrs = [];

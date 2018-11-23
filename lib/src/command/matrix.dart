@@ -1,4 +1,4 @@
-import 'package:xiaoming/data/data.dart';
+import 'package:xiaoming/src/data/data.dart';
 
 String mtoString({String name, List<List<num>> list}) {
   StringBuffer buffer = new StringBuffer();

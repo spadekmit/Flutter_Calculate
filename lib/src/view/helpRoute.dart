@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xiaoming/language/xiaomingLocalizations.dart';
+import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
 
 void pophelpRoute(BuildContext context) {

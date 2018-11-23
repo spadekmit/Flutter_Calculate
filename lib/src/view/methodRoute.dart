@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:xiaoming/data/data.dart';
-import 'package:xiaoming/language/xiaomingLocalizations.dart';
+import 'package:xiaoming/src/data/data.dart';
+import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
 ///保存的方法界面
 void popmethodRoute(BuildContext context) {

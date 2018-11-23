@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:xiaoming/command/matrix.dart';
-import 'package:xiaoming/data/data.dart';
-import 'package:xiaoming/language/xiaomingLocalizations.dart';
+import 'package:xiaoming/src/command/matrix.dart';
+import 'package:xiaoming/src/data/data.dart';
+import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
 ///保存的数据界面
 void popdataRoute(BuildContext context) {

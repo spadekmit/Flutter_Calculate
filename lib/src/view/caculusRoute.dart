@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:xiaoming/command/handleLineEquations.dart';
+import 'package:xiaoming/src/command/handleLineEquations.dart';
 import 'package:flutter/services.dart';
-import 'package:xiaoming/language/xiaomingLocalizations.dart';
+import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
 void popCaculusRoute(BuildContext context) {
   Navigator.of(context)

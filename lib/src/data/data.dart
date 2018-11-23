@@ -1,4 +1,4 @@
-import 'package:xiaoming/command/handleCommand.dart';
+import 'package:xiaoming/src/command/handleCommand.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';

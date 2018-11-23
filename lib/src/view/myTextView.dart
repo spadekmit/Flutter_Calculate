@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:xiaoming/language/xiaomingLocalizations.dart';
+import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
 ///单个输出文本的视图
 class TextView extends StatelessWidget {

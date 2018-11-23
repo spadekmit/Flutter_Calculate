@@ -1,5 +1,7 @@
-import 'package:xiaoming/command/matrix.dart';
-import 'package:xiaoming/data/data.dart';
+import 'dart:math';
+
+import 'package:xiaoming/src/command/matrix.dart';
+import 'package:xiaoming/src/data/data.dart';
 
 class EquationsUtil {
   _EquationsUtil() {}
@@ -7,11 +9,13 @@ class EquationsUtil {
   static final EquationsUtil instance = new EquationsUtil();
   static List<List<num>> postMatrix = [];
   static List<List<num>> constant = [];
-
+  ///获取已缓存的实例
   static EquationsUtil getInstance() {
     return instance;
   }
-
+  ///传入线性方程组和变量求得结果
+  ///@param raweuations  线性方程组，以逗号隔开
+  ///@param rawvars      所有变量，以逗号隔开
   String handleLineEquations(String raweuations, String rawvars) {
     RegExp char = new RegExp(r'^[A-Za-z]+[0-9]*');
     var varmap = new Map();
@@ -69,7 +73,11 @@ class EquationsUtil {
     constant = [];
     return result;
   }
-
+  ///传入方程字符串，将系数添加到系数阵，常数添加到常数阵
+  ///@param  equation   方程字符串
+  ///@param  map        存储变量与其对应序号的map
+  ///@param  isLeft     传入方程是否是等式左边
+  ///@param  index      处理的是哪一行的方程
   simplifiedEquation(String equation, Map map, bool isLeft, int index) {  //a+b
     RegExp reg = new RegExp(r'(\+|-)\w+');
     if(RegExp(r'^[A-Za-z0-9]').hasMatch(equation)){
@@ -112,4 +120,31 @@ class EquationsUtil {
       }
     }
   }
+
+  ///传入非线性方程，返回结果
+  ///@param   equation    非线性方程组
+  ///@param   x           变量
+  String nonlinearEquation(String equation, String x){
+    String result;
+    Function fun = (x) {};
+    if(equation.substring(0,1) != '-'){
+      equation = '+' + equation;
+    }
+    var reg = new RegExp(r'(\+|-)[0-9]*' + x + r'(\^[0-9]+)?');
+    var mas = reg.allMatches(equation);
+    for(var m in mas){
+      var x_i = m.group(0).indexOf(x);
+      if(m.group(0).contains('^')){
+        var power_i = m.group(0).indexOf('^');
+        var post = num.parse(m.group(0).substring(0,x_i));
+        var power = num.parse(m.group(0).substring(power_i + 1));
+        var newfun = (x) => fun(x) + post * pow(x, power);
+        fun = newfun;
+      }
+
+    }
+    return result;
+  }
 }
+
+

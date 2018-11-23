@@ -6,7 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:xiaoming/View/MainRoute.dart';
+import 'package:xiaoming/src/view/mainRoute.dart';
 
 
 void main() {

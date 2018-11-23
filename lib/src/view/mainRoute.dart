@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:xiaoming/view/dataRoute.dart';
-import 'package:xiaoming/view/helpRoute.dart';
-import 'package:xiaoming/view/lineEquationRoute.dart';
-import 'package:xiaoming/view/methodRoute.dart';
-import 'package:xiaoming/view/myTextView.dart';
-import 'package:xiaoming/view/settingRoute.dart';
-import 'package:xiaoming/view/caculusRoute.dart';
-import 'package:xiaoming/command/handleCommand.dart';
-import 'package:xiaoming/data/data.dart';
-import 'package:xiaoming/language/xiaomingLocalizations.dart';
+import 'package:xiaoming/src/view/dataRoute.dart';
+import 'package:xiaoming/src/view/helpRoute.dart';
+import 'package:xiaoming/src/view/lineEquationRoute.dart';
+import 'package:xiaoming/src/view/methodRoute.dart';
+import 'package:xiaoming/src/view/myTextView.dart';
+import 'package:xiaoming/src/view/settingRoute.dart';
+import 'package:xiaoming/src/view/caculusRoute.dart';
+import 'package:xiaoming/src/command/handleCommand.dart';
+import 'package:xiaoming/src/data/data.dart';
+import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
 class MyApp extends StatelessWidget {
   MyApp({Key key}) : super(key: key);
@@ -124,6 +124,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                       decoration: new BoxDecoration(
                         color: Theme.of(context).cardColor,
                       ),
+                     // height: 200.0,
                       child: _buildMethodButtons(),
                     ),
                     new Divider(height: 1.0),

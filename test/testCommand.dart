@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:xiaoming/command/handleLineEquations.dart';
-import 'package:xiaoming/command/Matrix.dart';
+import 'package:xiaoming/src/command/handleLineEquations.dart';
+import 'package:xiaoming/src/command/matrix.dart';
 
 void main(){
   test('test UserFunction invoke', () {

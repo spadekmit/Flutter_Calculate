@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:xiaoming/data/data.dart';
-import 'package:xiaoming/language/xiaomingLocalizations.dart';
+import 'package:xiaoming/src/data/data.dart';
+import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
 ///设置界面
 class SettingRoute extends StatefulWidget {
