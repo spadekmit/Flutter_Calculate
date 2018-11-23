@@ -26,7 +26,7 @@ class _LineQuationsViewState extends State<LineQuationsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('求解方程组'),
+        title: Text(XiaomingLocalizations.of(context).Solve_equation),
       ),
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -69,7 +69,7 @@ class _LineQuationsViewState extends State<LineQuationsView> {
                   SizedBox(
                     width: 60.0,
                     child: FlatButton(
-                      child: Text('清空'),
+                      child: Text(XiaomingLocalizations.of(context).empty),
                       onPressed: () => _lineQuasController.clear(),
                     ),
                   ),
@@ -104,7 +104,7 @@ class _LineQuationsViewState extends State<LineQuationsView> {
                   SizedBox(
                     width: 60.0,
                     child: FlatButton(
-                      child: Text('清空'),
+                      child: Text(XiaomingLocalizations.of(context).empty),
                       onPressed: () => _varController.clear(),
                     ),
                   ),
@@ -115,7 +115,7 @@ class _LineQuationsViewState extends State<LineQuationsView> {
                 child: RaisedButton(
                   color: Colors.blue,
                   onPressed: () => _handleLineQuationCacul(),
-                  child: Text('计算'),
+                  child: Text(XiaomingLocalizations.of(context).calculate),
                 ),
               ),
               Container(

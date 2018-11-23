@@ -84,7 +84,7 @@ String _handleMatrixArithmetic(String cmd) {
   }
   //处理运算语句，返回运算结果或异常信息
   try {
-    var re = handleCaculStr(newcmd);
+    var re = handleCalcuStr(newcmd);
     if (name != null) {
       if (re is List<List<num>>) {
         dbs.remove(name);
@@ -286,13 +286,13 @@ List<dynamic> getMethodValue(String methodValue) {
   //将参数字符串转化为实际类型
   List<dynamic> vals = [];
   for (String str in values) {
-    vals.add(handleCaculStr(str));
+    vals.add(handleCalcuStr(str));
   }
   return vals;
 }
 
 /// 传入需要运算的语句，返回结果
-dynamic handleCaculStr(String caculStr) {
+dynamic handleCalcuStr(String caculStr) {
   var temp = new Map();
   if (matrixs.containsKey(caculStr)) {
     return matrixs[caculStr];
@@ -359,7 +359,7 @@ dynamic handleCaculStr(String caculStr) {
         }
         caculStr = caculStr.replaceFirst(
             '(' + caculStrs[i].toString() + ')', 'caculStrTemp$i');
-        temp['caculStrTemp$i'] = handleCaculStr(caculStrs[i].toString());
+        temp['caculStrTemp$i'] = handleCalcuStr(caculStrs[i].toString());
       }
     }
   }

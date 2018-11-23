@@ -14,6 +14,10 @@ class XiaomingLocalizations {
       'Setting': 'Setting',
       'Saved function': 'Saved function',
       'Saved Data': 'Saved Data',
+      'Solve equation' : 'Solve equation',
+      'Solve calculus' : 'Solve calculus',
+      'empty' : 'empty',
+      'calculate' : 'calculate',
       'InputHint': 'Input command',
       'decimal digits': 'decimal digits',
       'CopyHint': 'The content has been copied to the clipboard',
@@ -34,6 +38,10 @@ class XiaomingLocalizations {
       'Setting': '设置',
       'Saved function': '保存的函数',
       'Saved Data': '保存的数据',
+      'Solve equation' : '解方程',
+      'Solve calculus' : '解微积分',
+      'empty' : '清空',
+      'calculate' : '计算',
       'InputHint': '输入命令',
       'decimal digits': '小数保留位数',
       'CopyHint': '内容已复制到剪切板',
@@ -77,6 +85,22 @@ class XiaomingLocalizations {
 
   get Saved_Data {
     return _localizedValues[locale.languageCode]['Saved Data'];
+  }
+
+  get Solve_equation {
+    return _localizedValues[locale.languageCode]['Solve equation'];
+  }
+
+  get Solve_calculus {
+    return _localizedValues[locale.languageCode]['Solve calculus'];
+  }
+
+  get empty {
+    return _localizedValues[locale.languageCode]['empty'];
+  }
+
+  get calculate {
+    return _localizedValues[locale.languageCode]['calculate'];
   }
 
   get InputHint {

@@ -6,7 +6,7 @@ import 'package:xiaoming/src/view/lineEquationRoute.dart';
 import 'package:xiaoming/src/view/methodRoute.dart';
 import 'package:xiaoming/src/view/myTextView.dart';
 import 'package:xiaoming/src/view/settingRoute.dart';
-import 'package:xiaoming/src/view/caculusRoute.dart';
+import 'package:xiaoming/src/view/calculusRoute.dart';
 import 'package:xiaoming/src/command/handleCommand.dart';
 import 'package:xiaoming/src/data/data.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
@@ -85,13 +85,13 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
               ),
               ListTile(
                 leading: Icon(Icons.extension),
-                title: Text('方程组求解'),
+                title: Text(XiaomingLocalizations.of(context).Solve_equation),
                 onTap: () => poplineQuationsRoute(context),
               ),
               ListTile(
                 leading: Icon(Icons.extension),
-                title: Text('微积分求解'),
-                onTap: () => popCaculusRoute(context),
+                title: Text(XiaomingLocalizations.of(context).Solve_calculus),
+                onTap: () => popCalculusRoute(context),
               ),
             ],
           ),
@@ -129,6 +129,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                     ),
                     new Divider(height: 1.0),
                     new Container(
+                      height: 40.0,
                       decoration: new BoxDecoration(
                         color: Theme.of(context).cardColor,
                       ),
@@ -171,46 +172,46 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    _buildTextButton('Fun', width: double.infinity),
-                    _buildTextButton('inv(', width: double.infinity),
-                    _buildTextButton('tran(', width: double.infinity),
-                    _buildTextButton('value(', width: double.infinity),
+                    _buildBracketButton('Fun', width: double.infinity),
+                    _buildBracketButton('inv(', width: double.infinity),
+                    _buildBracketButton('tran(', width: double.infinity),
+                    _buildBracketButton('value(', width: double.infinity),
                   ],
                 ),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    _buildTextButton('upmat(', width: double.infinity),
-                    _buildTextButton('cofa(', width: double.infinity),
-                    _buildTextButton('sum(', width: double.infinity),
-                    _buildTextButton('average(', width: double.infinity),
+                    _buildBracketButton('upmat(', width: double.infinity),
+                    _buildBracketButton('cofa(', width: double.infinity),
+                    _buildBracketButton('sum(', width: double.infinity),
+                    _buildBracketButton('average(', width: double.infinity),
                   ],
                 ),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    _buildTextButton('factorial(', width: double.infinity),
-                    _buildTextButton('sin(', width: double.infinity),
-                    _buildTextButton('cos(', width: double.infinity),
-                    _buildTextButton('tan(', width: double.infinity),
+                    _buildBracketButton('factorial(', width: double.infinity),
+                    _buildBracketButton('sin(', width: double.infinity),
+                    _buildBracketButton('cos(', width: double.infinity),
+                    _buildBracketButton('tan(', width: double.infinity),
                   ],
                 ),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    _buildTextButton('asin(', width: double.infinity),
-                    _buildTextButton('acos(', width: double.infinity),
-                    _buildTextButton('atan(', width: double.infinity),
-                    _buildTextButton('formatDeg(', width: double.infinity),
+                    _buildBracketButton('asin(', width: double.infinity),
+                    _buildBracketButton('acos(', width: double.infinity),
+                    _buildBracketButton('atan(', width: double.infinity),
+                    _buildBracketButton('formatDeg(', width: double.infinity),
                   ],
                 ),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    _buildTextButton('reForDeg(', width: double.infinity),
-                    _buildTextButton('absSum(', width: double.infinity),
-                    _buildTextButton('absAverage(', width: double.infinity),
-                    _buildTextButton('radToDeg(', width: double.infinity),
+                    _buildBracketButton('reForDeg(', width: double.infinity),
+                    _buildBracketButton('absSum(', width: double.infinity),
+                    _buildBracketButton('absAverage(', width: double.infinity),
+                    _buildBracketButton('radToDeg(', width: double.infinity),
                   ],
                 ),
                 new Row(
@@ -231,26 +232,21 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   /// 创建方便输入符号的按钮列
   Widget _buildButtons() {
     Widget buttons;
-    buttons = new LimitedBox(
-      maxHeight: 40.0,
-      child: new ListView(
-        scrollDirection: Axis.horizontal,
-        children: <Widget>[
-          _buildTextButton(','),
-          _buildTextButton(';'),
-          _buildTextButton(':'),
-          _buildTextButton('['),
-          _buildTextButton(']'),
-          _buildTextButton('='),
-          _buildTextButton('('),
-          _buildTextButton(')'),
-          _buildTextButton('^'),
-          _buildTextButton('+'),
-          _buildTextButton('-'),
-          _buildTextButton('*'),
-          _buildTextButton('/'),
-        ],
-      ),
+    buttons = new ListView(
+      scrollDirection: Axis.horizontal,
+      children: <Widget>[
+        _buildTextButton(','),
+        _buildTextButton(';'),
+        _buildTextButton(':'),
+        _buildBracketButton('['),
+        _buildTextButton('='),
+        _buildBracketButton('('),
+        _buildTextButton('^'),
+        _buildTextButton('+'),
+        _buildTextButton('-'),
+        _buildTextButton('*'),
+        _buildTextButton('/'),
+      ],
     );
     return buttons;
   }
@@ -266,6 +262,17 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
       ),
     );
     return buttonCard;
+  }
+
+  Widget _buildBracketButton(String label,{double width = 50.0} ){
+    return LimitedBox(
+      maxWidth: width,
+      child: new FlatButton(
+        padding: const EdgeInsets.all(0.0),
+        onPressed: () => _handleBracket(label),
+        child: new Text(label, style: new TextStyle(fontSize: 14.0)),
+      ),
+    );
   }
 
   ///输入控件，包含一个输入框和一个按钮
@@ -337,8 +344,35 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
     textView2.animationController.forward();
   }
 
+  void _handleBracket(String text){
+    String bracket = text.substring(text.length -1);
+    if(bracket == '('){
+      text = text + ')';
+    } else if(bracket == '['){
+      text = text + ']';
+    }
+    if (_textController.selection.isValid) {
+      int index = _textController.value.selection.extentOffset;
+      String newStr = _textController.text.substring(0, index) +
+          text +
+          _textController.text.substring(index, _textController.text.length);
+      setState(() {
+        _isComposing = true;
+      });
+      _textController.value = new TextEditingValue(
+        text: newStr,
+        selection: new TextSelection.collapsed(offset: index + text.length - 1),
+      );
+    } else {
+      _textController.value = new TextEditingValue(
+        text: text,
+        selection: new TextSelection.collapsed(offset: text.length - 1),
+      );
+    }
+  }
+
   /// 处理便捷输入按钮的点击事件
-  void _handleTextButton(String text, {bool isExpanded = false}) {
+  void _handleTextButton(String text) {
     if (_textController.selection.isValid) {
       int index = _textController.value.selection.extentOffset;
       String newStr = _textController.text.substring(0, index) +

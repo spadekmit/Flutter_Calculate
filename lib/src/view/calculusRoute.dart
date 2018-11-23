@@ -3,7 +3,7 @@ import 'package:xiaoming/src/command/handleLineEquations.dart';
 import 'package:flutter/services.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
-void popCaculusRoute(BuildContext context) {
+void popCalculusRoute(BuildContext context) {
   Navigator.of(context)
       .push(new MaterialPageRoute<void>(builder: (BuildContext context) {
     return new CaculusView();
@@ -26,7 +26,7 @@ class _CaculusViewState extends State<CaculusView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('求解微积分'),
+        title: Text(XiaomingLocalizations.of(context).Solve_calculus),
       ),
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -69,7 +69,7 @@ class _CaculusViewState extends State<CaculusView> {
                   SizedBox(
                     width: 60.0,
                     child: FlatButton(
-                      child: Text('清空'),
+                      child: Text(XiaomingLocalizations.of(context).empty),
                       onPressed: () => _lineQuasController.clear(),
                     ),
                   ),
@@ -104,7 +104,7 @@ class _CaculusViewState extends State<CaculusView> {
                   SizedBox(
                     width: 60.0,
                     child: FlatButton(
-                      child: Text('清空'),
+                      child: Text(XiaomingLocalizations.of(context).empty),
                       onPressed: () => _varController.clear(),
                     ),
                   ),
@@ -115,7 +115,7 @@ class _CaculusViewState extends State<CaculusView> {
                 child: RaisedButton(
                   color: Colors.blue,
                   onPressed: () => _handleLineQuationCacul(),
-                  child: Text('计算'),
+                  child: Text(XiaomingLocalizations.of(context).calculate),
                 ),
               ),
               Container(
