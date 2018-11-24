@@ -26,7 +26,7 @@ class _CaculusViewState extends State<CaculusView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(XiaomingLocalizations.of(context).Solve_calculus),
+        title: Text(XiaomingLocalizations.of(context).Solve_equation),
       ),
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -39,76 +39,66 @@ class _CaculusViewState extends State<CaculusView> {
               right: 12.0, left: 12.0, bottom: 12.0, top: 12.0),
           child: ListView(
             children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: 48.0, bottom: 12.0),
+                child: ExpansionTile(
+                  title: Text('提示'),
+                  children: <Widget>[
+                    Text('线性方程指最高次幂为1次的一元或多元方程'),
+                    Text('例a00x+a01y+a02z=b0,a10x+a11y+a12z=b1,'),
+                    Text('a20x+a21y+a22z=b2      变量栏输入x,y,z'),
+                  ],
+                ),
+              ),
               Container(
-                padding: EdgeInsets.only(left: 12.0, bottom: 12.0, top: 48.0),
-                child: Row(children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            right: 8.0, left: 8.0, bottom: 8.0, top: 8.0),
-                        child: Container(
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return '请输入方程组';
-                              }
-                            },
-                            focusNode: _lineQuasFocusNode,
-                            controller: _lineQuasController,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8.0))),
-                                hintText: '输入方程式组，以逗号隔开'),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 60.0,
-                    child: FlatButton(
-                      child: Text(XiaomingLocalizations.of(context).empty),
-                      onPressed: () => _lineQuasController.clear(),
-                    ),
-                  ),
-                ]),
+                padding: EdgeInsets.only(left: 12.0, top: 12.0),
+                child: TextFormField(
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return '请输入方程组';
+                    }
+                  },
+                  focusNode: _lineQuasFocusNode,
+                  controller: _lineQuasController,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                      hintText: '输入方程式组，以逗号隔开'),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 250.0, bottom: 16.0),
+                width: 40.0,
+                child: FlatButton(
+                  child: Text(XiaomingLocalizations.of(context).empty),
+                  onPressed: () => _lineQuasController.clear(),
+                ),
               ),
               Container(
                 padding: EdgeInsets.only(left: 12.0, bottom: 12.0, top: 12.0),
-                child: Row(children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return '请输入所有变量';
-                              }
-                            },
-                            focusNode: _varFocusNode,
-                            controller: _varController,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8.0))),
-                                hintText: '输入所有变量，以逗号隔开'),
-                          ),
-                        ),
-                      ),
-                    ),
+                child: TextFormField(
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return '请输入所有变量';
+                    }
+                  },
+                  focusNode: _varFocusNode,
+                  controller: _varController,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                      hintText: '输入所有变量，以逗号隔开'),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 250.0, bottom: 16.0),
+                child: SizedBox(
+                  width: 40.0,
+                  child: FlatButton(
+                    child: Text(XiaomingLocalizations.of(context).empty),
+                    onPressed: () => _varController.clear(),
                   ),
-                  SizedBox(
-                    width: 60.0,
-                    child: FlatButton(
-                      child: Text(XiaomingLocalizations.of(context).empty),
-                      onPressed: () => _varController.clear(),
-                    ),
-                  ),
-                ]),
+                ),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 90.0, vertical: 12.0),
