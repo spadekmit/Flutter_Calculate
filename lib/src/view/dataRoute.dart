@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xiaoming/src/command/matrix.dart';
-import 'package:xiaoming/src/data/data.dart';
+import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
 ///保存的数据界面
@@ -8,17 +8,17 @@ void popdataRoute(BuildContext context) {
   Navigator.of(context)
       .push(new MaterialPageRoute<void>(builder: (BuildContext context) {
     List<Card> tiles = <Card>[];
-    if (matrixs.isNotEmpty) {
-      matrixs.forEach((name, list) => tiles.add(new Card(
+    if (UserData.matrixs.isNotEmpty) {
+      UserData.matrixs.forEach((name, list) => tiles.add(new Card(
             color: Colors.cyan,
             child: new ListTile(
               leading: new Text(name),
-              title: new Text(mtoString(list: list)),
+              title: new Text(MatrixUtil.mtoString(list: list)),
             ),
           )));
     }
-    if (dbs.isNotEmpty) {
-      dbs.forEach((name, value) => tiles.add(new Card(
+    if (UserData.dbs.isNotEmpty) {
+      UserData.dbs.forEach((name, value) => tiles.add(new Card(
             color: Colors.green,
             child: new ListTile(
               leading: new Text(name),

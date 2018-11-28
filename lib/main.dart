@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:xiaoming/src/view/mainRoute.dart';
-import 'package:xiaoming/src/data/data.dart';
+import 'package:xiaoming/src/data/appData.dart';
 
 void main() {
-  readSettingData();
+  UserData.readSettingData();
   runApp(new MyApp());
 }

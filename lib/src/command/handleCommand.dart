@@ -2,7 +2,8 @@ import 'dart:math';
 
 import 'package:xiaoming/src/command/matrix.dart';
 import 'package:xiaoming/src/command/cmdMethod.dart';
-import 'package:xiaoming/src/data/data.dart';
+import 'package:xiaoming/src/data/appData.dart';
+import 'package:xiaoming/src/data/settingData.dart';
 
 ///处理字符命令
 String handleCommand(String command) {
@@ -61,11 +62,11 @@ String _handleGetMatrix(String cmd) {
     }
     index++;
   }
-  matrixs.remove(name);
-  dbs.remove(name);
-  matrixs[name] = list;
-  writeMatrix();
-  return mtoString(name: name, list: list);
+  UserData.matrixs.remove(name);
+  UserData.dbs.remove(name);
+  UserData.matrixs[name] = list;
+  UserData.writeMatrix();
+  return MatrixUtil.mtoString(name: name, list: list);
 }
 
 /// 处理矩阵与浮点数的四则运算
@@ -87,23 +88,23 @@ String _handleMatrixArithmetic(String cmd) {
     var re = handleCalcuStr(newcmd);
     if (name != null) {
       if (re is List<List<num>>) {
-        dbs.remove(name);
-        matrixs[name] = copyMatrix(re); //将运算得到的矩阵添加到矩阵池
-        writeMatrix();
-        result = mtoString(name: name, list: matrixs[name]);
+        UserData.dbs.remove(name);
+        UserData.matrixs[name] = MatrixUtil.copyMatrix(re); //将运算得到的矩阵添加到矩阵池
+        UserData.writeMatrix();
+        result = MatrixUtil.mtoString(name: name, list: UserData.matrixs[name]);
       } else if (re is num) {
-        matrixs.remove(name);
-        dbs[name] = re; //将运算得到的浮点数添加到浮点池
-        writeDb();
-        result = '$name = ' + re.toStringAsFixed(fixedNum.round());
+        UserData.matrixs.remove(name);
+        UserData.dbs[name] = re; //将运算得到的浮点数添加到浮点池
+        UserData.writeDb();
+        result = '$name = ' + re.toStringAsFixed(SettingData.fixedNum.round());
       } else {
         result = '该类型不能存储  $re';
       }
     } else {
       if (re is List<List<num>>) {
-        result = mtoString(list: re);
+        result = MatrixUtil.mtoString(list: re);
       } else if (re is num) {
-        result = re.toStringAsFixed(fixedNum.round());
+        result = re.toStringAsFixed(SettingData.fixedNum.round());
       } else {
         result = re.toString();
       }
@@ -134,52 +135,52 @@ dynamic _invocationMethod(String cmd) {
     case 'inv':
       if (vals.length != 1 || vals[0] is! List<List<num>>)
         throw FormatException('inv函数参数传递错误');
-      return getAdjoint(vals[0]);
+      return MatrixUtil.getAdjoint(vals[0]);
     case 'tran':
       if (vals.length != 1 || vals[0] is! List<List<num>>)
         throw FormatException('tran函数参数传递错误');
-      return transList(vals[0]);
+      return MatrixUtil.transList(vals[0]);
     case 'value':
       if (vals.length != 1 || vals[0] is! List<List<num>>)
         throw FormatException('value函数参数传递错误');
-      return getDetValue(vals[0]);
+      return MatrixUtil.getDetValue(vals[0]);
     case 'lagrange':
       if (vals.length != 3 ||
           !(vals[0] is List<List<num>>) ||
           !(vals[1] is List<List<num>>) ||
           !(vals[2] is List<List<num>>))
         throw FormatException('lagrange函数参数传递错误');
-      return lagrange(vals[0], vals[1], vals[2]);
+      return CmdMethodUtil.lagrange(vals[0], vals[1], vals[2]);
     case 'sum':
       if (vals.length != 1 || vals[0] is! List<List<num>>)
         throw FormatException('sum函数参数传递错误');
-      return sum(vals[0]);
+      return CmdMethodUtil.sum(vals[0]);
     case 'absSum':
       if (vals.length != 1 || vals[0] is! List<List<num>>)
         throw FormatException('absSum函数参数传递错误');
-      return absSum(vals[0]);
+      return CmdMethodUtil.absSum(vals[0]);
     case 'average':
       if (vals.length != 1 || vals[0] is! List<List<num>>)
         throw FormatException('average函数参数传递错误');
-      return average(vals[0]);
+      return CmdMethodUtil.average(vals[0]);
     case 'absAverage':
       if (vals.length != 1 || vals[0] is! List<List<num>>)
         throw FormatException('absAverage函数参数传递错误');
-      return absAverage(vals[0]);
+      return CmdMethodUtil.absAverage(vals[0]);
     case 'factorial':
       if (vals.length != 1 || vals[0] is! num)
         throw FormatException('factorial函数参数传递错误');
-      return factorial(vals[0]);
+      return CmdMethodUtil.factorial(vals[0]);
 
     case 'sin':
       if (vals.length != 1 || vals[0] is! num)
         throw FormatException('sin函数参数传递错误');
-      return sin(degToRad(vals[0]));
+      return sin(CmdMethodUtil.degToRad(vals[0]));
 
     case 'cos':
       if (vals.length != 1 || vals[0] is! num)
         throw FormatException('cos函数参数传递错误');
-      return cos(degToRad(vals[0]));
+      return cos(CmdMethodUtil.degToRad(vals[0]));
 
     case 'tan':
       if (vals.length != 1 || vals[0] is! num)
@@ -187,35 +188,35 @@ dynamic _invocationMethod(String cmd) {
       if (vals[0] == 90) {
         throw FormatException('tan(90)为无穷大');
       }
-      return tan(degToRad(vals[0]));
+      return tan(CmdMethodUtil.degToRad(vals[0]));
 
     case 'asin':
       if (vals.length != 1 || vals[0] is! num)
         throw FormatException('asin函数参数传递错误');
-      return radToDeg(asin(vals[0]));
+      return CmdMethodUtil.radToDeg(asin(vals[0]));
 
     case 'acos':
       if (vals.length != 1 || vals[0] is! num)
         throw FormatException('acos函数参数传递错误');
-      return radToDeg(acos(vals[0]));
+      return CmdMethodUtil.radToDeg(acos(vals[0]));
 
     case 'atan':
       if (vals.length != 1 || vals[0] is! num)
         throw FormatException('atan函数参数传递错误');
-      return radToDeg(atan(vals[0]));
+      return CmdMethodUtil.radToDeg(atan(vals[0]));
 
     case 'radToDeg':
       if (vals.length != 1 || vals[0] is! num)
         throw FormatException('radToDeg函数参数传递错误');
-      return radToDeg(vals[0]);
+      return CmdMethodUtil.radToDeg(vals[0]);
     case 'formatDeg':
       if (vals.length != 1 || vals[0] is! num)
         throw FormatException('formatDeg函数参数传递错误');
-      return formatDeg(vals[0]);
+      return CmdMethodUtil.formatDeg(vals[0]);
     case 'reForDeg':
       if (vals.length != 1 || vals[0] is! num)
         throw FormatException('reForDeg函数参数传递错误');
-      return reForDeg(vals[0]);
+      return CmdMethodUtil.reForDeg(vals[0]);
     case 'cofa':
       if (vals.length != 3 ||
           vals[0] is! List<List<num>> ||
@@ -223,13 +224,12 @@ dynamic _invocationMethod(String cmd) {
           vals[2] is! num) {
         throw FormatException('cofa函数参数传递错误');
       }
-      return getConfactor(vals[0], vals[1], vals[2]);
+      return MatrixUtil.getConfactor(vals[0], vals[1], vals[2]);
     case 'upmat':
-      if (vals.length != 1 ||
-          vals[0] is! List<List<num>>) {
+      if (vals.length != 1 || vals[0] is! List<List<num>>) {
         throw FormatException('upmat函数参数传递错误');
       }
-      return upperTriangular(vals[0]);
+      return MatrixUtil.upperTriangular(vals[0]);
     default:
       throw FormatException('$methodName 为未知命令');
   }
@@ -255,14 +255,14 @@ String _handleDefinFunction(String cmd) {
   for (String para in paras.split(',')) {
     funPara.add(para);
   }
-  userFunctions.add(new UserFunction(funName, funPara, cmds));
-  writeUserFun();
+  UserData.userFunctions.add(new UserFunction(funName, funPara, cmds));
+  UserData.writeUserFun();
   return '已保存';
 }
 
 ///通过函数名返回用户自定义函数
 UserFunction getUfByName(String funName) {
-  for (UserFunction u in userFunctions) {
+  for (UserFunction u in UserData.userFunctions) {
     if (u.funName == funName) {
       return u;
     }
@@ -272,7 +272,7 @@ UserFunction getUfByName(String funName) {
 
 ///判断传入的函数名是否为用户已定义函数
 bool UFcontain(String funName) {
-  for (UserFunction u in userFunctions) {
+  for (UserFunction u in UserData.userFunctions) {
     if (u.funName == funName) {
       return true;
     }
@@ -294,27 +294,32 @@ List<dynamic> getMethodValue(String methodValue) {
 /// 传入需要运算的语句，返回结果
 dynamic handleCalcuStr(String caculStr) {
   var temp = new Map();
-  if (matrixs.containsKey(caculStr)) {
-    return matrixs[caculStr];
+  if (UserData.matrixs.containsKey(caculStr)) {
+    return UserData.matrixs[caculStr];
   }
-  if (dbs.containsKey(caculStr)) {
-    return dbs[caculStr];
+  if (UserData.dbs.containsKey(caculStr)) {
+    return UserData.dbs[caculStr];
   }
   if (num.tryParse(caculStr) != null) {
     return num.tryParse(caculStr);
   }
-  if (UFtemp.containsKey(caculStr)) {
-    return UFtemp[caculStr];
+  if (UserData.UFtemp.containsKey(caculStr)) {
+    return UserData.UFtemp[caculStr];
   }
   var negative = new RegExp(r'(([^A-Za-z0-9]-)|(^-))[A-Za-z0-9]+[^\)]');
   var minus = new RegExp(r'(([^A-Za-z0-9]-)|(^-))[A-Za-z0-9]+');
-  while(negative.hasMatch(caculStr)){
+  while (negative.hasMatch(caculStr)) {
     String str1 = negative.firstMatch(caculStr).group(0);
     var str2 = minus.firstMatch(str1).group(0);
     var str3 = str1.replaceAll(str2, '');
     int index = str1.indexOf('-');
-    caculStr = caculStr.replaceFirst(negative, str1.substring(0, index) +
-        '(' + str1.substring(index).replaceAll(str3, '') + ')' + str3);
+    caculStr = caculStr.replaceFirst(
+        negative,
+        str1.substring(0, index) +
+            '(' +
+            str1.substring(index).replaceAll(str3, '') +
+            ')' +
+            str3);
   }
   if (caculStr.contains('(')) {
     var caculStrs = [];
@@ -376,22 +381,22 @@ dynamic handleCalcuStr(String caculStr) {
   List nums = [];
   for (String str in varibales) {
     if (num.tryParse(str) == null) {
-      if (!UFtemp.containsKey(str)) {
-        if (!matrixs.containsKey(str)) {
-          if (!dbs.containsKey(str)) {
+      if (!UserData.UFtemp.containsKey(str)) {
+        if (!UserData.matrixs.containsKey(str)) {
+          if (!UserData.dbs.containsKey(str)) {
             if (!temp.containsKey(str)) {
               throw FormatException('未知的符号：  $str');
             } else {
               nums.add(temp[str]);
             }
           } else {
-            nums.add(dbs[str]);
+            nums.add(UserData.dbs[str]);
           }
         } else {
-          nums.add(matrixs[str]);
+          nums.add(UserData.matrixs[str]);
         }
       } else {
-        nums.add(UFtemp[str]);
+        nums.add(UserData.UFtemp[str]);
       }
     } else {
       nums.add(num.tryParse(str));
@@ -448,13 +453,13 @@ dynamic _handleCacul(dynamic num1, dynamic num2, String oper) {
       //浮点数和矩阵运算
       switch (oper) {
         case '*':
-          return m2dRide(num2, num1);
+          return MatrixUtil.m2dRide(num2, num1);
         case '/':
-          return m2dDivide(num2, num1);
+          return MatrixUtil.m2dDivide(num2, num1);
         case '+':
-          return m2dPlus(num2, num1);
+          return MatrixUtil.m2dPlus(num2, num1);
         case '-':
-          return m2dMinus(num2, num1);
+          return MatrixUtil.m2dMinus(num2, num1);
         case '^':
           throw FormatException('$num2 为矩阵不能进行指数运算');
       }
@@ -464,13 +469,13 @@ dynamic _handleCacul(dynamic num1, dynamic num2, String oper) {
       //浮点数和矩阵运算
       switch (oper) {
         case '*':
-          return m2dRide(num1, num2);
+          return MatrixUtil.m2dRide(num1, num2);
         case '/':
-          return m2dDivide(num1, num2);
+          return MatrixUtil.m2dDivide(num1, num2);
         case '+':
-          return m2dPlus(num1, num2);
+          return MatrixUtil.m2dPlus(num1, num2);
         case '-':
-          return m2dMinus(num1, num2);
+          return MatrixUtil.m2dMinus(num1, num2);
         case '^':
           throw FormatException('$num2 为矩阵不能进行指数运算');
       }
@@ -478,13 +483,13 @@ dynamic _handleCacul(dynamic num1, dynamic num2, String oper) {
       //两个矩阵运算 ps:矩阵已重载运算符
       switch (oper) {
         case '*':
-          return m2mRide(num1, num2);
+          return MatrixUtil.m2mRide(num1, num2);
         case '/':
-          return m2mDivide(num1, num2);
+          return MatrixUtil.m2mDivide(num1, num2);
         case '+':
-          return m2mPlus(num1, num2);
+          return MatrixUtil.m2mPlus(num1, num2);
         case '-':
-          return m2mMinus(num1, num2);
+          return MatrixUtil.m2mMinus(num1, num2);
         case '^':
           throw FormatException('$num2 为矩阵不能进行指数运算');
       }

@@ -8,14 +8,14 @@ import 'package:xiaoming/src/view/myTextView.dart';
 import 'package:xiaoming/src/view/settingRoute.dart';
 import 'package:xiaoming/src/view/calculusRoute.dart';
 import 'package:xiaoming/src/command/handleCommand.dart';
-import 'package:xiaoming/src/data/data.dart';
+import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
 class MyApp extends StatelessWidget {
   MyApp({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    loadData();
+    UserData.loadData();
     return new MaterialApp(
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xiaoming/src/data/data.dart';
+import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
 ///保存的方法界面
@@ -10,7 +10,7 @@ void popmethodRoute(BuildContext context) {
     String funName;
     String funDescrip;
 
-    for (CmdMethod method in cmdMethods) {
+    for (CmdMethod method in UserData.cmdMethods) {
       if (myLocale.countryCode == 'CH') {
         funName = method.name;
         funDescrip = method.methodDescription;
@@ -28,7 +28,7 @@ void popmethodRoute(BuildContext context) {
         ),
       ));
     }
-    for (UserFunction u in userFunctions) {
+    for (UserFunction u in UserData.userFunctions) {
       tiles.add(new Card(
         color: Colors.purple,
         child: new ListTile(

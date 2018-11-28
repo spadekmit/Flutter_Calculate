@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:xiaoming/src/data/data.dart';
+import 'package:xiaoming/src/data/appData.dart';
+import 'package:xiaoming/src/data/settingData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
 ///设置界面
@@ -31,15 +32,15 @@ class _SettingRouteState extends State<SettingRoute> {
                       child: Text(
                           XiaomingLocalizations.of(context).decimal_digits),
                     ),
-                    Text(fixedNum.toString()),
+                    Text(SettingData.fixedNum.toString()),
                     CupertinoSlider(
                       divisions: 8,
                       max: 9.0,
                       min: 1.0,
-                      value: fixedNum,
+                      value: SettingData.fixedNum,
                       onChanged: (double d) {
                         setState(() {
-                          fixedNum = d;
+                          SettingData.fixedNum = d;
                         });
                         writeSettingData();
                       },

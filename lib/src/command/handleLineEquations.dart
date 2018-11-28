@@ -1,7 +1,8 @@
 import 'dart:math';
 
 import 'package:xiaoming/src/command/matrix.dart';
-import 'package:xiaoming/src/data/data.dart';
+import 'package:xiaoming/src/data/appData.dart';
+import 'package:xiaoming/src/data/settingData.dart';
 
 class EquationsUtil {
   _EquationsUtil() {}
@@ -62,10 +63,10 @@ class EquationsUtil {
       }
       equationIndex++;
     }
-    var resultList = m2mRide(getAdjoint(postMatrix), constant);
+    var resultList = MatrixUtil.m2mRide(MatrixUtil.getAdjoint(postMatrix), constant);
     var sb = new StringBuffer();
     for(int i=0;i<vars.length;i++){
-      sb.write(vars[i] + ':   ' + resultList[i][0].toStringAsFixed(fixedNum.round()));
+      sb.write(vars[i] + ':   ' + resultList[i][0].toStringAsFixed(SettingData.fixedNum.round()));
       sb.write('\n');
     }
     result = sb.toString();
