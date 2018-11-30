@@ -129,4 +129,5 @@ static num absSum(List<List<num>> list) {
     var rad = deg / 180 * pi;
     return rad;
   }
+
 }

@@ -5,6 +5,14 @@ import 'package:xiaoming/src/command/handleNonlinearEquation.dart';
 import 'package:xiaoming/src/command/matrix.dart';
 
 void main() {
+
+  test('test EigenValue', (){
+    List<List<double>> matrix = [[4.0,1.0,0.0],[1.0,0.0,-1.0],[1.0,1.0,-4.0]];
+    List<List<double>> result = [new List<double>(3),new List<double>(3),new List<double>(3)];
+    EigenValue(matrix, 3, 400, 4, result);
+    print(result);
+  });
+
   test('test handleNonlinearEquation', () {
     NonlinearEquationUtil instance = NonlinearEquationUtil.getInstance();
     var result = instance.handleNonlinearEquation('-3x^3+5x-10', 'x');

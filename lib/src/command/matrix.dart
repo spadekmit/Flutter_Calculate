@@ -1,5 +1,6 @@
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
+import 'dart:math';
 
 class MatrixUtil {
   static String mtoString({String name, List<List<num>> list}) {
@@ -316,4 +317,226 @@ class MatrixUtil {
     }
     return newresult;
   }
+}
+
+double _abs(double d) {
+  return d > 0 ? d : -d;
+}
+
+List<List<double>> _initMatrix(int m, int n) {
+  List<List<double>> matrix = [];
+  for (int i = 0; i < m; i++) {
+    matrix.add(new List<double>(n));
+  }
+  return matrix;
+}
+
+int Hessenberg(List<List<double>> matrix, int n, List<List<double>> ret) {
+  int i;
+  int j;
+  int k;
+  double temp;
+  int MaxNu;
+  n -= 1;
+  for (k = 1; k <= n - 1; k++) {
+    i = k - 1;
+    MaxNu = k;
+    temp = _abs(matrix[k][i]);
+    for (j = k + 1; j <= n; j++) {
+      if (_abs(matrix[j][i]) > temp) {
+        MaxNu = j;
+      }
+    }
+    ret[0][0] = matrix[MaxNu][i];
+    i = MaxNu;
+    if (ret[0][0] != 0) {
+      if (i != k) {
+        for (j = k - 1; j <= n; j++) {
+          temp = matrix[i][j];
+          matrix[i][j] = matrix[k][j];
+          matrix[k][j] = temp;
+        }
+        for (j = 0; j <= n; j++) {
+          temp = matrix[j][i];
+          matrix[j][i] = matrix[j][k];
+          matrix[j][k] = temp;
+        }
+      }
+      for (i = k + 1; i <= n; i++) {
+        temp = matrix[i][k - 1] / ret[0][0];
+        matrix[i][k - 1] = 0;
+        for (j = k; j <= n; j++) {
+          matrix[i][j] -= temp * matrix[k][j];
+        }
+        for (j = 0; j <= n; j++) {
+          matrix[j][k] += temp * matrix[j][i];
+        }
+      }
+    }
+  }
+  for (i = 0; i <= n; i++) {
+    for (j = 0; j <= n; j++) {
+      ret[i][j] = matrix[i][j];
+    }
+  }
+  return n + 1;
+}
+
+bool EigenValue(List<List<double>> Matrix, int n, int LoopNu, int Erro,
+    List<List<double>> Ret) {
+  int i = Matrix.length;
+  if (i != n) {
+    return false;
+  }
+  int j;
+  int k;
+  int t;
+  int m;
+  List<List<double>> A = _initMatrix(n, n);
+  double erro = pow(0.1, Erro);
+  double b;
+  double c;
+  double d;
+  double g;
+  double xy;
+  double p;
+  double q;
+  double r;
+  double x;
+  double s;
+  double e;
+  double f;
+  double z;
+  double y;
+  int loop1 = LoopNu;
+  Hessenberg(Matrix, n, A); // 将方阵K1转化成上Hessenberg矩阵A
+  m = n;
+  while (m != 0) {
+    t = m - 1;
+    while (t > 0) {
+      if (_abs(A[t][t - 1]) > erro * (_abs(A[t - 1][t - 1]) + _abs(A[t][t]))) {
+        t -= 1;
+      } else {
+        break;
+      }
+    }
+    if (t == m - 1) {
+      Ret[m - 1][0] = A[m - 1][m - 1];
+      Ret[m - 1][1] = 0;
+      m -= 1;
+      loop1 = LoopNu;
+    } else if (t == m - 2) {
+      b = -(A[m - 1][m - 1] + A[m - 2][m - 2]);
+      c = A[m - 1][m - 1] * A[m - 2][m - 2] - A[m - 1][m - 2] * A[m - 2][m - 1];
+      d = b * b - 4 * c;
+      y = pow(_abs(d), 0.5);
+      if (d > 0) {
+        xy = 1;
+        if (b < 0) {
+          xy = -1;
+        }
+        Ret[m - 1][0] = -(b + xy * y) / 2;
+        Ret[m - 1][1] = 0;
+        Ret[m - 2][0] = c / Ret[m - 1][0];
+        Ret[m - 2][1] = 0;
+      } else {
+        Ret[m - 1][0] = -b / 2;
+        Ret[m - 2][0] = Ret[m - 1][0];
+        Ret[m - 1][1] = y / 2;
+        Ret[m - 2][1] = -Ret[m - 1][1];
+      }
+      m -= 2;
+      loop1 = LoopNu;
+    } else {
+      if (loop1 < 1) {
+        return false;
+      }
+      loop1 -= 1;
+      j = t + 2;
+      while (j < m) {
+        A[j][j - 2] = 0;
+        j += 1;
+      }
+      j = t + 3;
+      while (j < m) {
+        A[j][j - 3] = 0;
+        j += 1;
+      }
+      k = t;
+      while (k < m - 1) {
+        if (k != t) {
+          p = A[k][k - 1];
+          q = A[k + 1][k - 1];
+          if (k != m - 2) {
+            r = A[k + 2][k - 1];
+          } else {
+            r = 0;
+          }
+        } else {
+          b = A[m - 1][m - 1];
+          c = A[m - 2][m - 2];
+          x = b + c;
+          y = c * b - A[m - 2][m - 1] * A[m - 1][m - 2];
+          p = A[t][t] * (A[t][t] - x) + A[t][t + 1] * A[t + 1][t] + y;
+          q = A[t + 1][t] * (A[t][t] + A[t + 1][t + 1] - x);
+          r = A[t + 1][t] * A[t + 2][t + 1];
+        }
+        if (p != 0 || q != 0 || r != 0) {
+          if (p < 0) {
+            xy = -1;
+          } else {
+            xy = 1;
+          }
+          s = xy * pow(p * p + q * q + r * r, 0.5);
+          if (k != t) {
+            A[k][k - 1] = -s;
+          }
+          e = -q / s;
+          f = -r / s;
+          x = -p / s;
+          y = -x - f * r / (p + s);
+          g = e * r / (p + s);
+          z = -x - e * q / (p + s);
+          for (j = k; j <= m - 1; j++) {
+            b = A[k][j];
+            c = A[k + 1][j];
+            p = x * b + e * c;
+            q = e * b + y * c;
+            r = f * b + g * c;
+            if (k != m - 2) {
+              b = A[k + 2][j];
+              p += f * b;
+              q += g * b;
+              r += z * b;
+              A[k + 2][j] = r;
+            }
+            A[k + 1][j] = q;
+            A[k][j] = p;
+          }
+          j = k + 3;
+          if (j >= m - 1) {
+            j = m - 1;
+          }
+          for (i = t; i <= j; i++) {
+            b = A[i][k];
+            c = A[i][k + 1];
+            p = x * b + e * c;
+            q = e * b + y * c;
+            r = f * b + g * c;
+            if (k != m - 2) {
+              b = A[i][k + 2];
+              p += f * b;
+              q += g * b;
+              r += z * b;
+              A[i][k + 2] = r;
+            }
+            A[i][k + 1] = q;
+            A[i][k] = p;
+          }
+        }
+        k += 1;
+      }
+    }
+  }
+  return true;
 }
