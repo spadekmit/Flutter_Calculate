@@ -139,7 +139,7 @@ class _LineQuationsViewState extends State<LineQuationsView> {
     if (_lineQuasController.text.length != 0) {
       if (_varController.text.length != 0) {
         EquationsUtil handle = EquationsUtil.getInstance();
-        var re = handle.handleLineEquations(
+        var re = handle.handleEquation(
             _lineQuasController.text, _varController.text);
         setState(() {
           result = re;

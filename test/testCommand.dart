@@ -5,11 +5,22 @@ import 'package:xiaoming/src/command/handleNonlinearEquation.dart';
 import 'package:xiaoming/src/command/matrix.dart';
 
 void main() {
+  
+  test('test _nonlinearEquation', (){
+    String cmd = '2x^3 + 5x^2 - x + 15';
+    var instance = EquationsUtil.getInstance();
+    print(instance.handleEquation(cmd, 'x'));
+  });
+
+  test('test getHessenberg', (){
+    List<List<num>> matrix = [[4,1,0],[1,0,-1],[1,1,-4]];
+    var result = MatrixUtil.getHessenberg(matrix);
+    expect(result, [[4, 1.0, 0], [1, -1.0, -1], [0.0, -2.0, -3.0]]);
+  });
 
   test('test EigenValue', (){
-    List<List<double>> matrix = [[4.0,1.0,0.0],[1.0,0.0,-1.0],[1.0,1.0,-4.0]];
-    List<List<double>> result = [new List<double>(3),new List<double>(3),new List<double>(3)];
-    EigenValue(matrix, 3, 400, 4, result);
+    List<List<num>> matrix = [[0,12,-16],[1,0,0],[0,1,0]];
+    List<List<num>> result = MatrixUtil.EigenValue(matrix, 400, 4);
     print(result);
   });
 

@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:xiaoming/src/command/matrix.dart';
-import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
 
 class EquationsUtil {
@@ -14,10 +13,20 @@ class EquationsUtil {
   static EquationsUtil getInstance() {
     return instance;
   }
+  ///处理方程计算，判断是
+  String handleEquation(String equations, String xs){
+    String result;
+    if(equations.contains('^')){
+      result = _nonlinearEquation(equations, xs);
+    }else{
+      result = _handleLineEquations(equations, xs);
+    }
+    return result;
+  }
   ///传入线性方程组和变量求得结果
   ///@param raweuations  线性方程组，以逗号隔开
   ///@param rawvars      所有变量，以逗号隔开
-  String handleLineEquations(String raweuations, String rawvars) {
+  String _handleLineEquations(String raweuations, String rawvars) {
     RegExp char = new RegExp(r'^[A-Za-z]+[0-9]*');
     var varmap = new Map();
     String result = '';
@@ -56,8 +65,8 @@ class EquationsUtil {
       var leftEquation = lr[0];
       var rightEquation = lr[1];
       try{
-        simplifiedEquation(leftEquation, varmap, true, equationIndex);
-        simplifiedEquation(rightEquation, varmap, false, equationIndex);
+        _simplifiedEquation(leftEquation, varmap, true, equationIndex);
+        _simplifiedEquation(rightEquation, varmap, false, equationIndex);
       }catch(e){
         return e.toString();
       }
@@ -79,7 +88,7 @@ class EquationsUtil {
   ///@param  map        存储变量与其对应序号的map
   ///@param  isLeft     传入方程是否是等式左边
   ///@param  index      处理的是哪一行的方程
-  simplifiedEquation(String equation, Map map, bool isLeft, int index) {  //a+b
+  _simplifiedEquation(String equation, Map map, bool isLeft, int index) {  //a+b
     RegExp reg = new RegExp(r'(\+|-)\w+');
     if(RegExp(r'^[A-Za-z0-9]').hasMatch(equation)){
       equation = '+' + equation;
@@ -125,26 +134,96 @@ class EquationsUtil {
   ///传入非线性方程，返回结果
   ///@param   equation    非线性方程组
   ///@param   x           变量
-  String nonlinearEquation(String equation, String x){
-    String result;
-    Function fun = (x) {};
+  String _nonlinearEquation(String equation, String x){
+    equation = equation.replaceAll(' ', '');
+    num c = 0;
+    var map = new Map();
     if(equation.substring(0,1) != '-'){
       equation = '+' + equation;
     }
     var reg = new RegExp(r'(\+|-)[0-9]*' + x + r'(\^[0-9]+)?');
+    var numReg = new RegExp(r'(\+|-)[0-9]+[^' + x + r']');
     var mas = reg.allMatches(equation);
+    int maxPower = 0;
+    ///获取每一项的系数和幂数
     for(var m in mas){
       var x_i = m.group(0).indexOf(x);
-      if(m.group(0).contains('^')){
-        var power_i = m.group(0).indexOf('^');
-        var post = num.parse(m.group(0).substring(0,x_i));
-        var power = num.parse(m.group(0).substring(power_i + 1));
-        var newfun = (x) => fun(x) + post * pow(x, power);
-        fun = newfun;
+      String postStr = m.group(0).substring(0, x_i);
+      if(postStr.length == 1){
+        postStr += '1';
       }
-
+      var post = num.parse(postStr);   //多项式系数
+      var power;
+      if(m.group(0).contains('^')) {
+        var power_i = m.group(0).indexOf('^');
+        power = num.parse(m.group(0).substring(power_i + 1));  //多项式幂数
+        if (power > maxPower) {
+          maxPower = power;
+        }
+      }else{
+        power = 1;
+      }
+      if (map.containsKey(power)) {
+        map[power] += post;
+      } else {
+        map[power] = post;
+      }
     }
-    return result;
+    var numMs = numReg.allMatches(equation);
+    for(var m in numMs){
+      num temp = num.tryParse(m.group(0));
+      if(temp != null){
+        c += temp;
+      }
+    }
+    List<List<num>> matrix = MatrixUtil.initMatrix(maxPower, maxPower);
+    ///将多项式的最高次幂项系数化为1
+    matrix[0][maxPower - 1] = -(c / map[maxPower]);
+    for(int i=maxPower - 1;i>0;i--){
+      if(!map.containsKey(i)){
+        map[i] = 0;
+      }else{
+        map[i] = map[i] / map[maxPower];
+      }
+      matrix[0][maxPower - i - 1] = -map[i];
+    }
+    for(int i=1;i<maxPower;i++){
+      for(int j=0;j<maxPower;j++){
+        if(i == j + 1){
+          matrix[i][j] = 1;
+        }else{
+          matrix[i][j] = 0;
+        }
+      }
+    }
+    var resultMatrix = MatrixUtil.EigenValue(matrix, 400, SettingData.fixedNum.round());
+    int index = 1;
+    StringBuffer sb = new StringBuffer();
+    for(var l in resultMatrix){
+      sb.write('第${index}个解为： ${l[0].toStringAsFixed(SettingData.fixedNum.round())}');
+      sb.write('\n');
+      index++;
+    }
+    return sb.toString();
+  }
+
+  ///传入多项式，返回结果
+  ///@param   equation    多项式
+  ///@param   xs          未知数
+  ///例  ‘2x^3 + 5x^2 - x + 15’
+  String _handleMultinomial(String equation, String xs) {
+    equation = equation.replaceAll(' ', '');
+    if(xs.contains(',')){
+      return '多项式只支持一元多次方程，即一个未知数';
+    }
+    if(equation.substring(0,1) != '-'){
+      equation = '+' + equation;
+    }
+    var reg = new RegExp(r'(\+|-)([0-9]+)?' + xs + r'(\^[0-9]+)?');
+    var ms = reg.allMatches(equation);
+    for(var m in ms){
+      print(m.group(0));
+    }
   }
 }
 
