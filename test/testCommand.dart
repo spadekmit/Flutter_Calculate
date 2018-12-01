@@ -1,10 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:xiaoming/src/command/cmdMethod.dart';
 import 'package:xiaoming/src/command/handleCommand.dart';
-import 'package:xiaoming/src/command/handleLineEquations.dart';
+import 'package:xiaoming/src/command/handleEquations.dart';
 import 'package:xiaoming/src/command/handleNonlinearEquation.dart';
 import 'package:xiaoming/src/command/matrix.dart';
 
 void main() {
+
+  test('Polyomial', (){
+    print(handleCommand('a=[1,-2,1]'));
+    print(CmdMethodUtil.Polyomial([[1,-2,1]]));
+  });
 
   test('calculus', (){
     print(handleCommand('Fun test(x):r=cos(x)'));

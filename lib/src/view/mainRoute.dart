@@ -166,7 +166,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    _buildBracketButton('Fun', width: double.infinity),
+                    _buildTextButton('Fun', width: double.infinity),
                     _buildBracketButton('inv(', width: double.infinity),
                     _buildBracketButton('tran(', width: double.infinity),
                     _buildBracketButton('value(', width: double.infinity),

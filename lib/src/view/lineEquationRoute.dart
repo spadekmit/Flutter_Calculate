@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xiaoming/src/command/handleLineEquations.dart';
+import 'package:xiaoming/src/command/handleEquations.dart';
 import 'package:flutter/services.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 

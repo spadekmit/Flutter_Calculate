@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:xiaoming/src/command/matrix.dart';
 import 'package:xiaoming/src/data/appData.dart';
+import 'package:xiaoming/src/data/settingData.dart';
 
 class CmdMethodUtil {
   ///拉格朗日插值法
@@ -129,7 +131,7 @@ class CmdMethodUtil {
     var rad = deg / 180 * pi;
     return rad;
   }
-
+  ///计算微积分（复合梯形公式）
   static num calculus(UserFunction fx, num a, num b, {int loops = 1000}) {
     num result = 0;
     if(fx.paras.length != 1){
@@ -150,8 +152,8 @@ class CmdMethodUtil {
     }
     return result;
   }
-
-  static _getValue(String valStr){
+  ///抽取字符串中等号后面的数值
+  static num _getValue(String valStr){
     var index = valStr.indexOf('=');
     var result;
     try{
@@ -160,5 +162,26 @@ class CmdMethodUtil {
       throw FormatException('积分函数返回值只能为实数');
     }
     return result;
+  }
+
+  static List<List<num>> Polyomial(List<List<num>> list){
+    if(list.length != 1){
+      throw FormatException('多项式求解函数参数应为单行矩阵');
+    }
+    int n = list[0].length - 1;
+    List<List<num>> matrix = MatrixUtil.initMatrix(n, n);
+    for(int i=0;i<n;i++){
+      matrix[0][i] = -(list[0][i+1] / list[0][0]);
+    }
+    for(int i=1;i<n;i++){
+      for(int j=0;j<n;j++){
+        if(i == j + 1){
+          matrix[i][j] = 1;
+        }else{
+          matrix[i][j] = 0;
+        }
+      }
+    }
+    return MatrixUtil.EigenValue(matrix, 400, SettingData.fixedNum.round());
   }
 }

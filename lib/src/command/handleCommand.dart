@@ -244,6 +244,11 @@ dynamic _invocationMethod(String cmd) {
         return CmdMethodUtil.calculus(vals[0], vals[1], vals[2],loops: vals[3]);
       }
       return CmdMethodUtil.calculus(vals[0], vals[1], vals[2]);
+    case 'roots':
+      if(vals.length != 1 || vals[0] is! List<List<num>>){
+        throw FormatException('多项式求根函数参数传递错误');
+      }
+      return CmdMethodUtil.Polyomial(vals[0]);
     default:
       throw FormatException('$methodName 为未知命令');
   }
@@ -268,6 +273,9 @@ String _handleDefinFunction(String cmd) {
   }
   for (String para in paras.split(',')) {
     funPara.add(para);
+  }
+  if(UFcontain(funName)){
+    UserData.userFunctions.remove(getUfByName(funName));
   }
   UserData.userFunctions.add(new UserFunction(funName, funPara, cmds));
   UserData.writeUserFun();

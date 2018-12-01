@@ -21,10 +21,10 @@ void popmethodRoute(BuildContext context) {
       tiles.add(new Card(
         color: Colors.yellow,
         child: new ListTile(
-          leading: new Text(
+          title: new Text(
             funName,
           ),
-          title: new Text(funDescrip),
+          subtitle: new Text(funDescrip),
         ),
       ));
     }

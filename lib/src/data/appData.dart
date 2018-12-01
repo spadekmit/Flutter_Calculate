@@ -37,6 +37,12 @@ class UserData {
         'Usage: cofa(A,x,y), A is the original matrix of the cofactor,x and y are the row and column Numbers of the cofactor.Note: x and y must be less than the number of rows and columns in A.',
         '用法：cofa(A,x,y)，A为所求余子式的原矩阵，x和y为所求代数余子式的行号和列号。注意：x和y必须小于A的行数和列数。'),
     new CmdMethod(
+        '求多项式的所有根',
+        'All roots of polynomials',
+        'roots',
+        'Usage: roots (c), c for prayer polynomial coefficient example: c1 c2 * * x ^ 3 + x ^ 2 + x + c4 c3 * = 0, the first input c = (c1, c2, c3, c4) using the roots (c) all roots of polynomial',
+        '用法：roots(c)，c为所求多项式的系数 例：c1*x^3+c2*x^2+c3*x+c4=0 ,则先输入c = [c1,c2,c3,c4] 再使用roots(c)求多项式的所有根'),
+    new CmdMethod(
         '求解微积分',
         'Differential and integral calculus',
         'calculus',
@@ -149,6 +155,7 @@ class UserData {
       SettingData.fixedNum = 6.0;
     }
   }
+
   //加载用户自定义函数，小数和矩阵
   static void loadData() async {
     readDbs();
@@ -229,6 +236,7 @@ class UserData {
       }
     }
   }
+
   //将用户自定义函数写入到文件
   static Future writeUserFun() async {
     File userFunFile = await _getUserFunFile();
@@ -288,6 +296,7 @@ class UserData {
     DbsFile.writeAsStringSync(sb.toString());
   }
 }
+
 //内置的命令行函数
 class CmdMethod {
   String name; //函数名
@@ -299,6 +308,7 @@ class CmdMethod {
   CmdMethod(this.name, this.Ename, this.cmdText, this.EmethodDescription,
       this.methodDescription);
 }
+
 //用户自定义函数
 class UserFunction {
   String funName;
