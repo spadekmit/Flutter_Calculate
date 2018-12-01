@@ -5,9 +5,14 @@ import 'package:xiaoming/src/command/handleNonlinearEquation.dart';
 import 'package:xiaoming/src/command/matrix.dart';
 
 void main() {
+
+  test('calculus', (){
+    print(handleCommand('Fun test(x):r=cos(x)'));
+    print(handleCommand('calculus(test,0,180,1000)'));
+  });
   
   test('test _nonlinearEquation', (){
-    String cmd = '2x^3 + 5x^2 - x + 15';
+    String cmd = 'x^2-2x+1';
     var instance = EquationsUtil.getInstance();
     print(instance.handleEquation(cmd, 'x'));
   });

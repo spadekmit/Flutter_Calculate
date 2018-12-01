@@ -230,6 +230,20 @@ dynamic _invocationMethod(String cmd) {
         throw FormatException('upmat函数参数传递错误');
       }
       return MatrixUtil.upperTriangular(vals[0]);
+    case 'calculus':
+      if(vals.length != 3 && vals.length !=4){
+        throw FormatException('积分函数参数数量错误');
+      }
+      if(vals[0] is! UserFunction || vals[1] is! num || vals[2] is! num){
+        throw FormatException('积分函数参数类型传递错误');
+      }
+      if(vals.length == 4){
+        if(vals[3] is! num){
+          throw FormatException('积分函数参数类型传递错误');
+        }
+        return CmdMethodUtil.calculus(vals[0], vals[1], vals[2],loops: vals[3]);
+      }
+      return CmdMethodUtil.calculus(vals[0], vals[1], vals[2]);
     default:
       throw FormatException('$methodName 为未知命令');
   }
@@ -286,7 +300,11 @@ List<dynamic> getMethodValue(String methodValue) {
   //将参数字符串转化为实际类型
   List<dynamic> vals = [];
   for (String str in values) {
-    vals.add(handleCalcuStr(str));
+    if(UFcontain(str)){
+      vals.add(getUfByName(str));
+    }else{
+      vals.add(handleCalcuStr(str));
+    }
   }
   return vals;
 }

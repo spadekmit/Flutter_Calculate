@@ -14,10 +14,15 @@ class XiaomingLocalizations {
       'Setting': 'Setting',
       'Saved function': 'Saved function',
       'Saved Data': 'Saved Data',
+      'Hint' : 'Hint',
       'Solve equation' : 'Solve equation',
+      'equaHint1' : 'A linear equation is one or more equations whose highest power is one',
+      'equaHint2' : 'Example a00x + + a02z a01y = b0, a10x + + a12z a11y = b1,',
+      'equaHint3' : 'a20x +a21y+a22z=b2 ',
+      'equaHint4' : 'Polynomials refer to equations of one variable multiple times',
+      'equaHint5' : "Example: x^2-2x+1",
       'Solve calculus' : 'Solve calculus',
       'empty' : 'empty',
-      'calculate' : 'calculate',
       'InputHint': 'Input command',
       'decimal digits': 'decimal digits',
       'CopyHint': 'The content has been copied to the clipboard',
@@ -38,8 +43,13 @@ class XiaomingLocalizations {
       'Setting': '设置',
       'Saved function': '保存的函数',
       'Saved Data': '保存的数据',
+      'Hint' : '提示',
       'Solve equation' : '解方程',
-      'Solve calculus' : '解微积分',
+      'equaHint1' : '线性方程指最高次幂为1次的一元或多元方程',
+      'equaHint2' : '例a00x+a01y+a02z=b0,a10x+a11y+a12z=b1,',
+      'equaHint3' : 'a20x+a21y+a22z=b2      变量栏输入x,y,z',
+      'equaHint4' : '多项式指一元多次方程',
+      'equaHint5' : "例：'x^2-2x+1' ,变量栏输入x",
       'empty' : '清空',
       'calculate' : '计算',
       'InputHint': '输入命令',
@@ -87,12 +97,28 @@ class XiaomingLocalizations {
     return _localizedValues[locale.languageCode]['Saved Data'];
   }
 
+  get hint {
+    return _localizedValues[locale.languageCode]['Hint'];
+  }
+
   get Solve_equation {
     return _localizedValues[locale.languageCode]['Solve equation'];
   }
 
-  get Solve_calculus {
-    return _localizedValues[locale.languageCode]['Solve calculus'];
+  get equaHint1 {
+    return _localizedValues[locale.languageCode]['equaHint1'];
+  }
+  get equaHint2 {
+    return _localizedValues[locale.languageCode]['equaHint2'];
+  }
+  get equaHint3 {
+    return _localizedValues[locale.languageCode]['equaHint3'];
+  }
+  get equaHint4 {
+    return _localizedValues[locale.languageCode]['equaHint4'];
+  }
+  get equaHint5 {
+    return _localizedValues[locale.languageCode]['equaHint5'];
   }
 
   get empty {

@@ -6,7 +6,6 @@ import 'package:xiaoming/src/view/lineEquationRoute.dart';
 import 'package:xiaoming/src/view/methodRoute.dart';
 import 'package:xiaoming/src/view/myTextView.dart';
 import 'package:xiaoming/src/view/settingRoute.dart';
-import 'package:xiaoming/src/view/calculusRoute.dart';
 import 'package:xiaoming/src/command/handleCommand.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
@@ -87,11 +86,6 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                 leading: Icon(Icons.extension),
                 title: Text(XiaomingLocalizations.of(context).Solve_equation),
                 onTap: () => poplineQuationsRoute(context),
-              ),
-              ListTile(
-                leading: Icon(Icons.extension),
-                title: Text(XiaomingLocalizations.of(context).Solve_calculus),
-                onTap: () => popCalculusRoute(context),
               ),
             ],
           ),
@@ -183,40 +177,46 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                   children: <Widget>[
                     _buildBracketButton('upmat(', width: double.infinity),
                     _buildBracketButton('cofa(', width: double.infinity),
+                    _buildBracketButton('calculus(', width: double.infinity),
+                    _buildBracketButton('roots(', width: double.infinity),
+                    
+                  ],
+                ),
+                new Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
                     _buildBracketButton('sum(', width: double.infinity),
                     _buildBracketButton('average(', width: double.infinity),
-                  ],
-                ),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
                     _buildBracketButton('factorial(', width: double.infinity),
                     _buildBracketButton('sin(', width: double.infinity),
+                   
+                  ],
+                ),
+                new Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
                     _buildBracketButton('cos(', width: double.infinity),
                     _buildBracketButton('tan(', width: double.infinity),
-                  ],
-                ),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
                     _buildBracketButton('asin(', width: double.infinity),
                     _buildBracketButton('acos(', width: double.infinity),
+                    
+                  ],
+                ),
+                new Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
                     _buildBracketButton('atan(', width: double.infinity),
                     _buildBracketButton('formatDeg(', width: double.infinity),
-                  ],
-                ),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
                     _buildBracketButton('reForDeg(', width: double.infinity),
                     _buildBracketButton('absSum(', width: double.infinity),
-                    _buildBracketButton('absAverage(', width: double.infinity),
-                    _buildBracketButton('radToDeg(', width: double.infinity),
+                    
                   ],
                 ),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
+                    _buildBracketButton('absAverage(', width: double.infinity),
+                    _buildBracketButton('radToDeg(', width: double.infinity),
                     _buildTextButton('lagrange(', width: double.infinity),
                   ],
                 ),

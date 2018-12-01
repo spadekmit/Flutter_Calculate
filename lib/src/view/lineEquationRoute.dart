@@ -42,11 +42,13 @@ class _LineQuationsViewState extends State<LineQuationsView> {
               Padding(
                 padding: EdgeInsets.only(top: 48.0, bottom: 12.0),
                 child: ExpansionTile(
-                  title: Text('提示'),
+                  title: Text(XiaomingLocalizations.of(context).hint),
                   children: <Widget>[
-                    Text('线性方程指最高次幂为1次的一元或多元方程'),
-                    Text('例a00x+a01y+a02z=b0,a10x+a11y+a12z=b1,'),
-                    Text('a20x+a21y+a22z=b2      变量栏输入x,y,z'),
+                    Text(XiaomingLocalizations.of(context).equaHint1),
+                    Text(XiaomingLocalizations.of(context).equaHint2),
+                    Text(XiaomingLocalizations.of(context).equaHint3),
+                    Text(XiaomingLocalizations.of(context).equaHint4),
+                    Text(XiaomingLocalizations.of(context).equaHint5),
                   ],
                 ),
               ),
@@ -55,7 +57,7 @@ class _LineQuationsViewState extends State<LineQuationsView> {
                 child: TextFormField(
                   validator: (value) {
                     if (value.isEmpty) {
-                      return '请输入方程组';
+                      return '请输入多项式或线性方程组';
                     }
                   },
                   focusNode: _lineQuasFocusNode,
@@ -63,7 +65,7 @@ class _LineQuationsViewState extends State<LineQuationsView> {
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                      hintText: '输入方程式组，以逗号隔开'),
+                      hintText: '输入多项式或线性方程式组，方程之间以逗号隔开'),
                 ),
               ),
               Container(

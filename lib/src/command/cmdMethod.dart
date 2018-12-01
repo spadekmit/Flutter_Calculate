@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:xiaoming/src/data/appData.dart';
+
 class CmdMethodUtil {
   ///拉格朗日插值法
   static List<List<num>> lagrange(
@@ -37,33 +39,31 @@ class CmdMethodUtil {
     return list;
   }
 
-  
-///求和函数
-static num sum(List<List<num>> list) {
-  num sum = 0.0;
-  for (List<num> l in list) {
-    for (num d in l) {
-      sum += d;
-    }
-  }
-  return sum;
-}
-
-///绝对值求和函数
-static num absSum(List<List<num>> list) {
-  num sum = 0.0;
-  for (List<num> l in list) {
-    for (num d in l) {
-      if (d > 0) {
+  ///求和函数
+  static num sum(List<List<num>> list) {
+    num sum = 0.0;
+    for (List<num> l in list) {
+      for (num d in l) {
         sum += d;
-      } else {
-        sum -= d;
       }
     }
+    return sum;
   }
-  return sum;
-}
 
+  ///绝对值求和函数
+  static num absSum(List<List<num>> list) {
+    num sum = 0.0;
+    for (List<num> l in list) {
+      for (num d in l) {
+        if (d > 0) {
+          sum += d;
+        } else {
+          sum -= d;
+        }
+      }
+    }
+    return sum;
+  }
 
   ///求平均函数
   static num average(List<List<num>> list) {
@@ -130,4 +130,35 @@ static num absSum(List<List<num>> list) {
     return rad;
   }
 
+  static num calculus(UserFunction fx, num a, num b, {int loops = 1000}) {
+    num result = 0;
+    if(fx.paras.length != 1){
+      throw FormatException('被积分函数的参数只允许为一个');
+    }
+    if (a > b) {
+      var temp = b;
+      b = a;
+      a = temp;
+    }
+    num h = (b - a) / loops;
+    for (int i = 0; i < loops; i++) {
+      num temp1 = a + i * h;
+      num temp2 = a + (i + 1) * h;
+      String r1Str = fx.invoke(temp1.toString());
+      String r2Str = fx.invoke(temp2.toString());
+      result += (_getValue(r1Str) + _getValue(r2Str)) / 2 * h;
+    }
+    return result;
+  }
+
+  static _getValue(String valStr){
+    var index = valStr.indexOf('=');
+    var result;
+    try{
+      result = num.parse(valStr.substring(index + 1));
+    }catch(e){
+      throw FormatException('积分函数返回值只能为实数');
+    }
+    return result;
+  }
 }

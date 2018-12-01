@@ -135,7 +135,7 @@ class EquationsUtil {
   ///@param   equation    非线性方程组
   ///@param   x           变量
   String _nonlinearEquation(String equation, String x){
-    equation = equation.replaceAll(' ', '');
+    equation = equation.replaceAll(' ', '') + ' ';
     num c = 0;
     var map = new Map();
     if(equation.substring(0,1) != '-'){

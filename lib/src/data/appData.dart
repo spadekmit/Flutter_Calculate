@@ -37,6 +37,12 @@ class UserData {
         'Usage: cofa(A,x,y), A is the original matrix of the cofactor,x and y are the row and column Numbers of the cofactor.Note: x and y must be less than the number of rows and columns in A.',
         '用法：cofa(A,x,y)，A为所求余子式的原矩阵，x和y为所求代数余子式的行号和列号。注意：x和y必须小于A的行数和列数。'),
     new CmdMethod(
+        '求解微积分',
+        'Differential and integral calculus',
+        'calculus',
+        "Usage: calculus(f,a,b,c), F is for the integrand (first create the function with Fun 'funname' and then take the function name as the first argument, the function f must be a single argument and return a function of real Numbers.A and b are integral intervals, such as 1 and 2.C is the number of cycles (the larger c is, the more accurate the result is, and the slower the solution speed is), which can be omitted, and the default is 1000.",
+        "用法：calculus(f,a,b,c)，f为被积函数（先用 Fun 'funname'创建函数，再将函数名作为第一个参数,函数f必须为单参数且返回实数的函数。a和b为积分区间，例如 1，2。c为循环次数（c越大结果越准确，求解速度越慢）可以省略，默认为1000。"),
+    new CmdMethod(
         '拉格朗日插值法',
         'Lagrange\'s interpolation',
         'lagrange',
@@ -301,7 +307,7 @@ class UserFunction {
   UserFunction(this.funName, this.paras, this.funCmds);
 
   ///自定义函数执行。
-  dynamic invoke(String methodVals) {
+  String invoke(String methodVals) {
     var result;
     List<dynamic> vals = getMethodValue(methodVals);
     if (vals.length != this.paras.length) {
