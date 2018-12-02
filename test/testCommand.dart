@@ -8,7 +8,7 @@ import 'package:xiaoming/src/command/matrix.dart';
 void main() {
 
   test('handleCommand', (){
-    print(handleCommand('-0.4*2'));
+    expect(handleCommand('-0.4*2'), '-0.800000');
   });
 
   test('Polyomial', (){
