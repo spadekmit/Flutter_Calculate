@@ -8,19 +8,18 @@ import 'package:xiaoming/src/command/matrix.dart';
 void main() {
 
   test('Polyomial', (){
-    print(handleCommand('a=[1,-2,1]'));
-    print(CmdMethodUtil.Polyomial([[1,-2,1]]));
+    expect(CmdMethodUtil.Polyomial([[1,-2,1]]), [[1.0, -0.0], [1.0, 0.0]]);
   });
 
   test('calculus', (){
-    print(handleCommand('Fun test(x):r=cos(x)'));
-    print(handleCommand('calculus(test,0,180,1000)'));
+    handleCommand('Fun test(x):r=cos(x)');
+    expect(handleCommand('calculus(test,0,180)'), '-0.000000');
   });
   
   test('test _nonlinearEquation', (){
     String cmd = 'x^2-2x+1';
     var instance = EquationsUtil.getInstance();
-    print(instance.handleEquation(cmd, 'x'));
+    expect(instance.handleEquation(cmd, 'x'), '第1个解为： 1.000000\n第2个解为： 1.000000\n');
   });
 
   test('test getHessenberg', (){
@@ -31,8 +30,10 @@ void main() {
 
   test('test EigenValue', (){
     List<List<num>> matrix = [[0,12,-16],[1,0,0],[0,1,0]];
-    List<List<num>> result = MatrixUtil.EigenValue(matrix, 400, 4);
-    print(result);
+    expect(MatrixUtil.EigenValue(matrix, 400, 4),
+     [[-3.999999923299447, 0.0],
+      [1.9999999616497233,-0.00006904586138525003],
+        [1.9999999616497233, 0.00006904586138525003]]);
   });
 
   test('test handleNonlinearEquation', () {
@@ -49,21 +50,6 @@ void main() {
   test('test handleCaculStr', () {
     var result = handleCalcuStr('-2+4*(-3+4)');
     expect(result, 2);
-  });
-  test('test UserFunction invoke', () {
-    var a = [
-      [1, 1, 5, 3, 2],
-      [2, 3, 2, 5, 7],
-      [6, 4, 2, 5, 3],
-      [3, 5, 2, 3, 2],
-      [3, 2, 2, 1, 6]
-    ];
-    var b = [
-      [2],
-      [5]
-    ];
-    var instance = EquationsUtil.getInstance();
-    print(MatrixUtil.mtoString(name: "B", list: MatrixUtil.upperTriangular(a)));
   });
 
   test('test upperTriangular function', () {

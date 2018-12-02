@@ -28,12 +28,14 @@ class _helpViewState extends State<helpView> {
     new HelpItem(false),
     new HelpItem(false),
     new HelpItem(false),
+    new HelpItem(false),
+    new HelpItem(false),
   ];
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: const Text('帮助'),
+        title: Text(XiaomingLocalizations.of(context).Help),
       ),
       body: Container(
         margin: const EdgeInsets.all(12.0),
@@ -111,6 +113,40 @@ class _helpViewState extends State<helpView> {
                         EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
                     child: new Text(
                         XiaomingLocalizations.of(context).HelpTabData4),
+                  ),
+                ),
+                new ExpansionPanel(
+                  headerBuilder: (context, isExpanded) {
+                    return new ListTile(
+                      leading: new Text(
+                          XiaomingLocalizations.of(context).HelpTab5,
+                          style: TextStyle(
+                              fontSize: 18.0, color: Colors.deepOrange)),
+                    );
+                  },
+                  isExpanded: items[4].isExpanded,
+                  body: Container(
+                    margin:
+                        EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+                    child: new Text(
+                        XiaomingLocalizations.of(context).HelpTabData5),
+                  ),
+                ),
+                new ExpansionPanel(
+                  headerBuilder: (context, isExpanded) {
+                    return new ListTile(
+                      leading: new Text(
+                          XiaomingLocalizations.of(context).HelpTab6,
+                          style: TextStyle(
+                              fontSize: 18.0, color: Colors.deepOrange)),
+                    );
+                  },
+                  isExpanded: items[5].isExpanded,
+                  body: Container(
+                    margin:
+                        EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+                    child: new Text(
+                        XiaomingLocalizations.of(context).HelpTabData6),
                   ),
                 ),
               ],

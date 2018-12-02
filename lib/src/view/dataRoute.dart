@@ -12,8 +12,8 @@ void popdataRoute(BuildContext context) {
       UserData.matrixs.forEach((name, list) => tiles.add(new Card(
             color: Colors.cyan,
             child: new ListTile(
-              leading: new Text(name),
-              title: new Text(MatrixUtil.mtoString(list: list)),
+              title: new Text(name),
+              subtitle: new Text(MatrixUtil.mtoString(list: list)),
             ),
           )));
     }
@@ -21,8 +21,8 @@ void popdataRoute(BuildContext context) {
       UserData.dbs.forEach((name, value) => tiles.add(new Card(
             color: Colors.green,
             child: new ListTile(
-              leading: new Text(name),
-              title: new Text(value.toString()),
+              title: new Text(name),
+              subtitle: new Text(value.toString()),
             ),
           )));
     }
