@@ -332,7 +332,11 @@ dynamic handleCalcuStr(String caculStr) {
   if (UserData.UFtemp.containsKey(caculStr)) {
     return UserData.UFtemp[caculStr];
   }
-  var negative = new RegExp(r'(([^A-Za-z0-9]-)|(^-))[A-Za-z0-9\.]+.');
+  final negativeEnd = new RegExp(r'(-[A-Za-z0-9\.]+)$');
+  if(negativeEnd.hasMatch(caculStr)){
+    caculStr = caculStr.replaceFirst(negativeEnd, '(' + negativeEnd.firstMatch(caculStr).group(0) + ')');
+  }
+  final negative = new RegExp(r'(([^A-Za-z0-9]-)|(^-))[A-Za-z0-9\.]+[^0-9\.\)]');
   var minus = new RegExp(r'(([^A-Za-z0-9]-)|(^-))[A-Za-z0-9\.]+');
   while (negative.hasMatch(caculStr)) {
     String str1 = negative.firstMatch(caculStr).group(0);
