@@ -7,6 +7,10 @@ import 'package:xiaoming/src/command/matrix.dart';
 
 void main() {
 
+  test('handleCommand', (){
+    print(handleCommand('-0.4*2'));
+  });
+
   test('Polyomial', (){
     expect(CmdMethodUtil.Polyomial([[1,-2,1]]), [[1.0, -0.0], [1.0, 0.0]]);
   });
