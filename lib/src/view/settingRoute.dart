@@ -17,7 +17,7 @@ class _SettingRouteState extends State<SettingRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(XiaomingLocalizations.of(context).Setting),
+        title: Text(XiaomingLocalizations.of(context).setting),
       ),
       body: ListView(
         children: <Widget>[

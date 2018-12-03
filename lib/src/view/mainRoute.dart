@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:xiaoming/src/view/dataRoute.dart';
 import 'package:xiaoming/src/view/helpRoute.dart';
-import 'package:xiaoming/src/view/lineEquationRoute.dart';
+import 'package:xiaoming/src/view/equationRoute.dart';
 import 'package:xiaoming/src/view/methodRoute.dart';
 import 'package:xiaoming/src/view/myTextView.dart';
 import 'package:xiaoming/src/view/settingRoute.dart';
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         const Locale('zh', 'CH'),
       ],
       onGenerateTitle: (context) {
-        return XiaomingLocalizations.of(context).AppName;
+        return XiaomingLocalizations.of(context).appName;
       },
       theme: new ThemeData(
         primaryColor: Colors.white, //使用白色的颜色主题
@@ -69,29 +69,29 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                   )),
               ListTile(
                 leading: Icon(Icons.settings),
-                title: Text(XiaomingLocalizations.of(context).Setting),
+                title: Text(XiaomingLocalizations.of(context).setting),
                 onTap: () => settingRoute(context),
               ),
               ListTile(
                 leading: Icon(Icons.bookmark),
-                title: Text(XiaomingLocalizations.of(context).Saved_function),
+                title: Text(XiaomingLocalizations.of(context).saved_function),
                 onTap: () => popmethodRoute(context),
               ),
               ListTile(
                 leading: Icon(Icons.bookmark),
-                title: Text(XiaomingLocalizations.of(context).Saved_Data),
+                title: Text(XiaomingLocalizations.of(context).saved_Data),
                 onTap: () => popdataRoute(context),
               ),
               ListTile(
                 leading: Icon(Icons.extension),
-                title: Text(XiaomingLocalizations.of(context).Solve_equation),
-                onTap: () => poplineQuationsRoute(context),
+                title: Text(XiaomingLocalizations.of(context).solve_equation),
+                onTap: () => popEquationsRoute(context),
               ),
             ],
           ),
         ),
         appBar: new AppBar(
-          title: new Text(XiaomingLocalizations.of(context).AppName),
+          title: new Text(XiaomingLocalizations.of(context).appName),
           actions: <Widget>[
             new IconButton(
               icon: new Icon(Icons.help),
@@ -154,7 +154,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
           headerBuilder: (context, isExpanded) {
             return new ListTile(
               leading: new Text(
-                  XiaomingLocalizations.of(context).Built_in_function,
+                  XiaomingLocalizations.of(context).built_in_function,
                   style: TextStyle(fontSize: 18.0, color: Colors.deepOrange)),
             );
           },
@@ -299,7 +299,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                                 _handleSubmitted(context, text),
                             decoration: new InputDecoration.collapsed(
                                 hintText: XiaomingLocalizations.of(context)
-                                    .InputHint),
+                                    .inputHint),
                           ))),
                   new Container(
                     margin: new EdgeInsets.symmetric(horizontal: 4.0),

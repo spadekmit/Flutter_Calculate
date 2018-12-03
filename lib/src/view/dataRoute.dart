@@ -32,7 +32,7 @@ void popdataRoute(BuildContext context) {
     ).toList();
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(XiaomingLocalizations.of(context).Saved_Data),
+        title: new Text(XiaomingLocalizations.of(context).saved_Data),
       ),
       body: new ListView(
         children: divided,

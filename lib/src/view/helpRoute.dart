@@ -35,7 +35,7 @@ class _helpViewState extends State<helpView> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: Text(XiaomingLocalizations.of(context).Help),
+        title: Text(XiaomingLocalizations.of(context).help),
       ),
       body: Container(
         margin: const EdgeInsets.all(12.0),
@@ -51,7 +51,7 @@ class _helpViewState extends State<helpView> {
                   headerBuilder: (context, isExpanded) {
                     return new ListTile(
                       leading: new Text(
-                          XiaomingLocalizations.of(context).HelpTab1,
+                          XiaomingLocalizations.of(context).helpTab1,
                           style: TextStyle(
                               fontSize: 18.0, color: Colors.deepOrange)),
                     );
@@ -61,14 +61,14 @@ class _helpViewState extends State<helpView> {
                     margin:
                         EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
                     child: new Text(
-                        XiaomingLocalizations.of(context).HelpTabData1),
+                        XiaomingLocalizations.of(context).helpTabData1),
                   ),
                 ),
                 new ExpansionPanel(
                   headerBuilder: (context, isExpanded) {
                     return new ListTile(
                       leading: new Text(
-                          XiaomingLocalizations.of(context).HelpTab2,
+                          XiaomingLocalizations.of(context).helpTab2,
                           style: TextStyle(
                               fontSize: 18.0, color: Colors.deepOrange)),
                     );
@@ -78,14 +78,14 @@ class _helpViewState extends State<helpView> {
                     margin:
                         EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
                     child: new Text(
-                        XiaomingLocalizations.of(context).HelpTabData2),
+                        XiaomingLocalizations.of(context).helpTabData2),
                   ),
                 ),
                 new ExpansionPanel(
                   headerBuilder: (context, isExpanded) {
                     return new ListTile(
                       leading: new Text(
-                          XiaomingLocalizations.of(context).HelpTab3,
+                          XiaomingLocalizations.of(context).helpTab3,
                           style: TextStyle(
                               fontSize: 18.0, color: Colors.deepOrange)),
                     );
@@ -95,14 +95,14 @@ class _helpViewState extends State<helpView> {
                     margin:
                         EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
                     child: new Text(
-                        XiaomingLocalizations.of(context).HelpTabData3),
+                        XiaomingLocalizations.of(context).helpTabData3),
                   ),
                 ),
                 new ExpansionPanel(
                   headerBuilder: (context, isExpanded) {
                     return new ListTile(
                       leading: new Text(
-                          XiaomingLocalizations.of(context).HelpTab4,
+                          XiaomingLocalizations.of(context).helpTab4,
                           style: TextStyle(
                               fontSize: 18.0, color: Colors.deepOrange)),
                     );
@@ -112,14 +112,14 @@ class _helpViewState extends State<helpView> {
                     margin:
                         EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
                     child: new Text(
-                        XiaomingLocalizations.of(context).HelpTabData4),
+                        XiaomingLocalizations.of(context).helpTabData4),
                   ),
                 ),
                 new ExpansionPanel(
                   headerBuilder: (context, isExpanded) {
                     return new ListTile(
                       leading: new Text(
-                          XiaomingLocalizations.of(context).HelpTab5,
+                          XiaomingLocalizations.of(context).helpTab5,
                           style: TextStyle(
                               fontSize: 18.0, color: Colors.deepOrange)),
                     );
@@ -129,14 +129,14 @@ class _helpViewState extends State<helpView> {
                     margin:
                         EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
                     child: new Text(
-                        XiaomingLocalizations.of(context).HelpTabData5),
+                        XiaomingLocalizations.of(context).helpTabData5),
                   ),
                 ),
                 new ExpansionPanel(
                   headerBuilder: (context, isExpanded) {
                     return new ListTile(
                       leading: new Text(
-                          XiaomingLocalizations.of(context).HelpTab6,
+                          XiaomingLocalizations.of(context).helpTab6,
                           style: TextStyle(
                               fontSize: 18.0, color: Colors.deepOrange)),
                     );
@@ -146,7 +146,7 @@ class _helpViewState extends State<helpView> {
                     margin:
                         EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
                     child: new Text(
-                        XiaomingLocalizations.of(context).HelpTabData6),
+                        XiaomingLocalizations.of(context).helpTabData6),
                   ),
                 ),
               ],

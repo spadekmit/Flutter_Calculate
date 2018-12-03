@@ -30,7 +30,7 @@ class TextView extends StatelessWidget {
     Clipboard.setData(new ClipboardData(text: text));
     Scaffold.of(context).showSnackBar(SnackBar(
       duration: Duration(milliseconds: 1000),
-      content: new Text(XiaomingLocalizations.of(context).CopyHint),
+      content: new Text(XiaomingLocalizations.of(context).copyHint),
     ));
   }
 }

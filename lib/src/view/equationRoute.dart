@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:xiaoming/src/command/handleEquations.dart';
 import 'package:flutter/services.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
-
-void poplineQuationsRoute(BuildContext context) {
+///弹出计算方程式界面
+void popEquationsRoute(BuildContext context) {
   Navigator.of(context)
       .push(new MaterialPageRoute<void>(builder: (BuildContext context) {
     return new LineQuationsView();
@@ -21,14 +21,14 @@ class _LineQuationsViewState extends State<LineQuationsView> {
   final TextEditingController _varController = TextEditingController();
   final FocusNode _lineQuasFocusNode = new FocusNode();
   final FocusNode _varFocusNode = new FocusNode();
-  String result = '';
+  String result = '  ';
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {   //主界面
     return Scaffold(
       appBar: AppBar(
-        title: Text(XiaomingLocalizations.of(context).Solve_equation),
+        title: Text(XiaomingLocalizations.of(context).solve_equation),
       ),
-      body: GestureDetector(
+      body: GestureDetector(   //点击空白区域收起键盘
         behavior: HitTestBehavior.translucent,
         onTap: () {
           _lineQuasFocusNode.unfocus();
@@ -41,7 +41,7 @@ class _LineQuationsViewState extends State<LineQuationsView> {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(top: 48.0, bottom: 12.0),
-                child: ExpansionTile(
+                child: ExpansionTile(   //可展开的提示栏
                   title: Text(XiaomingLocalizations.of(context).hint),
                   children: <Widget>[
                     Text(XiaomingLocalizations.of(context).equaHint1),
@@ -52,7 +52,7 @@ class _LineQuationsViewState extends State<LineQuationsView> {
                   ],
                 ),
               ),
-              Container(
+              Container(    //方程输入窗口
                 padding: EdgeInsets.only(left: 12.0, top: 12.0),
                 child: TextFormField(
                   validator: (value) {
@@ -60,12 +60,14 @@ class _LineQuationsViewState extends State<LineQuationsView> {
                       return '请输入多项式或线性方程组';
                     }
                   },
+                  style: TextStyle(color: Colors.black,),
                   focusNode: _lineQuasFocusNode,
                   controller: _lineQuasController,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                      hintText: '输入多项式或线性方程式组，方程之间以逗号隔开'),
+                    labelText: XiaomingLocalizations.of(context).equations,
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,),
+                      border: OutlineInputBorder(),
+                      ),
                 ),
               ),
               Container(
@@ -84,12 +86,14 @@ class _LineQuationsViewState extends State<LineQuationsView> {
                       return '请输入所有变量';
                     }
                   },
+                  style: TextStyle(color: Colors.black,),
                   focusNode: _varFocusNode,
                   controller: _varController,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                      hintText: '输入所有变量，以逗号隔开'),
+                    labelText: XiaomingLocalizations.of(context).variable,
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,),
+                      border: OutlineInputBorder(),
+                      ),
                 ),
               ),
               Container(
@@ -118,7 +122,7 @@ class _LineQuationsViewState extends State<LineQuationsView> {
                       Scaffold.of(context).showSnackBar(SnackBar(
                         duration: Duration(milliseconds: 1000),
                         content: new Text(
-                            XiaomingLocalizations.of(context).CopyHint),
+                            XiaomingLocalizations.of(context).copyHint),
                       ));
                     },
                     child: Text(

@@ -48,7 +48,7 @@ void popmethodRoute(BuildContext context) {
 
     return new Scaffold(
       appBar: new AppBar(
-          title: new Text(XiaomingLocalizations.of(context).Saved_function)),
+          title: new Text(XiaomingLocalizations.of(context).saved_function)),
       body: new ListView(
         children: divided,
       ),
