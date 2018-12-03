@@ -332,29 +332,7 @@ dynamic handleCalcuStr(String caculStr) {
   if (UserData.UFtemp.containsKey(caculStr)) {
     return UserData.UFtemp[caculStr];
   }
-  final negativeEnd = new RegExp(r'(-[A-Za-z0-9\.]+)$');
-  if(negativeEnd.hasMatch(caculStr)){
-    caculStr = caculStr.replaceFirst(negativeEnd, '(' + negativeEnd.firstMatch(caculStr).group(0) + ')');
-  }
-  final negative = new RegExp(r'(([^A-Za-z0-9]-)|(^-))[A-Za-z0-9\.]+[^0-9\.\)]');
-  var minus = new RegExp(r'(([^A-Za-z0-9]-)|(^-))[A-Za-z0-9\.]+');
-  while (negative.hasMatch(caculStr)) {
-    String str1 = negative.firstMatch(caculStr).group(0);
-    String temp = str1.substring(str1.length-1);
-    if(temp == ')'){
-      break;
-    }
-    var str2 = minus.firstMatch(str1).group(0);
-    var str3 = str1.replaceAll(str2, '');
-    int index = str1.indexOf('-');
-    caculStr = caculStr.replaceFirst(
-        negative,
-        str1.substring(0, index) +
-            '(' +
-            str1.substring(index).replaceAll(str3, '') +
-            ')' +
-            str3);
-  }
+  caculStr = _handleNegative(caculStr);
   if (caculStr.contains('(')) {
     var caculStrs = [];
     int index = -1;
@@ -446,6 +424,36 @@ dynamic handleCalcuStr(String caculStr) {
     nums.insert(index, _handleCacul(num1, num2, oper));
   }
   return nums[0];
+}
+
+///处理运算字符串中的负数（加上括号）
+String _handleNegative(String rawStr){
+  //处理尾部负数
+  final negativeEnd = new RegExp(r'(-[A-Za-z0-9\.]+)$');
+  if(negativeEnd.hasMatch(rawStr)){
+    rawStr = rawStr.replaceFirst(negativeEnd, '(' + negativeEnd.firstMatch(rawStr).group(0) + ')');
+  }
+  //处理头部负数
+  final negativeF = new RegExp(r'^(-[A-Za-z0-9\.]+)');
+  if(negativeF.hasMatch(rawStr)){
+    rawStr = rawStr.replaceFirst(negativeF, '(' + negativeF.firstMatch(rawStr).group(0) + ')');
+  }
+  //处理中间负数
+  final negativeM1 = new RegExp(r'[-/\+\*]-[A-Za-z0-9\.]+');
+  while(negativeM1.hasMatch(rawStr)){
+    final str = negativeM1.firstMatch(rawStr).group(0);
+    final operStr = str.substring(0,1);
+    rawStr = rawStr.replaceFirst(negativeM1, operStr + '(' + str.substring(1) +')');
+  }
+  final negativeM2 = new RegExp(r'\(-[A-Za-z0-9\.]+[-/\*\+]');
+  while(negativeM2.hasMatch(rawStr)){
+    final str = negativeM2.firstMatch(rawStr).group(0);
+    final str1 = str.substring(0,1);
+    final str2 = str.substring(1,str.length - 1);
+    final str3 = str.substring(str.length - 1);
+    rawStr = rawStr.replaceFirst(negativeM2, str1 + '(' + str2 +')' + str3);
+  }
+  return rawStr;
 }
 
 /// 分离变量名和计算语句
