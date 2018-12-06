@@ -315,7 +315,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   }
 
   ///处理发送按钮的点击事件
-  void _handleSubmitted(BuildContext context, String text) {
+  void _handleSubmitted(BuildContext context, String text) async{
     _textController.clear();
     setState(() {
       _isExpanded = false;
@@ -331,7 +331,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
       _texts.insert(0, textView1);
     });
     TextView textView2 = new TextView(
-        text: handleCommand(text),
+        text: await handleCommand(text),
         context: context,
         animationController: new AnimationController(
             duration: new Duration(milliseconds: 200), vsync: this));

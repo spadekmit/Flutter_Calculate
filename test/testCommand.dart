@@ -7,6 +7,13 @@ import 'package:xiaoming/src/command/matrix.dart';
 
 void main() {
 
+  test('_formatCmdStr', (){
+    String cmd = '-3x^2+2x-1';
+    print(formatCmdStr(cmd));
+  });
+
+
+
   test('handleCommand', (){
     print(handleCommand('-0.4/-2'));
   });

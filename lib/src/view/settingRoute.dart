@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
@@ -42,7 +41,7 @@ class _SettingRouteState extends State<SettingRoute> {
                         setState(() {
                           SettingData.fixedNum = d;
                         });
-                        writeSettingData();
+                        SettingData.writeSettingData();
                       },
                     ),
                   ],

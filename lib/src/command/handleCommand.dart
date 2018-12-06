@@ -6,7 +6,7 @@ import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
 
 ///处理字符命令
-String handleCommand(String command) {
+Future<String> handleCommand(String command) async{
   String cmd = command.trim().replaceAll(new RegExp(r'\r|\t|\n'), '');
   String result;
   //矩阵赋值语法的正则表达式
@@ -332,7 +332,7 @@ dynamic handleCalcuStr(String caculStr) {
   if (UserData.UFtemp.containsKey(caculStr)) {
     return UserData.UFtemp[caculStr];
   }
-  caculStr = _handleNegative(caculStr);
+  caculStr = formatCmdStr(caculStr);
   if (caculStr.contains('(')) {
     var caculStrs = [];
     int index = -1;
@@ -427,32 +427,51 @@ dynamic handleCalcuStr(String caculStr) {
 }
 
 ///处理运算字符串中的负数（加上括号）
-String _handleNegative(String rawStr){
+String formatCmdStr(String rawStr){
+  ///先处理数字与字母或左括弧紧邻
+  RegExp reg = new RegExp(r'[^A-Za-z][0-9\.]+[A-Za-z\(]+');
+  while(reg.hasMatch(rawStr)){
+    int index = rawStr.indexOf(new RegExp(r'[A-Za-z\(]'));
+    String numStr = rawStr.substring(1, index);
+    String operStr = rawStr.substring(0,1);
+    String varStr = rawStr.substring(index);
+    rawStr = rawStr.replaceFirst(reg, operStr + numStr + '*' + varStr);
+  }
+  ///处理头部
+  RegExp regF = new RegExp(r'^([0-9]+)[A-Za-z\(]+');
+  if(regF.hasMatch(rawStr)){
+    int index = rawStr.indexOf(new RegExp(r'[A-Za-z\(]'));
+    String numStr = rawStr.substring(0, index);
+    String varStr = rawStr.substring(index);
+    rawStr = rawStr.replaceFirst(regF, numStr + '*' + varStr);
+  }
+
   //处理尾部负数
-  final negativeEnd = new RegExp(r'(-[A-Za-z0-9\.]+)$');
+  final negativeEnd = new RegExp(r'([\+\*-/]-[0-9\.]+)$');
   if(negativeEnd.hasMatch(rawStr)){
     rawStr = rawStr.replaceFirst(negativeEnd, '(' + negativeEnd.firstMatch(rawStr).group(0) + ')');
   }
   //处理头部负数
-  final negativeF = new RegExp(r'^(-[A-Za-z0-9\.]+)');
+  final negativeF = new RegExp(r'^(-[0-9\.]+[\+\*/-])');
   if(negativeF.hasMatch(rawStr)){
-    rawStr = rawStr.replaceFirst(negativeF, '(' + negativeF.firstMatch(rawStr).group(0) + ')');
+    final str1 = negativeF.firstMatch(rawStr).group(0);
+    final str2 = str1.substring(str1.length - 1);
+    rawStr = rawStr.replaceFirst(negativeF, '(' + str1.substring(0,str1.length - 1) + ')' + str2);
   }
   //处理中间负数
-  final negativeM1 = new RegExp(r'[-/\+\*]-[A-Za-z0-9\.]+');
+  final negativeM1 = new RegExp(r'[-/\+\*\^]-[0-9\.]+');
   while(negativeM1.hasMatch(rawStr)){
     final str = negativeM1.firstMatch(rawStr).group(0);
     final operStr = str.substring(0,1);
     rawStr = rawStr.replaceFirst(negativeM1, operStr + '(' + str.substring(1) +')');
   }
-  final negativeM2 = new RegExp(r'\(-[A-Za-z0-9\.]+[-/\*\+]');
+  final negativeM2 = new RegExp(r'\(-[0-9\.]+[\+\*/-\^]');
   while(negativeM2.hasMatch(rawStr)){
     final str = negativeM2.firstMatch(rawStr).group(0);
-    final str1 = str.substring(0,1);
-    final str2 = str.substring(1,str.length - 1);
-    final str3 = str.substring(str.length - 1);
-    rawStr = rawStr.replaceFirst(negativeM2, str1 + '(' + str2 +')' + str3);
+    final str1 = str.substring(str.length - 1);
+    rawStr = rawStr.replaceFirst(negativeM2, '(' + '(' + str.substring(1,str.length - 1) + ')' + str1);
   }
+
   return rawStr;
 }
 

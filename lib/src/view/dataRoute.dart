@@ -7,7 +7,53 @@ import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 void popdataRoute(BuildContext context) {
   Navigator.of(context)
       .push(new MaterialPageRoute<void>(builder: (BuildContext context) {
+    return new dataRoute();
+  }));
+}
+
+class dataRoute extends StatefulWidget {
+  @override
+  _dataRouteState createState() => _dataRouteState();
+}
+
+class _dataRouteState extends State<dataRoute> {
+  @override
+  Widget build(BuildContext context) {
+    ///处理清空按钮调用函数
+    void _handleEmpty() {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('请确认是否要删除所有已保存的数据'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('确认'),
+                  onPressed: () {
+                    setState(() {
+                      UserData.dbs = new Map();
+                      UserData.matrixs = new Map();
+                      UserData.writeDb();
+                      UserData.writeMatrix();
+                    });
+                    Navigator.of(context).pop();
+                  },
+                ),
+                FlatButton(
+                  child: Text('取消'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+    }
+
+    ///保存的浮点数和矩阵组成的卡片列表
     List<Card> tiles = <Card>[];
+
+    ///加载矩阵列表
     if (UserData.matrixs.isNotEmpty) {
       UserData.matrixs.forEach((name, list) => tiles.add(new Card(
             color: Colors.cyan,
@@ -17,6 +63,8 @@ void popdataRoute(BuildContext context) {
             ),
           )));
     }
+
+    ///加载浮点数列表
     if (UserData.dbs.isNotEmpty) {
       UserData.dbs.forEach((name, value) => tiles.add(new Card(
             color: Colors.green,
@@ -28,8 +76,9 @@ void popdataRoute(BuildContext context) {
     }
     final List<Widget> divided = ListTile.divideTiles(
       context: context,
-      tiles: tiles.reversed,
+      tiles: tiles.reversed, //将后存入的数据显示在上方
     ).toList();
+
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(XiaomingLocalizations.of(context).saved_Data),
@@ -37,6 +86,10 @@ void popdataRoute(BuildContext context) {
       body: new ListView(
         children: divided,
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.delete),
+        onPressed: _handleEmpty,
+      ),
     );
-  }));
+  }
 }

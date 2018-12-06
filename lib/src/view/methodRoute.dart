@@ -5,6 +5,47 @@ import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 ///保存的方法界面
 void popmethodRoute(BuildContext context) {
   Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
+    return methodRoute();
+  }));
+}
+
+class methodRoute extends StatefulWidget {
+  @override
+  _methodRouteState createState() => _methodRouteState();
+}
+
+class _methodRouteState extends State<methodRoute> {
+  @override
+  Widget build(BuildContext context) {
+
+    void _handleDelete(){
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('请确认是否要删除所有已保存的自定义方法'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('确认'),
+                  onPressed: () {
+                    setState(() {
+                      UserData.userFunctions = [];
+                      UserData.writeUserFun();
+                    });
+                    Navigator.of(context).pop();
+                  },
+                ),
+                FlatButton(
+                  child: Text('取消'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+    }
+
     final List<Card> tiles = <Card>[];
     Locale myLocale = Localizations.localeOf(context);
     String funName;
@@ -46,12 +87,16 @@ void popmethodRoute(BuildContext context) {
       tiles: tiles,
     ).toList();
 
-    return new Scaffold(
+    return Scaffold(
       appBar: new AppBar(
           title: new Text(XiaomingLocalizations.of(context).saved_function)),
       body: new ListView(
         children: divided,
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.delete),
+        onPressed: _handleDelete,
+      ),
     );
-  }));
+  }
 }

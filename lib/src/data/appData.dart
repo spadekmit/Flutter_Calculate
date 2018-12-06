@@ -2,7 +2,6 @@ import 'package:xiaoming/src/command/handleCommand.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
-import 'package:xiaoming/src/data/settingData.dart';
 
 class UserData {
   static Map<String, num> dbs = new Map(); //存储浮点数变量
@@ -139,22 +138,6 @@ class UserData {
         'Usage: radToDeg(A), A must be a number Example: reForDeg(1) = 57.29578',
         "用法：radToDeg(A), A必须为数字 例：'reForDeg(1) = 57.29578 "),
   ];
-
-  ///从文件读取到设置界面的数据
-  static Future readSettingData() async {
-    String dir = (await getApplicationDocumentsDirectory()).path;
-    File settingDataFile = new File('$dir/settingdata.txt');
-    if (settingDataFile.existsSync()) {
-      String data = settingDataFile.readAsStringSync();
-      try {
-        SettingData.fixedNum = double.parse(data);
-      } catch (e) {
-        SettingData.fixedNum = 6.0;
-      }
-    } else {
-      SettingData.fixedNum = 6.0;
-    }
-  }
 
   //加载用户自定义函数，小数和矩阵
   static void loadData() async {
@@ -337,12 +320,4 @@ class UserFunction {
 }
 
 ///将设置界面的数据存储到文件
-Future writeSettingData() async {
-  String dir = (await getApplicationDocumentsDirectory()).path;
-  File settingDataFile = new File('$dir/settingdata.txt');
-  if (settingDataFile.existsSync()) {
-    settingDataFile.delete();
-  }
-  settingDataFile.createSync();
-  settingDataFile.writeAsStringSync(SettingData.fixedNum.toString());
-}
+
