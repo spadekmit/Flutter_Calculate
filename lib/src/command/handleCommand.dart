@@ -267,7 +267,7 @@ String _handleDefinFunction(String cmd) {
   List<String> cmds = [];
   List<String> funPara = [];
   for (String funcmd in funCmds) {
-    if (funcmd.length > 1) {
+    if (funcmd.length > 0) {
       cmds.add(funcmd);
     }
   }
@@ -431,25 +431,28 @@ String formatCmdStr(String rawStr){
   ///先处理数字与字母或左括弧紧邻
   RegExp reg = new RegExp(r'[^A-Za-z][0-9\.]+[A-Za-z\(]+');
   while(reg.hasMatch(rawStr)){
-    int index = rawStr.indexOf(new RegExp(r'[A-Za-z\(]'));
-    String numStr = rawStr.substring(1, index);
-    String operStr = rawStr.substring(0,1);
-    String varStr = rawStr.substring(index);
+    String str = reg.firstMatch(rawStr).group(0);
+    int index = str.indexOf(new RegExp(r'[A-Za-z\(]'));
+    String numStr = str.substring(1, index);
+    String operStr = str.substring(0,1);
+    String varStr = str.substring(index);
     rawStr = rawStr.replaceFirst(reg, operStr + numStr + '*' + varStr);
   }
   ///处理头部
   RegExp regF = new RegExp(r'^([0-9]+)[A-Za-z\(]+');
   if(regF.hasMatch(rawStr)){
-    int index = rawStr.indexOf(new RegExp(r'[A-Za-z\(]'));
-    String numStr = rawStr.substring(0, index);
-    String varStr = rawStr.substring(index);
+    String str = reg.firstMatch(rawStr).group(0);
+    int index = str.indexOf(new RegExp(r'[A-Za-z\(]'));
+    String numStr = str.substring(0, index);
+    String varStr = str.substring(index);
     rawStr = rawStr.replaceFirst(regF, numStr + '*' + varStr);
   }
 
   //处理尾部负数
   final negativeEnd = new RegExp(r'([\+\*-/]-[0-9\.]+)$');
   if(negativeEnd.hasMatch(rawStr)){
-    rawStr = rawStr.replaceFirst(negativeEnd, '(' + negativeEnd.firstMatch(rawStr).group(0) + ')');
+    final str = negativeEnd.firstMatch(rawStr).group(0);
+    rawStr = rawStr.replaceFirst(negativeEnd, str.substring(0,1) +  '(' + str.substring(1) + ')');
   }
   //处理头部负数
   final negativeF = new RegExp(r'^(-[0-9\.]+[\+\*/-])');
