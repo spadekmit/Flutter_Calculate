@@ -6,7 +6,7 @@ import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
 
 ///处理字符命令
-Future<String> handleCommand(String command) async{
+String handleCommand(String command) {
   String cmd = command.trim().replaceAll(new RegExp(r'\r|\t|\n'), '');
   String result;
   //矩阵赋值语法的正则表达式
@@ -441,7 +441,7 @@ String formatCmdStr(String rawStr){
   ///处理头部
   RegExp regF = new RegExp(r'^([0-9]+)[A-Za-z\(]+');
   if(regF.hasMatch(rawStr)){
-    String str = reg.firstMatch(rawStr).group(0);
+    String str = regF.firstMatch(rawStr).group(0);
     int index = str.indexOf(new RegExp(r'[A-Za-z\(]'));
     String numStr = str.substring(0, index);
     String varStr = str.substring(index);

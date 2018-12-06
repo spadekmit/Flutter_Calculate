@@ -7,10 +7,10 @@ import 'package:xiaoming/src/command/matrix.dart';
 
 void main() {
 
-  test('userFunction', ()async{
-    String cmd = 'Fun test(x):x';
-    print(await handleCommand(cmd));
-    print(await handleCommand('test(3)'));
+  test('userFunction', () {
+    String cmd = 'Fun test(x):2x^3-6x';
+    print(handleCommand(cmd));
+    print(handleCommand('test(3)'));
   });
 
   test('_formatCmdStr', (){

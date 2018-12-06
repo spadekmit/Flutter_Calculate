@@ -300,8 +300,8 @@ class UserFunction {
   UserFunction(this.funName, this.paras, this.funCmds);
 
   ///自定义函数执行。
-  String invoke(String methodVals) async{
-    var result;
+  String invoke(String methodVals) {
+    String result;
     List<dynamic> vals = getMethodValue(methodVals);
     if (vals.length != this.paras.length) {
       throw FormatException('$funName 方法的参数数量传递错误');
@@ -310,7 +310,7 @@ class UserFunction {
       UserData.UFtemp[paras[i]] = vals[i];
     }
     for (int j = 0; j < funCmds.length; j++) {
-      result = await handleCommand(funCmds[j]);
+      result = handleCommand(funCmds[j]);
     }
     for (var s in paras) {
       UserData.UFtemp.remove(s);
