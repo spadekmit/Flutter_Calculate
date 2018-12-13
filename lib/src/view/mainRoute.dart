@@ -9,9 +9,19 @@ import 'package:xiaoming/src/view/settingRoute.dart';
 import 'package:xiaoming/src/command/handleCommand.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
 class MyApp extends StatelessWidget {
   MyApp({Key key}) : super(key: key);
+
+  final ThemeData kIOSTheme = new ThemeData(
+    //Cupertino主题风格
+    primarySwatch: Colors.orange,
+    primaryColor: Colors.grey[100],
+    primaryColorBrightness: Brightness.light,
+  );
+
   @override
   Widget build(BuildContext context) {
     UserData.loadData();
@@ -118,7 +128,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                       decoration: new BoxDecoration(
                         color: Theme.of(context).cardColor,
                       ),
-                     // height: 200.0,
+                      // height: 200.0,
                       child: _buildMethodButtons(),
                     ),
                     new Divider(height: 1.0),
@@ -179,7 +189,6 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                     _buildBracketButton('cofa(', width: double.infinity),
                     _buildBracketButton('calculus(', width: double.infinity),
                     _buildBracketButton('roots(', width: double.infinity),
-                    
                   ],
                 ),
                 new Row(
@@ -189,7 +198,6 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                     _buildBracketButton('average(', width: double.infinity),
                     _buildBracketButton('factorial(', width: double.infinity),
                     _buildBracketButton('sin(', width: double.infinity),
-                   
                   ],
                 ),
                 new Row(
@@ -199,7 +207,6 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                     _buildBracketButton('tan(', width: double.infinity),
                     _buildBracketButton('asin(', width: double.infinity),
                     _buildBracketButton('acos(', width: double.infinity),
-                    
                   ],
                 ),
                 new Row(
@@ -209,7 +216,6 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                     _buildBracketButton('formatDeg(', width: double.infinity),
                     _buildBracketButton('reForDeg(', width: double.infinity),
                     _buildBracketButton('absSum(', width: double.infinity),
-                    
                   ],
                 ),
                 new Row(
@@ -264,7 +270,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
     return buttonCard;
   }
 
-  Widget _buildBracketButton(String label,{double width = 50.0} ){
+  Widget _buildBracketButton(String label, {double width = 50.0}) {
     return LimitedBox(
       maxWidth: width,
       child: new FlatButton(
@@ -315,7 +321,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   }
 
   ///处理发送按钮的点击事件
-  void _handleSubmitted(BuildContext context, String text){
+  void _handleSubmitted(BuildContext context, String text) {
     _textController.clear();
     setState(() {
       _isExpanded = false;
@@ -344,11 +350,11 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
     textView2.animationController.forward();
   }
 
-  void _handleBracket(String text){
-    String bracket = text.substring(text.length -1);
-    if(bracket == '('){
+  void _handleBracket(String text) {
+    String bracket = text.substring(text.length - 1);
+    if (bracket == '(') {
       text = text + ')';
-    } else if(bracket == '['){
+    } else if (bracket == '[') {
       text = text + ']';
     }
     if (_textController.selection.isValid) {

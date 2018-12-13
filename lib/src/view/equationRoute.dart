@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:xiaoming/src/command/handleEquations.dart';
 import 'package:flutter/services.dart';
@@ -5,7 +6,7 @@ import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 ///弹出计算方程式界面
 void popEquationsRoute(BuildContext context) {
   Navigator.of(context)
-      .push(new MaterialPageRoute<void>(builder: (BuildContext context) {
+      .push(new CupertinoPageRoute<void>(builder: (BuildContext context) {
     return new LineQuationsView();
   }));
 }

@@ -1,10 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
 ///保存的方法界面
 void popmethodRoute(BuildContext context) {
-  Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
+  Navigator.of(context).push(new CupertinoPageRoute(builder: (context) {
     return methodRoute();
   }));
 }

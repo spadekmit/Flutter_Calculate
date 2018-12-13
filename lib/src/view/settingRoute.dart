@@ -56,7 +56,7 @@ class _SettingRouteState extends State<SettingRoute> {
 ///加载设置界面
 void settingRoute(BuildContext context) {
   Navigator.of(context)
-      .push(new MaterialPageRoute<void>(builder: (BuildContext context) {
+      .push(new CupertinoPageRoute<void>(builder: (BuildContext context) {
     return new SettingRoute();
   }));
 }
