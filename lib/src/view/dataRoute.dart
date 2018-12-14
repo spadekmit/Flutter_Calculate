@@ -82,6 +82,7 @@ class _dataRouteState extends State<dataRoute> {
 
     return new Scaffold(
       appBar: new AppBar(
+        elevation: 1.0,
         title: new Text(XiaomingLocalizations.of(context).saved_Data),
       ),
       body: new ListView(

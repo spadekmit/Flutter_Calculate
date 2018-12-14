@@ -36,6 +36,7 @@ class _helpViewState extends State<helpView> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
+        elevation: 1.0,
         title: Text(XiaomingLocalizations.of(context).help),
       ),
       body: Container(

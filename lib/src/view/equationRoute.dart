@@ -27,6 +27,7 @@ class _LineQuationsViewState extends State<LineQuationsView> {
   Widget build(BuildContext context) {   //主界面
     return Scaffold(
       appBar: AppBar(
+        elevation: 1.0,
         title: Text(XiaomingLocalizations.of(context).solve_equation),
       ),
       body: GestureDetector(   //点击空白区域收起键盘

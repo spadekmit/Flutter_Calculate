@@ -90,6 +90,7 @@ class _methodRouteState extends State<methodRoute> {
 
     return Scaffold(
       appBar: new AppBar(
+        elevation: 1.0,
           title: new Text(XiaomingLocalizations.of(context).saved_function)),
       body: new ListView(
         children: divided,

@@ -16,12 +16,13 @@ class _SettingRouteState extends State<SettingRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 1.0,
         title: Text(XiaomingLocalizations.of(context).setting),
       ),
       body: ListView(
         children: <Widget>[
           Card(
-            elevation: 5.0,
+            elevation: 1.0,
             margin: const EdgeInsets.all(8.0),
             child: new Container(
                 margin: const EdgeInsets.all(12.0),

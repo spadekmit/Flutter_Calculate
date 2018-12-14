@@ -101,6 +101,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
           ),
         ),
         appBar: new AppBar(
+          elevation: 1.0,
           title: new Text(XiaomingLocalizations.of(context).appName),
           actions: <Widget>[
             new IconButton(
@@ -155,7 +156,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   ///创建方便输入方法名的按钮列
   Widget _buildMethodButtons() {
     Widget buttonsV;
-    buttonsV = new ExpansionPanelList(
+    buttonsV = ExpansionPanelList(
       expansionCallback: (int i, bool b) => setState(() {
             _isExpanded = !_isExpanded;
           }),
@@ -232,13 +233,14 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
         ),
       ],
     );
+    
     return buttonsV;
   }
 
   /// 创建方便输入符号的按钮列
   Widget _buildButtons() {
     Widget buttons;
-    buttons = new ListView(
+    buttons = ListView(
       scrollDirection: Axis.horizontal,
       children: <Widget>[
         _buildTextButton(','),
