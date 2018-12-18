@@ -117,7 +117,12 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                     new Flexible(
                         child: new GestureDetector(
                             behavior: HitTestBehavior.translucent,
-                            onTap: () => _textFocusNode.unfocus(),
+                            onTap: () {
+                              _textFocusNode.unfocus();
+                              setState(() {
+                                _isExpanded = false;
+                              });
+                            },
                             child: new ListView.builder(
                               padding: new EdgeInsets.only(left: 5.0),
                               reverse: true,
@@ -133,16 +138,6 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                       child: _buildMethodButtons(),
                     ),
                     new Divider(height: 1.0),
-                    new Container(
-                      height: 40.0,
-                      decoration: new BoxDecoration(
-                        color: Theme.of(context).cardColor,
-                      ),
-                      child: _buildButtons(),
-                    ),
-                    new Divider(
-                      height: 1.0,
-                    ),
                     new Container(
                       decoration: new BoxDecoration(
                         color: Theme.of(context).cardColor,
@@ -171,92 +166,109 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
           },
           isExpanded: _isExpanded,
           body: LimitedBox(
-            maxHeight: 200.0,
-            child: ListView(
-              children: <Widget>[
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+            maxHeight: 250.0,
+            child: Column(children: <Widget>[
+              Flexible(
+                child: ListView(
                   children: <Widget>[
-                    _buildTextButton('Fun', width: double.infinity),
-                    _buildBracketButton('inv(', width: double.infinity),
-                    _buildBracketButton('tran(', width: double.infinity),
-                    _buildBracketButton('value(', width: double.infinity),
+                    new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        _buildTextButton('Fun', width: double.infinity),
+                        _buildBracketButton('inv(', width: double.infinity),
+                        _buildBracketButton('tran(', width: double.infinity),
+                        _buildBracketButton('value(', width: double.infinity),
+                      ],
+                    ),
+                    new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        _buildBracketButton('upmat(', width: double.infinity),
+                        _buildBracketButton('cofa(', width: double.infinity),
+                        _buildBracketButton('calculus(',
+                            width: double.infinity),
+                        _buildBracketButton('roots(', width: double.infinity),
+                      ],
+                    ),
+                    new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        _buildBracketButton('sum(', width: double.infinity),
+                        _buildBracketButton('average(', width: double.infinity),
+                        _buildBracketButton('factorial(',
+                            width: double.infinity),
+                        _buildBracketButton('sin(', width: double.infinity),
+                      ],
+                    ),
+                    new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        _buildBracketButton('cos(', width: double.infinity),
+                        _buildBracketButton('tan(', width: double.infinity),
+                        _buildBracketButton('asin(', width: double.infinity),
+                        _buildBracketButton('acos(', width: double.infinity),
+                      ],
+                    ),
+                    new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        _buildBracketButton('atan(', width: double.infinity),
+                        _buildBracketButton('formatDeg(',
+                            width: double.infinity),
+                        _buildBracketButton('reForDeg(',
+                            width: double.infinity),
+                        _buildBracketButton('absSum(', width: double.infinity),
+                      ],
+                    ),
+                    new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        _buildBracketButton('absAverage(',
+                            width: double.infinity),
+                        _buildBracketButton('radToDeg(',
+                            width: double.infinity),
+                        _buildTextButton('lagrange(', width: double.infinity),
+                      ],
+                    ),
                   ],
                 ),
-                new Row(
+              ),
+              Divider(height: 1.0),
+              LimitedBox(
+                maxHeight: 40,
+                child: new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    _buildBracketButton('upmat(', width: double.infinity),
-                    _buildBracketButton('cofa(', width: double.infinity),
-                    _buildBracketButton('calculus(', width: double.infinity),
-                    _buildBracketButton('roots(', width: double.infinity),
+                    _buildTextButton(','),
+                    _buildTextButton(';'),
+                    _buildTextButton(':'),
+                    _buildBracketButton('['),
+                    _buildTextButton('='),
+                    _buildBracketButton('('),
                   ],
                 ),
-                new Row(
+              ),
+              Divider(height: 1.0),
+              LimitedBox(
+                maxHeight: 40,
+                child: new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    _buildBracketButton('sum(', width: double.infinity),
-                    _buildBracketButton('average(', width: double.infinity),
-                    _buildBracketButton('factorial(', width: double.infinity),
-                    _buildBracketButton('sin(', width: double.infinity),
+                    _buildTextButton('^'),
+                    _buildTextButton('+'),
+                    _buildTextButton('-'),
+                    _buildTextButton('*'),
+                    _buildTextButton('/'),
                   ],
                 ),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    _buildBracketButton('cos(', width: double.infinity),
-                    _buildBracketButton('tan(', width: double.infinity),
-                    _buildBracketButton('asin(', width: double.infinity),
-                    _buildBracketButton('acos(', width: double.infinity),
-                  ],
-                ),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    _buildBracketButton('atan(', width: double.infinity),
-                    _buildBracketButton('formatDeg(', width: double.infinity),
-                    _buildBracketButton('reForDeg(', width: double.infinity),
-                    _buildBracketButton('absSum(', width: double.infinity),
-                  ],
-                ),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    _buildBracketButton('absAverage(', width: double.infinity),
-                    _buildBracketButton('radToDeg(', width: double.infinity),
-                    _buildTextButton('lagrange(', width: double.infinity),
-                  ],
-                ),
-              ],
-            ),
+              ),
+            ]),
           ),
         ),
       ],
     );
-    
-    return buttonsV;
-  }
 
-  /// 创建方便输入符号的按钮列
-  Widget _buildButtons() {
-    Widget buttons;
-    buttons = ListView(
-      scrollDirection: Axis.horizontal,
-      children: <Widget>[
-        _buildTextButton(','),
-        _buildTextButton(';'),
-        _buildTextButton(':'),
-        _buildBracketButton('['),
-        _buildTextButton('='),
-        _buildBracketButton('('),
-        _buildTextButton('^'),
-        _buildTextButton('+'),
-        _buildTextButton('-'),
-        _buildTextButton('*'),
-        _buildTextButton('/'),
-      ],
-    );
-    return buttons;
+    return buttonsV;
   }
 
   /// 传入标签，创建便捷输入按钮
@@ -301,6 +313,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                             onChanged: (String text) {
                               setState(() {
                                 _isComposing = text.length > 0;
+                                _isExpanded = true;
                               });
                             },
                             onSubmitted: (String text) =>
