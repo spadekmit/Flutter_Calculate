@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:xiaoming/src/data/settingData.dart';
 import 'package:xiaoming/src/view/dataRoute.dart';
 import 'package:xiaoming/src/view/helpRoute.dart';
 import 'package:xiaoming/src/view/equationRoute.dart';
@@ -62,10 +63,12 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     _textFocusNode.addListener(() {
-      if (_textFocusNode.hasFocus) {
-        setState(() {
-          _isExpanded = true;
-        });
+      if (SettingData.isAutoExpanded) {
+        if (_textFocusNode.hasFocus) {
+          setState(() {
+            _isExpanded = true;
+          });
+        }
       }
     });
     return new Scaffold(
@@ -166,14 +169,13 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
         new ExpansionPanel(
           headerBuilder: (context, isExpanded) {
             return new ListTile(
-              leading: new Text(
-                  XiaomingLocalizations.of(context).buttons,
+              leading: new Text(XiaomingLocalizations.of(context).buttons,
                   style: TextStyle(fontSize: 18.0, color: Colors.deepOrange)),
             );
           },
           isExpanded: _isExpanded,
           body: LimitedBox(
-            maxHeight: 250.0,
+            maxHeight: SettingData.buttonsHeight,
             child: Column(children: <Widget>[
               Flexible(
                 child: ListView(

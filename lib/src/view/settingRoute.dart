@@ -48,6 +48,26 @@ class _SettingRouteState extends State<SettingRoute> {
                   ],
                 )),
           ),
+          Card(
+            elevation: 1.0,
+            margin: const EdgeInsets.all(8.0),
+            child: new Container(
+                margin: const EdgeInsets.all(12.0),
+                child: new Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                          XiaomingLocalizations.of(context).buttonsAutoExpanded),
+                    ),
+                    Switch(
+                      value: SettingData.isAutoExpanded,
+                      onChanged: (bool b) => setState((){
+                        SettingData.isAutoExpanded = b;
+                      }) ,
+                    )
+                  ],
+                )),
+          ),
         ],
       ),
     );

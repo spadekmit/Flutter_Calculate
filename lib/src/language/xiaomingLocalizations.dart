@@ -11,6 +11,8 @@ class XiaomingLocalizations {
     'en': {
       'AppName': 'Computing assistant',
       'Buttons': 'Buttons',
+      'ButtonsHeight' : 'Buttons Height',
+      'ButtonsAutoExpanded' : 'ButtonsAutoExpanded',
       'calculate': 'calculate',
       'CopyHint': 'The content has been copied to the clipboard',
       'decimal digits': 'decimal digits',
@@ -55,6 +57,8 @@ class XiaomingLocalizations {
     'zh': {
       'AppName': '计算小助手',
       'Buttons': '按钮',
+      'ButtonsHeight' : '按钮栏显示高度',
+      'ButtonsAutoExpanded' : '按钮栏自动展开',
       'calculate': '计算',
       'CopyHint': '内容已复制到剪切板',
       'decimal digits': '小数保留位数',
@@ -107,6 +111,14 @@ class XiaomingLocalizations {
 
   get buttons {
     return _localizedValues[locale.languageCode]['Buttons'];
+  }
+
+  get buttonsHeight {
+    return _localizedValues[locale.languageCode]['ButtonsHeight'];
+  }
+
+  get buttonsAutoExpanded {
+    return _localizedValues[locale.languageCode]['ButtonsAutoExpanded'];
   }
 
   get calculate {
