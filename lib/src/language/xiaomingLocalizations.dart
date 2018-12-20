@@ -10,7 +10,7 @@ class XiaomingLocalizations {
   static Map<String, Map<String, String>> _localizedValues = {
     'en': {
       'AppName': 'Computing assistant',
-      'Built-in function': 'Built-in function',
+      'Buttons': 'Buttons',
       'calculate': 'calculate',
       'CopyHint': 'The content has been copied to the clipboard',
       'decimal digits': 'decimal digits',
@@ -54,7 +54,7 @@ class XiaomingLocalizations {
     },
     'zh': {
       'AppName': '计算小助手',
-      'Built-in function': '内置的函数',
+      'Buttons': '按钮',
       'calculate': '计算',
       'CopyHint': '内容已复制到剪切板',
       'decimal digits': '小数保留位数',
@@ -105,8 +105,8 @@ class XiaomingLocalizations {
     return _localizedValues[locale.languageCode]['AppName'];
   }
 
-  get built_in_function {
-    return _localizedValues[locale.languageCode]['Built-in function'];
+  get buttons {
+    return _localizedValues[locale.languageCode]['Buttons'];
   }
 
   get calculate {
