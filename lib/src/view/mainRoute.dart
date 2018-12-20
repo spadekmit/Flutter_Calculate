@@ -61,6 +61,13 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    _textFocusNode.addListener(() {
+      if (_textFocusNode.hasFocus) {
+        setState(() {
+          _isExpanded = true;
+        });
+      }
+    });
     return new Scaffold(
         drawer: new Drawer(
           child: new ListView(
@@ -299,40 +306,46 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   Widget _buildTextComposer(BuildContext context) {
     return new IconTheme(
         data: new IconThemeData(color: Theme.of(context).accentColor),
-        child: new SafeArea(
-            child: new Container(
-                margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: new Row(children: <Widget>[
-                  new Flexible(
-                      child: new Container(
-                          margin: new EdgeInsets.only(left: 15.0),
-                          child: new TextField(
-                            focusNode: _textFocusNode,
-                            maxLines: null,
-                            controller: _textController,
-                            onChanged: (String text) {
-                              setState(() {
-                                _isComposing = text.length > 0;
-                                _isExpanded = true;
-                              });
-                            },
-                            onSubmitted: (String text) =>
-                                _handleSubmitted(context, text),
-                            decoration: new InputDecoration.collapsed(
-                                hintText: XiaomingLocalizations.of(context)
-                                    .inputHint),
-                          ))),
-                  new Container(
-                    margin: new EdgeInsets.symmetric(horizontal: 4.0),
-                    child: new IconButton(
-                      icon: new Icon(Icons.send),
-                      onPressed: _isComposing
-                          ? () =>
-                              _handleSubmitted(context, _textController.text)
-                          : null,
+        child: GestureDetector(
+          onTap: () => setState(() {
+                _isExpanded = true;
+              }),
+          child: SafeArea(
+              child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Row(children: <Widget>[
+                    Flexible(
+                      child: Container(
+                        margin: EdgeInsets.only(left: 15.0),
+                        child: TextField(
+                          focusNode: _textFocusNode,
+                          maxLines: null,
+                          controller: _textController,
+                          onChanged: (String text) {
+                            setState(() {
+                              _isComposing = text.length > 0;
+                            });
+                          },
+                          onSubmitted: (String text) =>
+                              _handleSubmitted(context, text),
+                          decoration: new InputDecoration.collapsed(
+                              hintText:
+                                  XiaomingLocalizations.of(context).inputHint),
+                        ),
+                      ),
                     ),
-                  )
-                ]))));
+                    new Container(
+                      margin: new EdgeInsets.symmetric(horizontal: 4.0),
+                      child: new IconButton(
+                        icon: new Icon(Icons.send),
+                        onPressed: _isComposing
+                            ? () =>
+                                _handleSubmitted(context, _textController.text)
+                            : null,
+                      ),
+                    )
+                  ]))),
+        ));
   }
 
   ///处理发送按钮的点击事件
