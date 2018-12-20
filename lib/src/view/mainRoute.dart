@@ -160,7 +160,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
           headerBuilder: (context, isExpanded) {
             return new ListTile(
               leading: new Text(
-                  XiaomingLocalizations.of(context).built_in_function,
+                  XiaomingLocalizations.of(context).buttons,
                   style: TextStyle(fontSize: 18.0, color: Colors.deepOrange)),
             );
           },
