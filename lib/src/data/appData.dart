@@ -318,6 +318,3 @@ class UserFunction {
     return result;
   }
 }
-
-///将设置界面的数据存储到文件
-
