@@ -12,6 +12,8 @@ class UserData {
 
   static Map UFtemp = new Map(); //存储调用用户自定义函数时传入的参数
 
+  static List<String> strs = <String>[];
+
   static List<CmdMethod> cmdMethods = [
     new CmdMethod(
         '矩阵求逆',

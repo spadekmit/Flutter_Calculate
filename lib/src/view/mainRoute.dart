@@ -12,16 +12,10 @@ import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:xiaoming/src/view/widget/buttons.dart';
 
 class MyApp extends StatelessWidget {
   MyApp({Key key}) : super(key: key);
-
-  final ThemeData kIOSTheme = new ThemeData(
-    //Cupertino主题风格
-    primarySwatch: Colors.orange,
-    primaryColor: Colors.grey[100],
-    primaryColorBrightness: Brightness.light,
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +56,18 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+
+    UserData.strs.forEach((String str) {
+      _texts.insert(
+          0,
+          TextView(
+            context: context,
+            text: str,
+            animationController: new AnimationController(
+                duration: new Duration(milliseconds: 200), vsync: this),
+          ));
+    });
+
     _textFocusNode.addListener(() {
       if (SettingData.isAutoExpanded) {
         if (_textFocusNode.hasFocus) {
@@ -71,6 +77,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
         }
       }
     });
+
     return new Scaffold(
         drawer: new Drawer(
           child: new ListView(
@@ -145,7 +152,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                         color: Theme.of(context).cardColor,
                       ),
                       // height: 200.0,
-                      child: _buildMethodButtons(),
+                      child: InputButtons(onTapButton: (String text) => _handleTextButton(text),),
                     ),
                     new Divider(height: 1.0),
                     new Container(
@@ -156,152 +163,6 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                     )
                   ],
                 )));
-  }
-
-  ///创建方便输入方法名的按钮列
-  Widget _buildMethodButtons() {
-    Widget buttonsV;
-    buttonsV = ExpansionPanelList(
-      expansionCallback: (int i, bool b) => setState(() {
-            _isExpanded = !_isExpanded;
-          }),
-      children: <ExpansionPanel>[
-        new ExpansionPanel(
-          headerBuilder: (context, isExpanded) {
-            return new ListTile(
-              leading: new Text(XiaomingLocalizations.of(context).buttons,
-                  style: TextStyle(fontSize: 18.0, color: Colors.deepOrange)),
-            );
-          },
-          isExpanded: _isExpanded,
-          body: LimitedBox(
-            maxHeight: SettingData.buttonsHeight,
-            child: Column(children: <Widget>[
-              Flexible(
-                child: ListView(
-                  children: <Widget>[
-                    new Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        _buildTextButton('Fun', width: double.infinity),
-                        _buildBracketButton('inv(', width: double.infinity),
-                        _buildBracketButton('tran(', width: double.infinity),
-                        _buildBracketButton('value(', width: double.infinity),
-                      ],
-                    ),
-                    new Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        _buildBracketButton('upmat(', width: double.infinity),
-                        _buildBracketButton('cofa(', width: double.infinity),
-                        _buildBracketButton('calculus(',
-                            width: double.infinity),
-                        _buildBracketButton('roots(', width: double.infinity),
-                      ],
-                    ),
-                    new Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        _buildBracketButton('sum(', width: double.infinity),
-                        _buildBracketButton('average(', width: double.infinity),
-                        _buildBracketButton('factorial(',
-                            width: double.infinity),
-                        _buildBracketButton('sin(', width: double.infinity),
-                      ],
-                    ),
-                    new Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        _buildBracketButton('cos(', width: double.infinity),
-                        _buildBracketButton('tan(', width: double.infinity),
-                        _buildBracketButton('asin(', width: double.infinity),
-                        _buildBracketButton('acos(', width: double.infinity),
-                      ],
-                    ),
-                    new Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        _buildBracketButton('atan(', width: double.infinity),
-                        _buildBracketButton('formatDeg(',
-                            width: double.infinity),
-                        _buildBracketButton('reForDeg(',
-                            width: double.infinity),
-                        _buildBracketButton('absSum(', width: double.infinity),
-                      ],
-                    ),
-                    new Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        _buildBracketButton('absAverage(',
-                            width: double.infinity),
-                        _buildBracketButton('radToDeg(',
-                            width: double.infinity),
-                        _buildTextButton('lagrange(', width: double.infinity),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Divider(height: 1.0),
-              LimitedBox(
-                maxHeight: 40,
-                child: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    _buildTextButton(','),
-                    _buildTextButton(';'),
-                    _buildTextButton(':'),
-                    _buildBracketButton('['),
-                    _buildTextButton('='),
-                    _buildBracketButton('('),
-                  ],
-                ),
-              ),
-              Divider(height: 1.0),
-              LimitedBox(
-                maxHeight: 40,
-                child: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    _buildTextButton('^'),
-                    _buildTextButton('+'),
-                    _buildTextButton('-'),
-                    _buildTextButton('*'),
-                    _buildTextButton('/'),
-                  ],
-                ),
-              ),
-            ]),
-          ),
-        ),
-      ],
-    );
-
-    return buttonsV;
-  }
-
-  /// 传入标签，创建便捷输入按钮
-  Widget _buildTextButton(String label, {double width = 50.0}) {
-    Widget buttonCard = new LimitedBox(
-      maxWidth: width,
-      child: new FlatButton(
-        padding: const EdgeInsets.all(0.0),
-        onPressed: () => _handleTextButton(label),
-        child: new Text(label, style: new TextStyle(fontSize: 14.0)),
-      ),
-    );
-    return buttonCard;
-  }
-
-  Widget _buildBracketButton(String label, {double width = 50.0}) {
-    return LimitedBox(
-      maxWidth: width,
-      child: new FlatButton(
-        padding: const EdgeInsets.all(0.0),
-        onPressed: () => _handleBracket(label),
-        child: new Text(label, style: new TextStyle(fontSize: 14.0)),
-      ),
-    );
   }
 
   ///输入控件，包含一个输入框和一个按钮
@@ -357,58 +218,62 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
       _isExpanded = false;
       _isComposing = false;
     });
-    TextView textView1 = new TextView(
-        text: text,
-        context: context,
-        animationController: new AnimationController(
-            duration: new Duration(milliseconds: 200), vsync: this));
+    // TextView textView1 = new TextView(
+    //     text: text,
+    //     context: context,
+    //     animationController: new AnimationController(
+    //         duration: new Duration(milliseconds: 200), vsync: this));
 
     setState(() {
-      _texts.insert(0, textView1);
+      UserData.strs.insert(0, text);
     });
-    TextView textView2 = new TextView(
-        text: handleCommand(text),
-        context: context,
-        animationController: new AnimationController(
-            duration: new Duration(milliseconds: 200), vsync: this));
 
     setState(() {
-      _texts.insert(0, textView2);
+      UserData.strs.insert(0, handleCommand(text));
     });
 
-    textView1.animationController.forward();
-    textView2.animationController.forward();
+    _texts[1].animationController.forward();
+    _texts[0].animationController.forward();
   }
 
-  void _handleBracket(String text) {
-    String bracket = text.substring(text.length - 1);
-    if (bracket == '(') {
-      text = text + ')';
-    } else if (bracket == '[') {
-      text = text + ']';
-    }
-    if (_textController.selection.isValid) {
-      int index = _textController.value.selection.extentOffset;
-      String newStr = _textController.text.substring(0, index) +
-          text +
-          _textController.text.substring(index, _textController.text.length);
-      setState(() {
-        _isComposing = true;
-      });
-      _textController.value = new TextEditingValue(
-        text: newStr,
-        selection: new TextSelection.collapsed(offset: index + text.length - 1),
-      );
-    } else {
-      _textController.value = new TextEditingValue(
-        text: text,
-        selection: new TextSelection.collapsed(offset: text.length - 1),
-      );
-    }
-  }
+  // void _handleBracket(String text) {
+  //   String bracket = text.substring(text.length - 1);
+  //   if (bracket == '(') {
+  //     text = text + ')';
+  //   } else if (bracket == '[') {
+  //     text = text + ']';
+  //   }
+  //   if (_textController.selection.isValid) {
+  //     int index = _textController.value.selection.extentOffset;
+  //     String newStr = _textController.text.substring(0, index) +
+  //         text +
+  //         _textController.text.substring(index, _textController.text.length);
+  //     setState(() {
+  //       _isComposing = true;
+  //     });
+  //     _textController.value = new TextEditingValue(
+  //       text: newStr,
+  //       selection: new TextSelection.collapsed(offset: index + text.length - 1),
+  //     );
+  //   } else {
+  //     _textController.value = new TextEditingValue(
+  //       text: text,
+  //       selection: new TextSelection.collapsed(offset: text.length - 1),
+  //     );
+  //   }
+  // }
 
   /// 处理便捷输入按钮的点击事件
   void _handleTextButton(String text) {
+    int temp = 0;
+    String bracket = text.substring(text.length - 1);
+    if (bracket == '(') {
+      text = text + ')';
+      temp = 1;
+    } else if (bracket == '[') {
+      text = text + ']';
+      temp = 1;
+    }
     if (_textController.selection.isValid) {
       int index = _textController.value.selection.extentOffset;
       String newStr = _textController.text.substring(0, index) +
@@ -419,21 +284,23 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
       });
       _textController.value = new TextEditingValue(
         text: newStr,
-        selection: new TextSelection.collapsed(offset: index + text.length),
+        selection: new TextSelection.collapsed(offset: index + text.length - temp),
       );
     } else {
       _textController.value = new TextEditingValue(
         text: text,
-        selection: new TextSelection.collapsed(offset: text.length),
+        selection: new TextSelection.collapsed(offset: text.length - temp),
       );
     }
   }
 
   ///退出该路由时释放动画资源
+  @override
   void dispose() {
     for (TextView textView in _texts) {
       textView.animationController.dispose();
     }
+    _textFocusNode.dispose();
     super.dispose();
   }
 }
