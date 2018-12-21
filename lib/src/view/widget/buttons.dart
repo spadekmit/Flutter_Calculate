@@ -5,21 +5,23 @@ import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 typedef OnTapButton = void Function(String label);
 
 class InputButtons extends StatefulWidget {
-  InputButtons({@required this.onTapButton});
+  InputButtons({@required this.isExpanded, @required this.onTapButton});
 
+  bool isExpanded;
   OnTapButton onTapButton;
 
   @override
   _InputButtonsState createState() =>
-      _InputButtonsState(onTapButton: onTapButton);
+      _InputButtonsState(onTapButton: onTapButton, isExpanded: isExpanded);
 }
 
 class _InputButtonsState extends State<InputButtons> {
-  _InputButtonsState({@required this.onTapButton});
+  _InputButtonsState({@required this.isExpanded, @required this.onTapButton});
 
+  bool isExpanded;
   OnTapButton onTapButton;
 
-  bool _isExpanded;
+  bool _isExpanded = false;
   @override
   Widget build(BuildContext context) {
 
@@ -39,7 +41,7 @@ class _InputButtonsState extends State<InputButtons> {
             _isExpanded = !_isExpanded;
           }),
       children: <ExpansionPanel>[
-        new ExpansionPanel(
+        ExpansionPanel(
           headerBuilder: (context, isExpanded) {
             return new ListTile(
               leading: new Text(XiaomingLocalizations.of(context).buttons,

@@ -168,6 +168,11 @@ class UserData {
     return new File('$dir/userFun.txt');
   }
 
+  static Future<File> _getTextFile() async {
+    String dir = (await getApplicationDocumentsDirectory()).path;
+    return new File('$dir/text.txt');
+  }
+
   ///读取存储的矩阵
   static Future readMatrixs() async {
     File matrixFile = await _getMatrixsFile();
@@ -218,6 +223,18 @@ class UserData {
             strs[2].substring(1, strs[2].length - 1).split(',');
         UserFunction uf = new UserFunction(funName, paras, funCmds);
         userFunctions.add(uf);
+      }
+    }
+  }
+
+  static Future readText() async {
+    File TextFile = await _getTextFile();
+    if (TextFile.existsSync()) {
+      String textStr = TextFile.readAsStringSync();
+      List<String> texts = textStr.split('|||');
+      for (String text in texts) {
+        if (text.length == 0) continue;
+        strs.add(text);
       }
     }
   }
@@ -279,6 +296,17 @@ class UserData {
     var sb = new StringBuffer();
     dbs.forEach((name, value) => sb.write('$name:$value;'));
     DbsFile.writeAsStringSync(sb.toString());
+  }
+
+  static writeText() async{
+    File TextFile = await _getTextFile();
+    if (TextFile.existsSync()) {
+      TextFile.delete();
+    }
+    await TextFile.create();
+    var sb = new StringBuffer();
+    strs.forEach((str) => sb.write('$str|||'));
+    TextFile.writeAsStringSync(sb.toString());
   }
 }
 

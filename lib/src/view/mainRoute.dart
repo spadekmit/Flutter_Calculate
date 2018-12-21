@@ -151,8 +151,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                       decoration: new BoxDecoration(
                         color: Theme.of(context).cardColor,
                       ),
-                      // height: 200.0,
-                      child: InputButtons(onTapButton: (String text) => _handleTextButton(text),),
+                      child: _buildButtons(),
                     ),
                     new Divider(height: 1.0),
                     new Container(
@@ -218,50 +217,150 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
       _isExpanded = false;
       _isComposing = false;
     });
-    // TextView textView1 = new TextView(
-    //     text: text,
-    //     context: context,
-    //     animationController: new AnimationController(
-    //         duration: new Duration(milliseconds: 200), vsync: this));
-
+    UserData.strs.insert(0, text);
+    String handleText = handleCommand(text);
+    UserData.strs.insert(0, text);
+    TextView textView1 = new TextView(
+        text: text,
+        context: context,
+        animationController: new AnimationController(
+            duration: new Duration(milliseconds: 200), vsync: this));
+    TextView textView2 = new TextView(
+        text: handleText,
+        context: context,
+        animationController: new AnimationController(
+            duration: new Duration(milliseconds: 200), vsync: this));
     setState(() {
-      UserData.strs.insert(0, text);
+      _texts.insert(0, textView1);
+      _texts.insert(0, textView2);
     });
 
-    setState(() {
-      UserData.strs.insert(0, handleCommand(text));
-    });
-
-    _texts[1].animationController.forward();
-    _texts[0].animationController.forward();
+    textView1.animationController.forward();
+    textView2.animationController.forward();
   }
 
-  // void _handleBracket(String text) {
-  //   String bracket = text.substring(text.length - 1);
-  //   if (bracket == '(') {
-  //     text = text + ')';
-  //   } else if (bracket == '[') {
-  //     text = text + ']';
-  //   }
-  //   if (_textController.selection.isValid) {
-  //     int index = _textController.value.selection.extentOffset;
-  //     String newStr = _textController.text.substring(0, index) +
-  //         text +
-  //         _textController.text.substring(index, _textController.text.length);
-  //     setState(() {
-  //       _isComposing = true;
-  //     });
-  //     _textController.value = new TextEditingValue(
-  //       text: newStr,
-  //       selection: new TextSelection.collapsed(offset: index + text.length - 1),
-  //     );
-  //   } else {
-  //     _textController.value = new TextEditingValue(
-  //       text: text,
-  //       selection: new TextSelection.collapsed(offset: text.length - 1),
-  //     );
-  //   }
-  // }
+  Widget _buildTextButton(String label, {double width = 50.0}) {
+       return LimitedBox(
+        maxWidth: width,
+        child: new FlatButton(
+          padding: const EdgeInsets.all(0.0),
+          onPressed: () => _handleTextButton(label),
+          child: new Text(label, style: new TextStyle(fontSize: 14.0)),
+        ),
+      );
+  }
+
+  Widget _buildButtons (){
+    return ExpansionPanelList(
+      expansionCallback: (int i, bool b) => setState(() {
+            _isExpanded = !_isExpanded;
+          }),
+      children: <ExpansionPanel>[
+        ExpansionPanel(
+          headerBuilder: (context, isExpanded) {
+            return new ListTile(
+              leading: new Text(XiaomingLocalizations.of(context).buttons,
+                  style: TextStyle(fontSize: 18.0, color: Colors.deepOrange)),
+            );
+          },
+          isExpanded: _isExpanded,
+          body: LimitedBox(
+            maxHeight: SettingData.buttonsHeight,
+            child: Column(children: <Widget>[
+              Flexible(
+                child: ListView(
+                  children: <Widget>[
+                    new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        _buildTextButton('Fun', width: double.infinity),
+                        _buildTextButton('inv(', width: double.infinity),
+                        _buildTextButton('tran(', width: double.infinity),
+                        _buildTextButton('value(', width: double.infinity),
+                      ],
+                    ),
+                    new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        _buildTextButton('upmat(', width: double.infinity),
+                        _buildTextButton('cofa(', width: double.infinity),
+                        _buildTextButton('calculus(', width: double.infinity),
+                        _buildTextButton('roots(', width: double.infinity),
+                      ],
+                    ),
+                    new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        _buildTextButton('sum(', width: double.infinity),
+                        _buildTextButton('average(', width: double.infinity),
+                        _buildTextButton('factorial(', width: double.infinity),
+                        _buildTextButton('sin(', width: double.infinity),
+                      ],
+                    ),
+                    new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        _buildTextButton('cos(', width: double.infinity),
+                        _buildTextButton('tan(', width: double.infinity),
+                        _buildTextButton('asin(', width: double.infinity),
+                        _buildTextButton('acos(', width: double.infinity),
+                      ],
+                    ),
+                    new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        _buildTextButton('atan(', width: double.infinity),
+                        _buildTextButton('formatDeg(', width: double.infinity),
+                        _buildTextButton('reForDeg(', width: double.infinity),
+                        _buildTextButton('absSum(', width: double.infinity),
+                      ],
+                    ),
+                    new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        _buildTextButton('absAverage(', width: double.infinity),
+                        _buildTextButton('radToDeg(', width: double.infinity),
+                        _buildTextButton('lagrange(', width: double.infinity),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Divider(height: 1.0),
+              LimitedBox(
+                maxHeight: 40,
+                child: new Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    _buildTextButton(','),
+                    _buildTextButton(';'),
+                    _buildTextButton(':'),
+                    _buildTextButton('['),
+                    _buildTextButton('='),
+                    _buildTextButton('('),
+                  ],
+                ),
+              ),
+              Divider(height: 1.0),
+              LimitedBox(
+                maxHeight: 40,
+                child: new Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    _buildTextButton('^'),
+                    _buildTextButton('+'),
+                    _buildTextButton('-'),
+                    _buildTextButton('*'),
+                    _buildTextButton('/'),
+                  ],
+                ),
+              ),
+            ]),
+          ),
+        ),
+      ],
+    );
+  }
 
   /// 处理便捷输入按钮的点击事件
   void _handleTextButton(String text) {
