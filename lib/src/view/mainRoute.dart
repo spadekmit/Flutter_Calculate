@@ -220,6 +220,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
     UserData.strs.insert(0, text);
     String handleText = handleCommand(text);
     UserData.strs.insert(0, text);
+    UserData.writeText();
     TextView textView1 = new TextView(
         text: text,
         context: context,

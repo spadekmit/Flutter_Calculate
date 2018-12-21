@@ -146,6 +146,7 @@ class UserData {
     readDbs();
     readMatrixs();
     readUserFun();
+    readText();
   }
 
   ///获取存储矩阵的文件
