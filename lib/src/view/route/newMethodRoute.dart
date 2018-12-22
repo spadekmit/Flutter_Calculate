@@ -73,7 +73,7 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
               children: <Widget>[
                 Container(
                   //方程输入窗口
-                  padding: EdgeInsets.only(left: 12.0, top: 12.0),
+                  padding: EdgeInsets.only(left: 24.0, top: 82.0,right: 24.0),
                   child: TextFormField(
                     onSaved: (value) {
                       _funName = value;
@@ -98,7 +98,7 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
                 ),
                 Container(
                   //方程输入窗口
-                  padding: EdgeInsets.only(left: 12.0, top: 12.0),
+                  padding: EdgeInsets.only(left: 24.0, top: 32.0, right: 24.0),
                   child: TextFormField(
                     onSaved: (value) {
                       _parm = value;
@@ -123,7 +123,7 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
                 ),
                 Container(
                   //方程输入窗口
-                  padding: EdgeInsets.only(left: 12.0, top: 12.0),
+                  padding: EdgeInsets.only(left: 24.0, top: 32.0, right: 24.0),
                   child: TextFormField(
                     onSaved: (value) {
                       _cmds = value;
@@ -146,9 +146,11 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.save),
-                  onPressed: () => _saveMethod(),
+                Container(
+                  child: IconButton(
+                    icon: Icon(Icons.save),
+                    onPressed: () => _saveMethod(),
+                  ),
                 )
               ],
             )),
