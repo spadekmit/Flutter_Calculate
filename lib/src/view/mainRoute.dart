@@ -1,25 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:xiaoming/src/data/settingData.dart';
-import 'package:xiaoming/src/view/dataRoute.dart';
-import 'package:xiaoming/src/view/helpRoute.dart';
-import 'package:xiaoming/src/view/equationRoute.dart';
-import 'package:xiaoming/src/view/methodRoute.dart';
 import 'package:xiaoming/src/view/myTextView.dart';
-import 'package:xiaoming/src/view/settingRoute.dart';
 import 'package:xiaoming/src/command/handleCommand.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:xiaoming/src/view/widget/buttons.dart';
+import 'package:xiaoming/src/view/widget/mianAppBar.dart';
+import 'package:xiaoming/src/view/widget/myDrawer.dart';
 
 class MyApp extends StatelessWidget {
   MyApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    UserData.loadData();
     return new MaterialApp(
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
@@ -48,25 +43,35 @@ class MyApp extends StatelessWidget {
 /// funMap存储自带函数和自定义函数
 /// 状态栏包含两个菜单控件，用来进入函数界面和数据界面
 class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
-  final TextEditingController _textController = new TextEditingController();
-  final FocusNode _textFocusNode = new FocusNode();
-  final List<TextView> _texts = <TextView>[]; //存储消息的列表
+  TextEditingController _textController;
+  FocusNode _textFocusNode;
+  List<TextView> _texts = <TextView>[]; //存储消息的列表
   bool _isComposing = false;
   bool _isExpanded = false;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    SettingData.readSettingData();
+    _textController = new TextEditingController();
+    _textFocusNode = new FocusNode();
+    UserData.strs.forEach(
+      (text) {
+        var textView = TextView(
+          text: text,
+          animationController: AnimationController(
+            duration: new Duration(milliseconds: 200),
+            vsync: this
+          ),
+        );
+        _texts.add(textView);
+        textView.animationController.forward();
+      }
+    );
+    super.initState();
+  }
 
-    UserData.strs.forEach((String str) {
-      _texts.insert(
-          0,
-          TextView(
-            context: context,
-            text: str,
-            animationController: new AnimationController(
-                duration: new Duration(milliseconds: 200), vsync: this),
-          ));
-    });
+  @override
+  Widget build(BuildContext context) {
 
     _textFocusNode.addListener(() {
       if (SettingData.isAutoExpanded) {
@@ -79,55 +84,8 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
     });
 
     return new Scaffold(
-        drawer: new Drawer(
-          child: new ListView(
-            padding: EdgeInsets.all(0.0),
-            children: <Widget>[
-              DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                  ),
-                  child: new Center(
-                    child: new Text(
-                      'K',
-                      style: TextStyle(
-                          fontSize: 35.0, fontStyle: FontStyle.italic),
-                    ),
-                  )),
-              ListTile(
-                leading: Icon(Icons.settings),
-                title: Text(XiaomingLocalizations.of(context).setting),
-                onTap: () => settingRoute(context),
-              ),
-              ListTile(
-                leading: Icon(Icons.bookmark),
-                title: Text(XiaomingLocalizations.of(context).saved_function),
-                onTap: () => popmethodRoute(context),
-              ),
-              ListTile(
-                leading: Icon(Icons.bookmark),
-                title: Text(XiaomingLocalizations.of(context).saved_Data),
-                onTap: () => popdataRoute(context),
-              ),
-              ListTile(
-                leading: Icon(Icons.extension),
-                title: Text(XiaomingLocalizations.of(context).solve_equation),
-                onTap: () => popEquationsRoute(context),
-              ),
-            ],
-          ),
-        ),
-        appBar: new AppBar(
-          elevation: 1.0,
-          title: new Text(XiaomingLocalizations.of(context).appName),
-          actions: <Widget>[
-            new IconButton(
-              icon: new Icon(Icons.help),
-              onPressed: () => pophelpRoute(context),
-            )
-          ],
-          //AppBar显示的标题
-        ),
+        drawer: buildDrawer(context: context),
+        appBar: buildMainAppBar(context: context),
         body: Builder(
             builder: (context) => Column(
                   children: <Widget>[
@@ -143,7 +101,10 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                             child: new ListView.builder(
                               padding: new EdgeInsets.only(left: 5.0),
                               reverse: true,
-                              itemBuilder: (_, int index) => _texts[index],
+                              itemBuilder: (context, int index) {
+                                _texts[index].context = context;
+                                return _texts[index];
+                              } ,
                               itemCount: _texts.length,
                             ))),
                     new Divider(height: 1.0),
@@ -219,7 +180,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
     });
     UserData.strs.insert(0, text);
     String handleText = handleCommand(text);
-    UserData.strs.insert(0, text);
+    UserData.strs.insert(0, handleText);
     UserData.writeText();
     TextView textView1 = new TextView(
         text: text,
@@ -240,18 +201,20 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
     textView2.animationController.forward();
   }
 
+  //创建便捷输入按钮
   Widget _buildTextButton(String label, {double width = 50.0}) {
-       return LimitedBox(
-        maxWidth: width,
-        child: new FlatButton(
-          padding: const EdgeInsets.all(0.0),
-          onPressed: () => _handleTextButton(label),
-          child: new Text(label, style: new TextStyle(fontSize: 14.0)),
-        ),
-      );
+    return LimitedBox(
+      maxWidth: width,
+      child: new FlatButton(
+        padding: const EdgeInsets.all(0.0),
+        onPressed: () => _handleTextButton(label),
+        child: new Text(label, style: new TextStyle(fontSize: 14.0)),
+      ),
+    );
   }
-
-  Widget _buildButtons (){
+  
+  //创建方便输入的按钮栏
+  Widget _buildButtons() {
     return ExpansionPanelList(
       expansionCallback: (int i, bool b) => setState(() {
             _isExpanded = !_isExpanded;
@@ -259,9 +222,15 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
       children: <ExpansionPanel>[
         ExpansionPanel(
           headerBuilder: (context, isExpanded) {
-            return new ListTile(
-              leading: new Text(XiaomingLocalizations.of(context).buttons,
-                  style: TextStyle(fontSize: 18.0, color: Colors.deepOrange)),
+            return Align(
+              alignment: Alignment.centerLeft,
+                child: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () => setState((){
+                  UserData.strs.clear();
+                  _texts.clear();
+                }),
+              ),
             );
           },
           isExpanded: _isExpanded,
@@ -384,7 +353,8 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
       });
       _textController.value = new TextEditingValue(
         text: newStr,
-        selection: new TextSelection.collapsed(offset: index + text.length - temp),
+        selection:
+            new TextSelection.collapsed(offset: index + text.length - temp),
       );
     } else {
       _textController.value = new TextEditingValue(
@@ -397,6 +367,8 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   ///退出该路由时释放动画资源
   @override
   void dispose() {
+    _textController.dispose();
+    _textFocusNode.dispose();
     for (TextView textView in _texts) {
       textView.animationController.dispose();
     }

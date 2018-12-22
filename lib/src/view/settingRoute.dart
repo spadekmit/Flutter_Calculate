@@ -61,9 +61,12 @@ class _SettingRouteState extends State<SettingRoute> {
                     ),
                     Switch(
                       value: SettingData.isAutoExpanded,
-                      onChanged: (bool b) => setState((){
+                      onChanged: (bool b) {
+                        setState((){
                         SettingData.isAutoExpanded = b;
-                      }) ,
+                        });
+                        SettingData.writeSettingData();
+                      }  ,
                     )
                   ],
                 )),

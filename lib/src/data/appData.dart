@@ -142,11 +142,11 @@ class UserData {
   ];
 
   //加载用户自定义函数，小数和矩阵
-  static void loadData() async {
-    readDbs();
-    readMatrixs();
-    readUserFun();
-    readText();
+  static Future loadData() async {
+    await readDbs();
+    await readMatrixs();
+    await readUserFun();
+    await readText();
   }
 
   ///获取存储矩阵的文件

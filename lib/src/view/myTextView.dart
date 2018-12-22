@@ -8,6 +8,7 @@ class TextView extends StatelessWidget {
   BuildContext context;
   final AnimationController animationController;
   final String text;
+
 //  final scaffoldState = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
