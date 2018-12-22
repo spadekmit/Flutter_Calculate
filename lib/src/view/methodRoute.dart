@@ -2,23 +2,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
+import 'package:xiaoming/src/view/route/newMethodRoute.dart';
 
 ///保存的方法界面
 void popmethodRoute(BuildContext context) {
   Navigator.of(context).push(new CupertinoPageRoute(builder: (context) {
-    return methodRoute();
+    return MethodRoute();
   }));
 }
 
-class methodRoute extends StatefulWidget {
+class MethodRoute extends StatefulWidget {
   @override
-  _methodRouteState createState() => _methodRouteState();
+  _MethodRouteState createState() => _MethodRouteState();
 }
 
-class _methodRouteState extends State<methodRoute> {
+class _MethodRouteState extends State<MethodRoute> {
   @override
   Widget build(BuildContext context) {
 
+    ///处理删除按钮回调
     void _handleDelete(){
       showDialog(
           context: context,
@@ -47,11 +49,13 @@ class _methodRouteState extends State<methodRoute> {
           });
     }
 
+    ///存储方法卡片列表
     final List<Card> tiles = <Card>[];
     Locale myLocale = Localizations.localeOf(context);
     String funName;
     String funDescrip;
 
+    ///将内置方法及已保存的方法加载进tiles
     for (CmdMethod method in UserData.cmdMethods) {
       if (myLocale.countryCode == 'CH') {
         funName = method.name;
@@ -91,7 +95,11 @@ class _methodRouteState extends State<methodRoute> {
     return Scaffold(
       appBar: new AppBar(
         elevation: 1.0,
-          title: new Text(XiaomingLocalizations.of(context).saved_function)),
+        title: new Text(XiaomingLocalizations.of(context).saved_function),
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.add), onPressed: () => popNewMethodRoute(context),)
+        ],
+      ),
       body: new ListView(
         children: divided,
       ),

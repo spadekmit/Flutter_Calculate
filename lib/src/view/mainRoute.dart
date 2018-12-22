@@ -49,6 +49,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   bool _isComposing = false;
   bool _isExpanded = false;
 
+  ///初始化对象及加载数据
   @override
   void initState() {
     SettingData.readSettingData();
@@ -82,7 +83,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
         }
       }
     });
-
+    ///主界面布局
     return new Scaffold(
         drawer: buildDrawer(context: context),
         appBar: buildMainAppBar(context: context),
