@@ -25,6 +25,7 @@ class XiaomingLocalizations {
       'equaHint4':
           'Polynomials refer to equations of one variable multiple times',
       'equaHint5': "Example: x^2-2x+1",
+      'funName' : 'method name',
       'Help': 'HELP',
       'HelpTab1': 'Matrix assignment',
       'HelpTab2': 'function call',
@@ -47,7 +48,11 @@ class XiaomingLocalizations {
           'First with a Fun t (x) : r = 2 * x ^ 3 to 7 * x defined integrand, then use the calculus dissuade (t, 0, 8) function to solve, t for the integrand, 0 to 8 for the integral interval',
       'Hint': 'Hint',
       'InputHint': 'Input command',
+      'maximum' : 'Maximum number of saves',
+      'methodBody' : 'method body',
+      'parameter' : 'parameter',
       'Setting': 'Setting',
+      'save' : 'save',
       'Saved function': 'Saved function',
       'Saved Data': 'Saved Data',
       'Solve equation': 'Solve equation',
@@ -69,6 +74,7 @@ class XiaomingLocalizations {
       'equaHint3': 'a20x+a21y+a22z=b2      变量栏输入x,y,z',
       'equaHint4': '多项式指一元多次方程',
       'equaHint5': "例：'x^2-2x+1' ,变量栏输入x",
+      'funName' : '函数名',
       'Hint': '提示',
       'Help': '帮助',
       'HelpTab1': '矩阵赋值',
@@ -97,7 +103,10 @@ class XiaomingLocalizations {
       'HelpTabData6':
           '首先用Fun t(x):r = 2*x^3-7*x 定义被积函数，然后使用calculus(t,0,8)函数求解，t为被积函数，0到8为积分区间',
       'InputHint': '输入命令',
+      'methodBody' : '函数体',
+      'parameter' : '参数',
       'Setting': '设置',
+      'save' : '保存',
       'Saved function': '保存的函数',
       'Saved Data': '保存的数据',
       'Solve equation': '解方程',
@@ -161,6 +170,10 @@ class XiaomingLocalizations {
     return _localizedValues[locale.languageCode]['equaHint5'];
   }
 
+  get funName {
+    return _localizedValues[locale.languageCode]['funName'];
+  }
+
   get hint {
     return _localizedValues[locale.languageCode]['Hint'];
   }
@@ -217,12 +230,32 @@ class XiaomingLocalizations {
     return _localizedValues[locale.languageCode]['HelpTabData6'];
   }
 
+  get historySaving {
+    return _localizedValues[locale.languageCode]['HistorySaving'];
+  }
+
   get inputHint {
     return _localizedValues[locale.languageCode]['InputHint'];
   }
 
+  get maximum {
+    return _localizedValues[locale.languageCode]['maximum'];
+  }
+
+  get methodBody {
+    return _localizedValues[locale.languageCode]['methodBody'];
+  }
+
+  get parameter {
+    return _localizedValues[locale.languageCode]['parameter'];
+  }
+
   get saved_function {
     return _localizedValues[locale.languageCode]['Saved function'];
+  }
+
+  get save {
+    return _localizedValues[locale.languageCode]['save'];
   }
 
   get saved_Data {

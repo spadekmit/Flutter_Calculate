@@ -87,7 +87,7 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
                       color: Colors.black,
                     ),
                     decoration: InputDecoration(
-                      labelText: XiaomingLocalizations.of(context).equations,
+                      labelText: XiaomingLocalizations.of(context).funName,
                       labelStyle: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -112,7 +112,7 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
                       color: Colors.black,
                     ),
                     decoration: InputDecoration(
-                      labelText: XiaomingLocalizations.of(context).equations,
+                      labelText: XiaomingLocalizations.of(context).parameter,
                       labelStyle: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -137,7 +137,7 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
                       color: Colors.black,
                     ),
                     decoration: InputDecoration(
-                      labelText: XiaomingLocalizations.of(context).equations,
+                      labelText: XiaomingLocalizations.of(context).methodBody,
                       labelStyle: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -147,10 +147,21 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
                   ),
                 ),
                 Container(
-                  child: IconButton(
-                    icon: Icon(Icons.save),
-                    onPressed: () => _saveMethod(),
-                  ),
+                  margin: EdgeInsets.all(20),
+                  child: Center(
+                    child: FlatButton(
+                      child: Text(
+                        XiaomingLocalizations.of(context).save,
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 24,
+                        ),
+                      ),
+                      onPressed: () => _saveMethod(),
+                    ),
+                  )
+
                 )
               ],
             )),
