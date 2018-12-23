@@ -14,6 +14,17 @@ class SettingRoute extends StatefulWidget {
 class _SettingRouteState extends State<SettingRoute> {
   @override
   Widget build(BuildContext context) {
+    Widget myCard(Widget child) {
+      return Card(
+        elevation: 1.0,
+        margin: const EdgeInsets.all(8.0),
+        child: new Container(
+          margin: const EdgeInsets.all(12.0),
+          child: child,
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         elevation: 1.0,
@@ -21,55 +32,62 @@ class _SettingRouteState extends State<SettingRoute> {
       ),
       body: ListView(
         children: <Widget>[
-          Card(
-            elevation: 1.0,
-            margin: const EdgeInsets.all(8.0),
-            child: new Container(
-                margin: const EdgeInsets.all(12.0),
-                child: new Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                          XiaomingLocalizations.of(context).decimal_digits),
+          myCard(Row(
+            children: <Widget>[
+              Expanded(
+                child: Text(XiaomingLocalizations.of(context).decimal_digits),
+              ),
+              Text(SettingData.fixedNum.toString()),
+              CupertinoSlider(
+                divisions: 8,
+                max: 9.0,
+                min: 1.0,
+                value: SettingData.fixedNum,
+                onChanged: (double d) {
+                  setState(() {
+                    SettingData.fixedNum = d;
+                  });
+                  SettingData.writeSettingData();
+                },
+              ),
+            ],
+          )),
+          myCard(Row(
+            children: <Widget>[
+              Expanded(
+                child:
+                    Text(XiaomingLocalizations.of(context).buttonsAutoExpanded),
+              ),
+              Switch(
+                value: SettingData.isAutoExpanded,
+                onChanged: (bool b) {
+                  setState(() {
+                    SettingData.isAutoExpanded = b;
+                  });
+                  SettingData.writeSettingData();
+                },
+              )
+            ],
+          )),
+          myCard(
+            Row(
+              children: <Widget>[
+                Expanded(child: Text("历史记录保存：")),
+                Container(
+                  margin: EdgeInsets.only(left: 70.0),
+                  child: FlatButton(
+                    child: Text(
+                        SettingData.maxTexts.toString(),
+                      style: TextStyle(color: Colors.blue, fontStyle: FontStyle.italic),
                     ),
-                    Text(SettingData.fixedNum.toString()),
-                    CupertinoSlider(
-                      divisions: 8,
-                      max: 9.0,
-                      min: 1.0,
-                      value: SettingData.fixedNum,
-                      onChanged: (double d) {
-                        setState(() {
-                          SettingData.fixedNum = d;
-                        });
-                        SettingData.writeSettingData();
-                      },
-                    ),
-                  ],
-                )),
-          ),
-          Card(
-            elevation: 1.0,
-            margin: const EdgeInsets.all(8.0),
-            child: new Container(
-                margin: const EdgeInsets.all(12.0),
-                child: new Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                          XiaomingLocalizations.of(context).buttonsAutoExpanded),
-                    ),
-                    Switch(
-                      value: SettingData.isAutoExpanded,
-                      onChanged: (bool b) {
-                        setState((){
-                        SettingData.isAutoExpanded = b;
-                        });
-                        SettingData.writeSettingData();
-                      }  ,
-                    )
-                  ],
-                )),
+                    onPressed: () {
+
+                    },
+                  ),
+                ),
+                Text("条"),
+              ],
+            )
           ),
         ],
       ),

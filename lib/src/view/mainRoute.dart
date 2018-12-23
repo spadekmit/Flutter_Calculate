@@ -227,10 +227,37 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
               alignment: Alignment.centerLeft,
                 child: IconButton(
                 icon: Icon(Icons.delete),
-                onPressed: () => setState((){
-                  UserData.strs.clear();
-                  _texts.clear();
-                }),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context){
+                      return AlertDialog(
+                        title: Text("请确认是否删除所有消息记录"),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: Text("确认"),
+                            onPressed: () {
+                              setState((){
+                                UserData.strs.clear();
+                                _texts.clear();
+                              });
+                              UserData.writeText();
+                              Navigator.of(context).pop();
+                              setState(() {
+                                _isExpanded = false;
+                              });
+                            },
+                          ),
+                          FlatButton(
+                            child: Text("取消"),
+                            onPressed: () => Navigator.of(context).pop(),
+                          )
+                        ],
+                      );
+                    }
+                  );
+
+                },
               ),
             );
           },
