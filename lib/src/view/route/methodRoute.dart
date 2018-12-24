@@ -19,9 +19,8 @@ class MethodRoute extends StatefulWidget {
 class _MethodRouteState extends State<MethodRoute> {
   @override
   Widget build(BuildContext context) {
-
     ///处理删除按钮回调
-    void _handleDelete(){
+    void _handleDelete() {
       showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -50,7 +49,7 @@ class _MethodRouteState extends State<MethodRoute> {
     }
 
     ///存储方法卡片列表
-    final List<Card> tiles = <Card>[];
+    final List<Widget> tiles = <Widget>[];
     Locale myLocale = Localizations.localeOf(context);
     String funName;
     String funDescrip;
@@ -64,26 +63,32 @@ class _MethodRouteState extends State<MethodRoute> {
         funName = method.Ename;
         funDescrip = method.EmethodDescription;
       }
-      tiles.add(new Card(
+      tiles.add(Card(
         color: Colors.yellow,
-        child: new ListTile(
-          title: new Text(
+        child: ListTile(
+          title: Text(
             funName,
           ),
-          subtitle: new Text(funDescrip),
+          subtitle: Text(funDescrip),
         ),
       ));
     }
     for (UserFunction u in UserData.userFunctions) {
-      tiles.add(new Card(
-        color: Colors.purple,
-        child: new ListTile(
-          leading: new Text(
-            u.funName,
+      tiles.add(Dismissible(
+        onDismissed: (item) {
+          
+        },
+        key: Key(u.funName),
+        child: Card(
+          color: Colors.purple,
+          child: new ListTile(
+            leading: new Text(
+              u.funName,
+            ),
+            title: new Text(
+                '${u.funName}(${u.paras.toString().substring(1, u.paras.toString().length - 1)})'),
+            subtitle: new Text(u.funCmds.toString()),
           ),
-          title: new Text(
-              '${u.funName}(${u.paras.toString().substring(1, u.paras.toString().length - 1)})'),
-          subtitle: new Text(u.funCmds.toString()),
         ),
       ));
     }
@@ -97,7 +102,10 @@ class _MethodRouteState extends State<MethodRoute> {
         elevation: 1.0,
         title: new Text(XiaomingLocalizations.of(context).saved_function),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.add), onPressed: () => popNewMethodRoute(context),)
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () => popNewMethodRoute(context),
+          )
         ],
       ),
       body: new ListView(

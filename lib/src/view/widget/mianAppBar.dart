@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
-import 'package:xiaoming/src/view/helpRoute.dart';
+import 'package:xiaoming/src/view/route/helpRoute.dart';
 
 Widget buildMainAppBar({@required BuildContext context}) {
   return new AppBar(

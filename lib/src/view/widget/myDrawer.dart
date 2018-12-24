@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
-import 'package:xiaoming/src/view/dataRoute.dart';
-import 'package:xiaoming/src/view/equationRoute.dart';
-import 'package:xiaoming/src/view/methodRoute.dart';
-import 'package:xiaoming/src/view/settingRoute.dart';
+import 'package:xiaoming/src/view/route/dataRoute.dart';
+import 'package:xiaoming/src/view/route/equationRoute.dart';
+import 'package:xiaoming/src/view/route/methodRoute.dart';
+import 'package:xiaoming/src/view/route/settingRoute.dart';
 
 Widget buildDrawer({@required BuildContext context}) {
   return new Drawer(

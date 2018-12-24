@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:xiaoming/src/data/settingData.dart';
-import 'package:xiaoming/src/view/myTextView.dart';
+import 'package:xiaoming/src/view/widget/myTextView.dart';
 import 'package:xiaoming/src/command/handleCommand.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
