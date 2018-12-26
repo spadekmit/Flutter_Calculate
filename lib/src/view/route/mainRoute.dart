@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:xiaoming/src/data/settingData.dart';
+import 'package:xiaoming/src/view/route/newMethodRoute.dart';
 import 'package:xiaoming/src/view/widget/myTextView.dart';
 import 'package:xiaoming/src/command/handleCommand.dart';
 import 'package:xiaoming/src/data/appData.dart';
@@ -15,7 +16,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
+      color: Colors.white,
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -28,9 +31,12 @@ class MyApp extends StatelessWidget {
       onGenerateTitle: (context) {
         return XiaomingLocalizations.of(context).appName;
       },
-      theme: new ThemeData(
-        primaryColor: Colors.white, //使用白色的颜色主题
+      theme: ThemeData(
+        primaryColor: Colors.white,
       ),
+      routes: {
+        '/newMethod' : (context) => NewMethodRoute(),
+      },
       home: new TextScreen(),
     );
   }
@@ -235,7 +241,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                         title: Text("请确认是否删除所有消息记录"),
                         actions: <Widget>[
                           FlatButton(
-                            child: Text("确认"),
+                            child: Text(XiaomingLocalizations.of(context).delete),
                             onPressed: () {
                               setState((){
                                 UserData.strs.clear();
@@ -249,7 +255,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                             },
                           ),
                           FlatButton(
-                            child: Text("取消"),
+                            child: Text(XiaomingLocalizations.of(context).cancel),
                             onPressed: () => Navigator.of(context).pop(),
                           )
                         ],

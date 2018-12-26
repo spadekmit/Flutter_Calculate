@@ -14,8 +14,10 @@ class XiaomingLocalizations {
       'ButtonsHeight' : 'Buttons Height',
       'ButtonsAutoExpanded' : 'ButtonsAutoExpanded',
       'calculate': 'calculate',
+      'cancel' : 'cancel',
       'CopyHint': 'The content has been copied to the clipboard',
       'decimal digits': 'decimal digits',
+      'delete' : 'delete',
       'empty': 'empty',
       'equations' : 'Equations',
       'equaHint1':
@@ -65,8 +67,10 @@ class XiaomingLocalizations {
       'ButtonsHeight' : '按钮栏显示高度',
       'ButtonsAutoExpanded' : '按钮栏自动展开',
       'calculate': '计算',
+      'cancel' : '取消',
       'CopyHint': '内容已复制到剪切板',
       'decimal digits': '小数保留位数',
+      'delete' : '删除',
       'empty': '清空',
       'equations' : '方程',
       'equaHint1': '线性方程指最高次幂为1次的一元或多元方程',
@@ -134,12 +138,20 @@ class XiaomingLocalizations {
     return _localizedValues[locale.languageCode]['calculate'];
   }
 
+  get cancel {
+    return _localizedValues[locale.languageCode]['cancel'];
+  }
+
   get copyHint {
     return _localizedValues[locale.languageCode]['CopyHint'];
   }
 
   get decimal_digits {
     return _localizedValues[locale.languageCode]['decimal digits'];
+  }
+
+  get delete {
+    return _localizedValues[locale.languageCode]['delete'];
   }
 
   get empty {

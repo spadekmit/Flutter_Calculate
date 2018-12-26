@@ -29,7 +29,7 @@ class _dataRouteState extends State<dataRoute> {
               title: Text('请确认是否要删除所有已保存的数据'),
               actions: <Widget>[
                 FlatButton(
-                  child: Text('确认'),
+                  child: Text(XiaomingLocalizations.of(context).delete),
                   onPressed: () {
                     setState(() {
                       UserData.dbs = new Map();
@@ -41,7 +41,7 @@ class _dataRouteState extends State<dataRoute> {
                   },
                 ),
                 FlatButton(
-                  child: Text('取消'),
+                  child: Text(XiaomingLocalizations.of(context).cancel),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },

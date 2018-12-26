@@ -2,12 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
-
-void popNewMethodRoute(BuildContext context) {
-  Navigator.of(context).push(new CupertinoPageRoute(builder: (context) {
-    return NewMethodRoute();
-  }));
-}
+import 'package:xiaoming/src/command/handleCommand.dart';
 
 class NewMethodRoute extends StatefulWidget {
   @override
@@ -39,8 +34,13 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
                           onPressed: () {
                             UserFunction uf = new UserFunction(
                                 _funName, _parm.split(','), _cmds.split(';'));
+                            if(UFcontain(_funName)){
+                              UserData.userFunctions.remove(getUfByName(_funName));
+                            }
                             UserData.userFunctions.add(uf);
-                            Navigator.pop(context);
+                            Navigator.of(context)
+                              ..pop()
+                              ..pop();
                           },
                         ),
                         FlatButton(
@@ -61,6 +61,7 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
     return Scaffold(
       appBar: AppBar(
         title: Text("New Function"),
+        elevation: 1.0,
       ),
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
