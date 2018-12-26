@@ -28,7 +28,7 @@ class _MethodRouteState extends State<MethodRoute> {
               title: Text('请确认是否要删除所有已保存的自定义方法'),
               actions: <Widget>[
                 FlatButton(
-                  child: Text('确认'),
+                  child: Text(XiaomingLocalizations.of(context).delete),
                   onPressed: () {
                     setState(() {
                       UserData.userFunctions = [];
@@ -38,7 +38,7 @@ class _MethodRouteState extends State<MethodRoute> {
                   },
                 ),
                 FlatButton(
-                  child: Text('取消'),
+                  child: Text(XiaomingLocalizations.of(context).cancel),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -104,7 +104,7 @@ class _MethodRouteState extends State<MethodRoute> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () => popNewMethodRoute(context),
+            onPressed: () => Navigator.pushNamed(context, '/newMethod'),//popNewMethodRoute(context),
           )
         ],
       ),

@@ -468,7 +468,7 @@ String formatCmdStr(String rawStr){
     final operStr = str.substring(0,1);
     rawStr = rawStr.replaceFirst(negativeM1, operStr + '(' + str.substring(1) +')');
   }
-  final negativeM2 = new RegExp(r'\(-[0-9\.]+[\+\*/-\^]');
+  final negativeM2 = new RegExp(r'\(-[0-9\.]+(\+|\*|-|/|\^)');
   while(negativeM2.hasMatch(rawStr)){
     final str = negativeM2.firstMatch(rawStr).group(0);
     final str1 = str.substring(str.length - 1);

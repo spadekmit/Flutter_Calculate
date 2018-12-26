@@ -1,9 +1,9 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:xiaoming/src/command/cmdMethod.dart';
 import 'package:xiaoming/src/command/handleCommand.dart';
 import 'package:xiaoming/src/command/handleEquations.dart';
 import 'package:xiaoming/src/command/handleNonlinearEquation.dart';
 import 'package:xiaoming/src/command/matrix.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
 
@@ -19,7 +19,7 @@ void main() {
   });
 
   test('handleCommand', (){
-    print(handleCommand('-0.4/-2'));
+    print(handleCommand('sin(-30)-20'));
   });
 
   test('Polyomial', (){
