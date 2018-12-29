@@ -4,6 +4,12 @@ import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/command/handleCommand.dart';
 
+void popNewMethodRoute(BuildContext context){
+  Navigator.of(context).push(new CupertinoPageRoute(builder: (context){
+    return NewMethodRoute();
+  }));
+}
+
 class NewMethodRoute extends StatefulWidget {
   @override
   _NewMethodRouteState createState() => _NewMethodRouteState();

@@ -55,6 +55,25 @@ class _MethodRouteState extends State<MethodRoute> {
     String funDescrip;
 
     ///将内置方法及已保存的方法加载进tiles
+    for (UserFunction u in UserData.userFunctions) {
+      tiles.add(Dismissible(
+        onDismissed: (item) {
+          print(item.index);
+        },
+        key: Key(u.funName),
+        child: Card(
+          color: Colors.purple,
+          child: new ListTile(
+            leading: new Text(
+              u.funName,
+            ),
+            title: new Text(
+                '${u.funName}(${u.paras.toString().substring(1, u.paras.toString().length - 1)})'),
+            subtitle: new Text(u.funCmds.toString()),
+          ),
+        ),
+      ));
+    }
     for (CmdMethod method in UserData.cmdMethods) {
       if (myLocale.countryCode == 'CH') {
         funName = method.name;
@@ -73,25 +92,7 @@ class _MethodRouteState extends State<MethodRoute> {
         ),
       ));
     }
-    for (UserFunction u in UserData.userFunctions) {
-      tiles.add(Dismissible(
-        onDismissed: (item) {
-          
-        },
-        key: Key(u.funName),
-        child: Card(
-          color: Colors.purple,
-          child: new ListTile(
-            leading: new Text(
-              u.funName,
-            ),
-            title: new Text(
-                '${u.funName}(${u.paras.toString().substring(1, u.paras.toString().length - 1)})'),
-            subtitle: new Text(u.funCmds.toString()),
-          ),
-        ),
-      ));
-    }
+    
     final List<Widget> divided = ListTile.divideTiles(
       context: context,
       tiles: tiles,
@@ -104,7 +105,7 @@ class _MethodRouteState extends State<MethodRoute> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () => Navigator.pushNamed(context, '/newMethod'),//popNewMethodRoute(context),
+            onPressed: () => popNewMethodRoute(context),
           )
         ],
       ),

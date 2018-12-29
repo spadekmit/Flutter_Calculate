@@ -401,13 +401,13 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   ///退出该路由时释放动画资源
   @override
   void dispose() {
+    super.dispose();
     _textController.dispose();
     _textFocusNode.dispose();
     for (TextView textView in _texts) {
       textView.animationController.dispose();
     }
     _textFocusNode.dispose();
-    super.dispose();
   }
 }
 

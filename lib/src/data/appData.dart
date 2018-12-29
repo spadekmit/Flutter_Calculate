@@ -5,10 +5,10 @@ import 'package:path_provider/path_provider.dart';
 
 class UserData {
   static Map<String, num> dbs = new Map(); //存储浮点数变量
-
+  
   static Map<String, List<List<num>>> matrixs = new Map(); //存储矩阵变量
 
-  static List<UserFunction> userFunctions = []; //存储用户自定义函数
+  static List<UserFunction> userFunctions = new List<UserFunction>(); //存储用户自定义函数
 
   static Map UFtemp = new Map(); //存储调用用户自定义函数时传入的参数
 
@@ -143,9 +143,9 @@ class UserData {
 
   //加载用户自定义函数，小数和矩阵
   static Future loadData() async {
-    await readDbs();
-    await readMatrixs();
-    await readUserFun();
+    readDbs();
+    readMatrixs();
+    readUserFun();
     await readText();
   }
 
@@ -169,6 +169,7 @@ class UserData {
     return new File('$dir/userFun.txt');
   }
 
+  ///获取存储用户消息队列的文件
   static Future<File> _getTextFile() async {
     String dir = (await getApplicationDocumentsDirectory()).path;
     return new File('$dir/text.txt');
@@ -228,6 +229,7 @@ class UserData {
     }
   }
 
+  ///从文件中读取消息队列
   static Future readText() async {
     File TextFile = await _getTextFile();
     if (TextFile.existsSync()) {
@@ -240,7 +242,7 @@ class UserData {
     }
   }
 
-  //将用户自定义函数写入到文件
+  ///将用户自定义函数写入到文件
   static Future writeUserFun() async {
     File userFunFile = await _getUserFunFile();
     if (userFunFile.existsSync()) {
@@ -299,6 +301,7 @@ class UserData {
     DbsFile.writeAsStringSync(sb.toString());
   }
 
+  ///将内存中的消息队列写入到文件
   static writeText() async{
     File TextFile = await _getTextFile();
     if (TextFile.existsSync()) {
@@ -311,7 +314,7 @@ class UserData {
   }
 }
 
-//内置的命令行函数
+///内置的命令行函数
 class CmdMethod {
   String name; //函数名
   String Ename;
@@ -323,7 +326,7 @@ class CmdMethod {
       this.methodDescription);
 }
 
-//用户自定义函数
+///用户自定义函数
 class UserFunction {
   String funName;
   List<String> paras;

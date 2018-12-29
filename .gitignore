@@ -5,5 +5,7 @@
 .pub/
 .vscode/
 build/
-
+android/
 .flutter-plugins
+android/build.gradle
+android/key.properties
