@@ -17,28 +17,33 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      color: Colors.white,
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        XiaomingLocalizationsDelegate.delegate,
-      ],
-      supportedLocales: [
-        const Locale('en', 'US'),
-        const Locale('zh', 'CH'),
-      ],
-      onGenerateTitle: (context) {
-        return XiaomingLocalizations.of(context).appName;
-      },
-      theme: ThemeData(
-        primaryColor: Colors.white,
-      ),
-      routes: {
-        '/newMethod' : (context) => NewMethodRoute(),
-      },
-      home: new TextScreen(),
-    );
+        color: Colors.white,
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          XiaomingLocalizationsDelegate.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en', 'US'),
+          const Locale('zh', 'CH'),
+        ],
+        onGenerateTitle: (context) {
+          return XiaomingLocalizations.of(context).appName;
+        },
+        theme: ThemeData(
+          primaryColor: Colors.white,
+        ),
+        routes: {
+          '/newMethod': (context) => NewMethodRoute(),
+        },
+        home: Builder(
+          builder: (context) => Scaffold(
+                drawer: buildDrawer(context: context),
+                appBar: buildMainAppBar(context: context),
+                body: TextScreen(),
+              ),
+        ));
   }
 }
 
@@ -61,26 +66,21 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
     SettingData.readSettingData();
     _textController = new TextEditingController();
     _textFocusNode = new FocusNode();
-    UserData.strs.forEach(
-      (text) {
-        var textView = TextView(
-          context: context,
-          text: text,
-          animationController: AnimationController(
-            duration: new Duration(milliseconds: 200),
-            vsync: this
-          ),
-        );
-        _texts.add(textView);
-        textView.animationController.forward();
-      }
-    );
+    UserData.strs.forEach((text) {
+      var textView = TextView(
+        context: context,
+        text: text,
+        animationController: AnimationController(
+            duration: new Duration(milliseconds: 200), vsync: this),
+      );
+      _texts.add(textView);
+      textView.animationController.forward();
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
     _textFocusNode.addListener(() {
       if (SettingData.isAutoExpanded) {
         if (_textFocusNode.hasFocus) {
@@ -90,46 +90,45 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
         }
       }
     });
+
     ///主界面布局
-    return new Scaffold(
-        drawer: buildDrawer(context: context),
-        appBar: buildMainAppBar(context: context),
-        body: Builder(
-            builder: (context) => Column(
-                  children: <Widget>[
-                    new Flexible(
-                        child: new GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: () {
-                              _textFocusNode.unfocus();
-                              setState(() {
-                                _isExpanded = false;
-                              });
-                            },
-                            child: new ListView.builder(
-                              padding: new EdgeInsets.only(left: 5.0),
-                              reverse: true,
-                              itemBuilder: (context, int index) {
-                                return _texts[index];
-                              } ,
-                              itemCount: _texts.length,
-                            ))),
-                    new Divider(height: 1.0),
-                    new Container(
-                      decoration: new BoxDecoration(
-                        color: Theme.of(context).cardColor,
-                      ),
-                      child: _buildButtons(),
-                    ),
-                    new Divider(height: 1.0),
-                    new Container(
-                      decoration: new BoxDecoration(
-                        color: Theme.of(context).cardColor,
-                      ),
-                      child: _buildTextComposer(context),
-                    )
-                  ],
-                )));
+    return Builder(
+        builder: (context) => Column(
+              children: <Widget>[
+                new Flexible(
+                    child: new GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          _textFocusNode.unfocus();
+                          setState(() {
+                            _isExpanded = false;
+                          });
+                        },
+                        child: new ListView.builder(
+                          padding: new EdgeInsets.only(left: 5.0),
+                          reverse: true,
+                          itemBuilder: (context, int index) {
+                            //_texts[index].context = context;
+                            return _texts[index];
+                          },
+                          itemCount: _texts.length,
+                        ))),
+                new Divider(height: 1.0),
+                new Container(
+                  decoration: new BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                  ),
+                  child: _buildButtons(),
+                ),
+                new Divider(height: 1.0),
+                new Container(
+                  decoration: new BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                  ),
+                  child: _buildTextComposer(context),
+                )
+              ],
+            ));
   }
 
   ///输入控件，包含一个输入框和一个按钮
@@ -219,7 +218,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
       ),
     );
   }
-  
+
   //创建方便输入的按钮栏
   Widget _buildButtons() {
     return ExpansionPanelList(
@@ -231,38 +230,38 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
           headerBuilder: (context, isExpanded) {
             return Align(
               alignment: Alignment.centerLeft,
-                child: IconButton(
+              child: IconButton(
                 icon: Icon(Icons.delete),
                 onPressed: () {
                   showDialog(
-                    context: context,
-                    builder: (BuildContext context){
-                      return AlertDialog(
-                        title: Text("请确认是否删除所有消息记录"),
-                        actions: <Widget>[
-                          FlatButton(
-                            child: Text(XiaomingLocalizations.of(context).delete),
-                            onPressed: () {
-                              setState((){
-                                UserData.strs.clear();
-                                _texts.clear();
-                              });
-                              UserData.writeText();
-                              Navigator.of(context).pop();
-                              setState(() {
-                                _isExpanded = false;
-                              });
-                            },
-                          ),
-                          FlatButton(
-                            child: Text(XiaomingLocalizations.of(context).cancel),
-                            onPressed: () => Navigator.of(context).pop(),
-                          )
-                        ],
-                      );
-                    }
-                  );
-
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("请确认是否删除所有消息记录"),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text(
+                                  XiaomingLocalizations.of(context).delete),
+                              onPressed: () {
+                                setState(() {
+                                  UserData.strs.clear();
+                                  _texts.clear();
+                                });
+                                UserData.writeText();
+                                Navigator.of(context).pop();
+                                setState(() {
+                                  _isExpanded = false;
+                                });
+                              },
+                            ),
+                            FlatButton(
+                              child: Text(
+                                  XiaomingLocalizations.of(context).cancel),
+                              onPressed: () => Navigator.of(context).pop(),
+                            )
+                          ],
+                        );
+                      });
                 },
               ),
             );

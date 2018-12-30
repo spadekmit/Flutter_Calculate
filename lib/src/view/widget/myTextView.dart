@@ -4,6 +4,7 @@ import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
 ///单个输出文本的视图
 class TextView extends StatelessWidget {
+  ScaffoldState scaffoldState = new ScaffoldState();
   TextView({this.context, this.text, this.animationController});
   final BuildContext context;
   final AnimationController animationController;

@@ -275,7 +275,7 @@ class XiaomingLocalizations {
     return _localizedValues[locale.languageCode]['Saved Data'];
   }
 
-  get setting {
+  String get setting {
     return _localizedValues[locale.languageCode]['Setting'];
   }
 
