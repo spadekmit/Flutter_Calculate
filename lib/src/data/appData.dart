@@ -5,12 +5,13 @@ import 'package:path_provider/path_provider.dart';
 
 class UserData {
   static Map<String, num> dbs = new Map(); //存储浮点数变量
-  
+
   static Map<String, List<List<num>>> matrixs = new Map(); //存储矩阵变量
 
-  static List<UserFunction> userFunctions = new List<UserFunction>(); //存储用户自定义函数
+  static List<UserFunction> userFunctions =
+      new List<UserFunction>(); //存储用户自定义函数
 
-  static Map UFtemp = new Map(); //存储调用用户自定义函数时传入的参数
+  static Map ufTemp = new Map(); //存储调用用户自定义函数时传入的参数
 
   static List<String> strs = <String>[];
 
@@ -176,7 +177,7 @@ class UserData {
   }
 
   ///读取存储的矩阵
-  static Future readMatrixs() async {
+  static void readMatrixs() async {
     File matrixFile = await _getMatrixsFile();
     if (matrixFile.existsSync()) {
       String matrixsStr = matrixFile.readAsStringSync();
@@ -193,7 +194,7 @@ class UserData {
   }
 
   ///读取存储的数字
-  static Future readDbs() async {
+  static void readDbs() async {
     File dbsFile = await _getDbsFile();
     if (dbsFile.existsSync()) {
       String matrixsStr = dbsFile.readAsStringSync();
@@ -210,30 +211,31 @@ class UserData {
   }
 
   ///读取存储的用户自定义函数
-  static Future readUserFun() async {
-    File UserFunFile = await _getUserFunFile();
-    if (UserFunFile.existsSync()) {
-      String userFunStr = UserFunFile.readAsStringSync();
-      List<String> ufstr = userFunStr.split('/');
-      for (String str in ufstr) {
-        if (str.length == 0) continue;
-        List<String> strs = str.split('|');
-        String funName = strs[0];
-        List<String> paras =
-            strs[1].substring(1, strs[1].length - 1).split(',');
-        List<String> funCmds =
-            strs[2].substring(1, strs[2].length - 1).split(',');
-        UserFunction uf = new UserFunction(funName, paras, funCmds);
-        userFunctions.add(uf);
+  static void readUserFun() {
+    _getUserFunFile().then((file) {
+      if (file.existsSync()) {
+        String userFunStr = file.readAsStringSync();
+        List<String> ufstr = userFunStr.split('/');
+        for (String str in ufstr) {
+          if (str.length == 0) continue;
+          List<String> strs = str.split('|');
+          String funName = strs[0];
+          List<String> paras =
+              strs[1].substring(1, strs[1].length - 1).split(',');
+          List<String> funCmds =
+              strs[2].substring(1, strs[2].length - 1).split(',');
+          UserFunction uf = new UserFunction(funName, paras, funCmds);
+          userFunctions.add(uf);
+        }
       }
-    }
+    });
   }
 
   ///从文件中读取消息队列
   static Future readText() async {
-    File TextFile = await _getTextFile();
-    if (TextFile.existsSync()) {
-      String textStr = TextFile.readAsStringSync();
+    File textFile = await _getTextFile();
+    if (textFile.existsSync()) {
+      String textStr = textFile.readAsStringSync();
       List<String> texts = textStr.split('|||');
       for (String text in texts) {
         if (text.length == 0) continue;
@@ -243,20 +245,22 @@ class UserData {
   }
 
   ///将用户自定义函数写入到文件
-  static Future writeUserFun() async {
-    File userFunFile = await _getUserFunFile();
-    if (userFunFile.existsSync()) {
-      userFunFile.delete();
-    }
-    userFunFile.createSync();
-    var sb = new StringBuffer();
-    userFunctions.forEach((UserFunction u) {
-      sb.write(u.funName);
-      sb.write('|');
-      sb.write(u.paras);
-      sb.write('|');
-      sb.write(u.funCmds);
-      sb.write('/');
+  static void writeUserFun() {
+    _getUserFunFile().then((file) {
+      if (file.existsSync()) {
+        file.delete();
+      }
+      file.createSync();
+      var sb = new StringBuffer();
+      userFunctions.forEach((UserFunction u) {
+        sb.write(u.funName);
+        sb.write('|');
+        sb.write(u.paras);
+        sb.write('|');
+        sb.write(u.funCmds);
+        sb.write('/');
+      });
+      file.writeAsStringSync(sb.toString());
     });
   }
 
@@ -291,38 +295,38 @@ class UserData {
 
   ///将内存中的数字列存储到文件
   static writeDb() async {
-    File DbsFile = await _getDbsFile();
-    if (DbsFile.existsSync()) {
-      DbsFile.delete();
+    File dbsFile = await _getDbsFile();
+    if (dbsFile.existsSync()) {
+      dbsFile.delete();
     }
-    await DbsFile.create();
+    await dbsFile.create();
     var sb = new StringBuffer();
     dbs.forEach((name, value) => sb.write('$name:$value;'));
-    DbsFile.writeAsStringSync(sb.toString());
+    dbsFile.writeAsStringSync(sb.toString());
   }
 
   ///将内存中的消息队列写入到文件
-  static writeText() async{
-    File TextFile = await _getTextFile();
-    if (TextFile.existsSync()) {
-      TextFile.delete();
+  static writeText() async {
+    File textFile = await _getTextFile();
+    if (textFile.existsSync()) {
+      textFile.delete();
     }
-    await TextFile.create();
+    await textFile.create();
     var sb = new StringBuffer();
     strs.forEach((str) => sb.write('$str|||'));
-    TextFile.writeAsStringSync(sb.toString());
+    textFile.writeAsStringSync(sb.toString());
   }
 }
 
 ///内置的命令行函数
 class CmdMethod {
   String name; //函数名
-  String Ename;
+  String ename;
   String cmdText; //函数命令
-  String EmethodDescription; //函数操作文本
+  String emethodDescription; //函数操作文本
   String methodDescription; //函数详细描述
 
-  CmdMethod(this.name, this.Ename, this.cmdText, this.EmethodDescription,
+  CmdMethod(this.name, this.ename, this.cmdText, this.emethodDescription,
       this.methodDescription);
 }
 
@@ -341,13 +345,13 @@ class UserFunction {
       throw FormatException('$funName 方法的参数数量传递错误');
     }
     for (int i = 0; i < paras.length; i++) {
-      UserData.UFtemp[paras[i]] = vals[i];
+      UserData.ufTemp[paras[i]] = vals[i];
     }
     for (int j = 0; j < funCmds.length; j++) {
       result = handleCommand(funCmds[j]);
     }
     for (var s in paras) {
-      UserData.UFtemp.remove(s);
+      UserData.ufTemp.remove(s);
     }
     return result;
   }

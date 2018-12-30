@@ -6,15 +6,15 @@ import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 void pophelpRoute(BuildContext context) {
   Navigator.of(context)
       .push(new CupertinoPageRoute<void>(builder: (BuildContext context) {
-    return new helpView();
+    return new HelpView();
   }));
 }
 
 ///帮助界面
-class helpView extends StatefulWidget {
-  helpView({Key key}) : super(key: key);
+class HelpView extends StatefulWidget {
+  HelpView({Key key}) : super(key: key);
   @override
-  _helpViewState createState() => _helpViewState();
+  _HelpViewState createState() => _HelpViewState();
 }
 
 class HelpItem {
@@ -23,7 +23,7 @@ class HelpItem {
 }
 
 ///控制帮助界面的状态
-class _helpViewState extends State<helpView> {
+class _HelpViewState extends State<HelpView> {
   List<HelpItem> items = <HelpItem>[
     new HelpItem(false),
     new HelpItem(false),

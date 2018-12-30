@@ -164,7 +164,7 @@ class CmdMethodUtil {
     return result;
   }
 
-  static List<List<num>> Polyomial(List<List<num>> list){
+  static List<List<num>> polyomial(List<List<num>> list){
     if(list.length != 1){
       throw FormatException('多项式求解函数参数应为单行矩阵');
     }
@@ -182,6 +182,6 @@ class CmdMethodUtil {
         }
       }
     }
-    return MatrixUtil.EigenValue(matrix, 400, SettingData.fixedNum.round());
+    return MatrixUtil.eigenValue(matrix, 400, SettingData.fixedNum.round());
   }
 }

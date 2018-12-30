@@ -8,16 +8,16 @@ import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 void popdataRoute(BuildContext context) {
   Navigator.of(context)
       .push(new CupertinoPageRoute<void>(builder: (BuildContext context) {
-    return new dataRoute();
+    return new DataRoute();
   }));
 }
 
-class dataRoute extends StatefulWidget {
+class DataRoute extends StatefulWidget {
   @override
-  _dataRouteState createState() => _dataRouteState();
+  _DataRouteState createState() => _DataRouteState();
 }
 
-class _dataRouteState extends State<dataRoute> {
+class _DataRouteState extends State<DataRoute> {
   @override
   Widget build(BuildContext context) {
     ///处理清空按钮调用函数
@@ -83,7 +83,7 @@ class _dataRouteState extends State<dataRoute> {
     return new Scaffold(
       appBar: new AppBar(
         elevation: 1.0,
-        title: new Text(XiaomingLocalizations.of(context).saved_Data),
+        title: new Text(XiaomingLocalizations.of(context).savedData),
       ),
       body: new ListView(
         children: divided,

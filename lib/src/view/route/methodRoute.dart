@@ -79,8 +79,8 @@ class _MethodRouteState extends State<MethodRoute> {
         funName = method.name;
         funDescrip = method.methodDescription;
       } else {
-        funName = method.Ename;
-        funDescrip = method.EmethodDescription;
+        funName = method.ename;
+        funDescrip = method.emethodDescription;
       }
       tiles.add(Card(
         color: Colors.yellow,
@@ -101,7 +101,7 @@ class _MethodRouteState extends State<MethodRoute> {
     return Scaffold(
       appBar: new AppBar(
         elevation: 1.0,
-        title: new Text(XiaomingLocalizations.of(context).saved_function),
+        title: new Text(XiaomingLocalizations.of(context).savedFunction),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),

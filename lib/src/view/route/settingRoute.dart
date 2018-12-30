@@ -45,7 +45,7 @@ class _SettingRouteState extends State<SettingRoute> {
                     children: <Widget>[
                       Expanded(
                         child: Text(
-                            XiaomingLocalizations.of(context).decimal_digits),
+                            XiaomingLocalizations.of(context).decimalDigits),
                       ),
                       Text(SettingData.fixedNum.toString()),
                       CupertinoSlider(

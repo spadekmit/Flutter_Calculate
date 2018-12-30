@@ -64,6 +64,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
     UserData.strs.forEach(
       (text) {
         var textView = TextView(
+          context: context,
           text: text,
           animationController: AnimationController(
             duration: new Duration(milliseconds: 200),
@@ -109,7 +110,6 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                               padding: new EdgeInsets.only(left: 5.0),
                               reverse: true,
                               itemBuilder: (context, int index) {
-                                _texts[index].context = context;
                                 return _texts[index];
                               } ,
                               itemCount: _texts.length,

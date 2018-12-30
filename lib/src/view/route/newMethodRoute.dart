@@ -40,10 +40,11 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
                           onPressed: () {
                             UserFunction uf = new UserFunction(
                                 _funName, _parm.split(','), _cmds.split(';'));
-                            if(UFcontain(_funName)){
+                            if(isUserFun(_funName)){
                               UserData.userFunctions.remove(getUfByName(_funName));
                             }
                             UserData.userFunctions.add(uf);
+                            UserData.writeUserFun();
                             Navigator.of(context)
                               ..pop()
                               ..pop();

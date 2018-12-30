@@ -108,6 +108,7 @@ class XiaomingLocalizations {
           '首先用Fun t(x):r = 2*x^3-7*x 定义被积函数，然后使用calculus(t,0,8)函数求解，t为被积函数，0到8为积分区间',
       'InputHint': '输入命令',
       'methodBody' : '函数体',
+      'maximum' : '历史记录条数',
       'parameter' : '参数',
       'Setting': '设置',
       'save' : '保存',
@@ -146,7 +147,7 @@ class XiaomingLocalizations {
     return _localizedValues[locale.languageCode]['CopyHint'];
   }
 
-  get decimal_digits {
+  get decimalDigits {
     return _localizedValues[locale.languageCode]['decimal digits'];
   }
 
@@ -262,7 +263,7 @@ class XiaomingLocalizations {
     return _localizedValues[locale.languageCode]['parameter'];
   }
 
-  get saved_function {
+  get savedFunction {
     return _localizedValues[locale.languageCode]['Saved function'];
   }
 
@@ -270,7 +271,7 @@ class XiaomingLocalizations {
     return _localizedValues[locale.languageCode]['save'];
   }
 
-  get saved_Data {
+  get savedData {
     return _localizedValues[locale.languageCode]['Saved Data'];
   }
 
@@ -278,7 +279,7 @@ class XiaomingLocalizations {
     return _localizedValues[locale.languageCode]['Setting'];
   }
 
-  get solve_equation {
+  get solveEquation {
     return _localizedValues[locale.languageCode]['Solve equation'];
   }
 
@@ -297,20 +298,17 @@ class XiaomingLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) {
-    // TODO: implement isSupported
     return ['en', 'zh'].contains(locale.languageCode);
   }
 
   @override
   Future<XiaomingLocalizations> load(Locale locale) {
-    // TODO: implement load
     return new SynchronousFuture<XiaomingLocalizations>(
         new XiaomingLocalizations(locale));
   }
 
   @override
   bool shouldReload(LocalizationsDelegate<XiaomingLocalizations> old) {
-    // TODO: implement shouldReload
     return false;
   }
 

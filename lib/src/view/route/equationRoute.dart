@@ -28,7 +28,7 @@ class _LineQuationsViewState extends State<LineQuationsView> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1.0,
-        title: Text(XiaomingLocalizations.of(context).solve_equation),
+        title: Text(XiaomingLocalizations.of(context).solveEquation),
       ),
       body: GestureDetector(   //点击空白区域收起键盘
         behavior: HitTestBehavior.translucent,

@@ -23,7 +23,7 @@ void main() {
   });
 
   test('Polyomial', (){
-    expect(CmdMethodUtil.Polyomial([[1,-2,1]]), [[1.0, -0.0], [1.0, 0.0]]);
+    expect(CmdMethodUtil.polyomial([[1,-2,1]]), [[1.0, -0.0], [1.0, 0.0]]);
   });
 
   test('calculus', (){
@@ -45,7 +45,7 @@ void main() {
 
   test('test EigenValue', (){
     List<List<num>> matrix = [[0,12,-16],[1,0,0],[0,1,0]];
-    expect(MatrixUtil.EigenValue(matrix, 400, 4),
+    expect(MatrixUtil.eigenValue(matrix, 400, 4),
      [[-3.999999923299447, 0.0],
       [1.9999999616497233,-0.00006904586138525003],
         [1.9999999616497233, 0.00006904586138525003]]);

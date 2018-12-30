@@ -1,4 +1,3 @@
-import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
 import 'dart:math';
 
@@ -250,7 +249,6 @@ class MatrixUtil {
     //(n-1)!*2n  (n-1)!n
     var newlist = copyMatrix(list); //拷贝出一个新矩阵
     var divisor = new List(list.length); //记录对角线下的每一行的倍数
-    int index = 0;
     for (int i = 0; i < newlist.length; i++) {
       if (newlist[i][i] == 0) {
         //如果该对角线上的元素为零，将最近的不为零的一行换上来
@@ -386,7 +384,7 @@ class MatrixUtil {
     return result;
   }
 
-  static List<List<num>> EigenValue(List<List<num>> matrix, int LoopNu, int Erro) {
+  static List<List<num>> eigenValue(List<List<num>> matrix, int loopNu, int erro) {
     if(!isSquare(matrix)) {
       throw FormatException('方阵才能求特征值');
     }
@@ -398,7 +396,7 @@ class MatrixUtil {
     int t;
     int m;
     List<List<num>> A = initMatrix(n, n);
-    num erro = pow(0.1, Erro);
+    num newerro = pow(0.1, erro);
     num b;
     num c;
     num d;
@@ -413,13 +411,13 @@ class MatrixUtil {
     num f;
     num z;
     num y;
-    int loop1 = LoopNu;
+    int loop1 = loopNu;
     A = getHessenberg(matrix); // 将方阵matrix转化成Hessenberg矩阵A
     m = n;
     while (m != 0) {
       t = m - 1;
       while (t > 0) {
-        if (_abs(A[t][t - 1]) > erro * (_abs(A[t - 1][t - 1]) + _abs(A[t][t]))) {
+        if (_abs(A[t][t - 1]) > newerro * (_abs(A[t - 1][t - 1]) + _abs(A[t][t]))) {
           t -= 1;
         } else {
           break;
@@ -429,7 +427,7 @@ class MatrixUtil {
         result[m - 1][0] = A[m - 1][m - 1];
         result[m - 1][1] = 0.0;
         m -= 1;
-        loop1 = LoopNu;
+        loop1 = loopNu;
       } else if (t == m - 2) {
         b = -(A[m - 1][m - 1] + A[m - 2][m - 2]);
         c = A[m - 1][m - 1] * A[m - 2][m - 2] - A[m - 1][m - 2] * A[m - 2][m - 1];
@@ -451,7 +449,7 @@ class MatrixUtil {
           result[m - 2][1] = -result[m - 1][1];
         }
         m -= 2;
-        loop1 = LoopNu;
+        loop1 = loopNu;
       } else {
         if (loop1 < 1) {
           return null;

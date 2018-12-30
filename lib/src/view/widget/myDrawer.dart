@@ -27,17 +27,17 @@ Widget buildDrawer({@required BuildContext context}) {
         ),
         ListTile(
           leading: Icon(Icons.bookmark),
-          title: Text(XiaomingLocalizations.of(context).saved_function),
+          title: Text(XiaomingLocalizations.of(context).savedFunction),
           onTap: () => popmethodRoute(context),
         ),
         ListTile(
           leading: Icon(Icons.bookmark),
-          title: Text(XiaomingLocalizations.of(context).saved_Data),
+          title: Text(XiaomingLocalizations.of(context).savedData),
           onTap: () => popdataRoute(context),
         ),
         ListTile(
           leading: Icon(Icons.extension),
-          title: Text(XiaomingLocalizations.of(context).solve_equation),
+          title: Text(XiaomingLocalizations.of(context).solveEquation),
           onTap: () => popEquationsRoute(context),
         ),
       ],

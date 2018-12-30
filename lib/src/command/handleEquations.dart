@@ -1,10 +1,7 @@
-import 'dart:math';
-
 import 'package:xiaoming/src/command/matrix.dart';
 import 'package:xiaoming/src/data/settingData.dart';
 
 class EquationsUtil {
-  _EquationsUtil() {}
 
   static final EquationsUtil instance = new EquationsUtil();
   static List<List<num>> postMatrix = [];
@@ -147,16 +144,16 @@ class EquationsUtil {
     int maxPower = 0;
     ///获取每一项的系数和幂数
     for(var m in mas){
-      var x_i = m.group(0).indexOf(x);
-      String postStr = m.group(0).substring(0, x_i);
+      var xi = m.group(0).indexOf(x);
+      String postStr = m.group(0).substring(0, xi);
       if(postStr.length == 1){
         postStr += '1';
       }
       var post = num.parse(postStr);   //多项式系数
       var power;
       if(m.group(0).contains('^')) {
-        var power_i = m.group(0).indexOf('^');
-        power = num.parse(m.group(0).substring(power_i + 1));  //多项式幂数
+        var poweri = m.group(0).indexOf('^');
+        power = num.parse(m.group(0).substring(poweri + 1));  //多项式幂数
         if (power > maxPower) {
           maxPower = power;
         }
@@ -196,35 +193,17 @@ class EquationsUtil {
         }
       }
     }
-    var resultMatrix = MatrixUtil.EigenValue(matrix, 400, SettingData.fixedNum.round());
+    var resultMatrix = MatrixUtil.eigenValue(matrix, 400, SettingData.fixedNum.round());
     int index = 1;
     StringBuffer sb = new StringBuffer();
     for(var l in resultMatrix){
-      sb.write('第${index}个解为： ${l[0].toStringAsFixed(SettingData.fixedNum.round())}');
+      sb.write('第$index 个解为： ${l[0].toStringAsFixed(SettingData.fixedNum.round())}');
       sb.write('\n');
       index++;
     }
     return sb.toString();
   }
 
-  ///传入多项式，返回结果
-  ///@param   equation    多项式
-  ///@param   xs          未知数
-  ///例  ‘2x^3 + 5x^2 - x + 15’
-  String _handleMultinomial(String equation, String xs) {
-    equation = equation.replaceAll(' ', '');
-    if(xs.contains(',')){
-      return '多项式只支持一元多次方程，即一个未知数';
-    }
-    if(equation.substring(0,1) != '-'){
-      equation = '+' + equation;
-    }
-    var reg = new RegExp(r'(\+|-)([0-9]+)?' + xs + r'(\^[0-9]+)?');
-    var ms = reg.allMatches(equation);
-    for(var m in ms){
-      print(m.group(0));
-    }
-  }
 }
 
 

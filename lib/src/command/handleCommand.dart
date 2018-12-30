@@ -121,7 +121,7 @@ dynamic _invocationMethod(String cmd) {
   String methodName = cmd.substring(0, index); //存储函数名
   String methodValue = cmd.substring(index + 1, cmd.length - 1); //存储函数参数
   //处理用户自定义函数调用
-  if (UFcontain(methodName)) {
+  if (isUserFun(methodName)) {
     UserFunction u = getUfByName(methodName);
     if (u != null) {
       return u.invoke(methodValue);
@@ -248,7 +248,7 @@ dynamic _invocationMethod(String cmd) {
       if(vals.length != 1 || vals[0] is! List<List<num>>){
         throw FormatException('多项式求根函数参数传递错误');
       }
-      return CmdMethodUtil.Polyomial(vals[0]);
+      return CmdMethodUtil.polyomial(vals[0]);
     default:
       throw FormatException('$methodName 为未知命令');
   }
@@ -274,7 +274,7 @@ String _handleDefinFunction(String cmd) {
   for (String para in paras.split(',')) {
     funPara.add(para);
   }
-  if(UFcontain(funName)){
+  if(isUserFun(funName)){
     UserData.userFunctions.remove(getUfByName(funName));
   }
   UserData.userFunctions.add(new UserFunction(funName, funPara, cmds));
@@ -293,7 +293,7 @@ UserFunction getUfByName(String funName) {
 }
 
 ///判断传入的函数名是否为用户已定义函数
-bool UFcontain(String funName) {
+bool isUserFun(String funName) {
   for (UserFunction u in UserData.userFunctions) {
     if (u.funName == funName) {
       return true;
@@ -308,7 +308,7 @@ List<dynamic> getMethodValue(String methodValue) {
   //将参数字符串转化为实际类型
   List<dynamic> vals = [];
   for (String str in values) {
-    if(UFcontain(str)){
+    if(isUserFun(str)){
       vals.add(getUfByName(str));
     }else{
       vals.add(handleCalcuStr(str));
@@ -329,8 +329,8 @@ dynamic handleCalcuStr(String caculStr) {
   if (num.tryParse(caculStr) != null) {
     return num.tryParse(caculStr);
   }
-  if (UserData.UFtemp.containsKey(caculStr)) {
-    return UserData.UFtemp[caculStr];
+  if (UserData.ufTemp.containsKey(caculStr)) {
+    return UserData.ufTemp[caculStr];
   }
   caculStr = formatCmdStr(caculStr);
   if (caculStr.contains('(')) {
@@ -393,7 +393,7 @@ dynamic handleCalcuStr(String caculStr) {
   List nums = [];
   for (String str in varibales) {
     if (num.tryParse(str) == null) {
-      if (!UserData.UFtemp.containsKey(str)) {
+      if (!UserData.ufTemp.containsKey(str)) {
         if (!UserData.matrixs.containsKey(str)) {
           if (!UserData.dbs.containsKey(str)) {
             if (!temp.containsKey(str)) {
@@ -408,7 +408,7 @@ dynamic handleCalcuStr(String caculStr) {
           nums.add(UserData.matrixs[str]);
         }
       } else {
-        nums.add(UserData.UFtemp[str]);
+        nums.add(UserData.ufTemp[str]);
       }
     } else {
       nums.add(num.tryParse(str));

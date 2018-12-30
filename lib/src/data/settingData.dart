@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 class SettingData {
-  _SettingData() {}
 
   static double fixedNum = 6.0; //存储小数位值
   static double buttonsHeight = 250.0; //存储便捷输入栏的高度

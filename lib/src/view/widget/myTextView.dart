@@ -5,7 +5,7 @@ import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 ///单个输出文本的视图
 class TextView extends StatelessWidget {
   TextView({this.context, this.text, this.animationController});
-  BuildContext context;
+  final BuildContext context;
   final AnimationController animationController;
   final String text;
 

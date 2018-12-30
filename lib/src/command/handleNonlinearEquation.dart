@@ -1,7 +1,6 @@
 import 'dart:math';
 
 class NonlinearEquationUtil {
-  _NonlinearEquationUtil() {}
 
   static final NonlinearEquationUtil instance = new NonlinearEquationUtil();
 
