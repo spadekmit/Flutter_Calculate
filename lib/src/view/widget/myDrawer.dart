@@ -28,7 +28,7 @@ Widget buildDrawer({@required BuildContext context}) {
         ListTile(
           leading: Icon(Icons.bookmark),
           title: Text(XiaomingLocalizations.of(context).savedFunction),
-          onTap: () => popmethodRoute(context),
+          onTap: () => popMethodRoute(context),
         ),
         ListTile(
           leading: Icon(Icons.bookmark),

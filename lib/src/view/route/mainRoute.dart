@@ -34,9 +34,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: Colors.white,
         ),
-        routes: {
-          '/newMethod': (context) => NewMethodRoute(),
-        },
         home: Builder(
           builder: (context) => Scaffold(
                 drawer: buildDrawer(context: context),
@@ -81,6 +78,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    UserData.language = Localizations.localeOf(context).languageCode;
     _textFocusNode.addListener(() {
       if (SettingData.isAutoExpanded) {
         if (_textFocusNode.hasFocus) {

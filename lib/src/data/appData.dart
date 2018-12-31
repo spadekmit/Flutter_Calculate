@@ -4,6 +4,9 @@ import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 
 class UserData {
+
+  static String language = 'en';
+
   static Map<String, num> dbs = new Map(); //存储浮点数变量
 
   static Map<String, List<List<num>>> matrixs = new Map(); //存储矩阵变量

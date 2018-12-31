@@ -5,7 +5,7 @@ import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/route/newMethodRoute.dart';
 
 ///保存的方法界面
-void popmethodRoute(BuildContext context) {
+void popMethodRoute(BuildContext context) {
   Navigator.of(context).push(new CupertinoPageRoute(builder: (context) {
     return MethodRoute();
   }));
@@ -48,56 +48,6 @@ class _MethodRouteState extends State<MethodRoute> {
           });
     }
 
-    ///存储方法卡片列表
-    final List<Widget> tiles = <Widget>[];
-    Locale myLocale = Localizations.localeOf(context);
-    String funName;
-    String funDescrip;
-
-    ///将内置方法及已保存的方法加载进tiles
-    for (UserFunction u in UserData.userFunctions) {
-      tiles.add(Dismissible(
-        onDismissed: (item) {
-          print(item.index);
-        },
-        key: Key(u.funName),
-        child: Card(
-          color: Colors.purple,
-          child: new ListTile(
-            leading: new Text(
-              u.funName,
-            ),
-            title: new Text(
-                '${u.funName}(${u.paras.toString().substring(1, u.paras.toString().length - 1)})'),
-            subtitle: new Text(u.funCmds.toString()),
-          ),
-        ),
-      ));
-    }
-    for (CmdMethod method in UserData.cmdMethods) {
-      if (myLocale.countryCode == 'CH') {
-        funName = method.name;
-        funDescrip = method.methodDescription;
-      } else {
-        funName = method.ename;
-        funDescrip = method.emethodDescription;
-      }
-      tiles.add(Card(
-        color: Colors.yellow,
-        child: ListTile(
-          title: Text(
-            funName,
-          ),
-          subtitle: Text(funDescrip),
-        ),
-      ));
-    }
-    
-    final List<Widget> divided = ListTile.divideTiles(
-      context: context,
-      tiles: tiles,
-    ).toList();
-
     return Scaffold(
       appBar: new AppBar(
         elevation: 1.0,
@@ -109,8 +59,76 @@ class _MethodRouteState extends State<MethodRoute> {
           )
         ],
       ),
-      body: new ListView(
-        children: divided,
+      body: Builder(
+        builder: (context) {
+
+          ///存储方法卡片列表
+          final List<Widget> tiles = <Widget>[];
+          Locale myLocale = Localizations.localeOf(context);
+          String funName;
+          String funDescrip;
+
+          ///将内置方法及已保存的方法加载进tiles
+          for (int index = 0; index < UserData.userFunctions.length; index ++) {
+            var u = UserData.userFunctions[index];
+            tiles.add(Dismissible(
+              onDismissed: (item) {
+                var temp;
+                setState(() {
+                  temp = UserData.userFunctions.removeAt(index);
+                });
+                Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Text("UesrFunction has been removed"),
+                  action: SnackBarAction(label: "UNDO", onPressed: ()=>setState((){
+                    UserData.userFunctions.insert(index, temp);
+                  })),
+                ));
+                UserData.writeUserFun();
+              },
+              background: Container(
+                color: Colors.red,
+              ),
+              key: Key(u.funName),
+              child: Card(
+                color: Colors.purple,
+                child: new ListTile(
+                  leading: new Text(
+                    u.funName,
+                  ),
+                  title: new Text(
+                      '${u.funName}(${u.paras.toString().substring(1, u.paras.toString().length - 1)})'),
+                  subtitle: new Text(u.funCmds.toString()),
+                ),
+              ),
+            ));
+          }
+          for (CmdMethod method in UserData.cmdMethods) {
+            if (myLocale.countryCode == 'CH') {
+              funName = method.name;
+              funDescrip = method.methodDescription;
+            } else {
+              funName = method.ename;
+              funDescrip = method.emethodDescription;
+            }
+            tiles.add(Card(
+              color: Colors.yellow,
+              child: ListTile(
+                title: Text(
+                  funName,
+                ),
+                subtitle: Text(funDescrip),
+              ),
+            ));
+          }
+          final List<Widget> divided = ListTile.divideTiles(
+            context: context,
+            tiles: tiles,
+          ).toList();
+
+          return ListView(
+            children: divided,
+          );
+        } ,
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.delete),
