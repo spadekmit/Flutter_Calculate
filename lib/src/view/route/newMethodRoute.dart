@@ -33,10 +33,10 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
                   context: context,
                   builder: (alertContext) {
                     return AlertDialog(
-                      title: Text("保存成功"),
+                      title: Text(XiaomingLocalizations.of(context).sucSave),
                       actions: <Widget>[
                         FlatButton(
-                          child: Text("确认"),
+                          child: Text(XiaomingLocalizations.of(context).ok),
                           onPressed: () {
                             UserFunction uf = new UserFunction(
                                 _funName, _parm.split(','), _cmds.split(';'));
@@ -51,7 +51,7 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
                           },
                         ),
                         FlatButton(
-                          child: Text("取消"),
+                          child: Text(XiaomingLocalizations.of(context).cancel),
                           onPressed: () {
                             Navigator.pop(alertContext);
                           },
@@ -67,7 +67,7 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("New Function"),
+        title: Text(XiaomingLocalizations.of(context).newFun),
         elevation: 1.0,
       ),
       body: GestureDetector(

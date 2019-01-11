@@ -25,7 +25,7 @@ class _MethodRouteState extends State<MethodRoute> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('请确认是否要删除所有已保存的自定义方法'),
+              title: Text(XiaomingLocalizations.of(context).deleteAllMethod),
               actions: <Widget>[
                 FlatButton(
                   child: Text(XiaomingLocalizations.of(context).delete),
@@ -78,8 +78,8 @@ class _MethodRouteState extends State<MethodRoute> {
                   temp = UserData.userFunctions.removeAt(index);
                 });
                 Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text("UesrFunction has been removed"),
-                  action: SnackBarAction(label: "UNDO", onPressed: ()=>setState((){
+                  content: Text(XiaomingLocalizations.of(context).removeUF),
+                  action: SnackBarAction(label: XiaomingLocalizations.of(context).undo, onPressed: ()=>setState((){
                     UserData.userFunctions.insert(index, temp);
                   })),
                 ));

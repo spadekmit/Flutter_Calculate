@@ -18,6 +18,7 @@ class XiaomingLocalizations {
       'CopyHint': 'The content has been copied to the clipboard',
       'decimal digits': 'decimal digits',
       'delete' : 'delete',
+      'deleteAllMethod' : 'Please confirm if you want to delete all saved custom methods',
       'empty': 'empty',
       'equations' : 'Equations',
       'equaHint1':
@@ -49,9 +50,12 @@ class XiaomingLocalizations {
       'HelpTabData6':
           'First with a Fun t (x) : r = 2 * x ^ 3 to 7 * x defined integrand, then use the calculus dissuade (t, 0, 8) function to solve, t for the integrand, 0 to 8 for the integral interval',
       'Hint': 'Hint',
+      'removeUF' : 'UserFuntion has been removed',
       'InputHint': 'Input command',
       'maximum' : 'Maximum number of saves',
       'methodBody' : 'method body',
+      'newFun' : 'New Funtion',
+      'ok' : 'OK',
       'parameter' : 'parameter',
       'Setting': 'Setting',
       'save' : 'save',
@@ -59,6 +63,8 @@ class XiaomingLocalizations {
       'Saved Data': 'Saved Data',
       'Solve equation': 'Solve equation',
       'Solve calculus': 'Solve calculus',
+      'sucSave' : 'successfully saved',
+      'undo' : 'UNDO',
       'variable' : 'variable',
     },
     'zh': {
@@ -71,6 +77,7 @@ class XiaomingLocalizations {
       'CopyHint': '内容已复制到剪切板',
       'decimal digits': '小数保留位数',
       'delete' : '删除',
+      'deleteAllMethod' : '请确认是否要删除所有已保存的自定义方法',
       'empty': '清空',
       'equations' : '方程',
       'equaHint1': '线性方程指最高次幂为1次的一元或多元方程',
@@ -106,15 +113,20 @@ class XiaomingLocalizations {
           '在抽屉界面有解方程组按钮，点击可进入到解方程组的界面，输入单个方程则视为多项式解求所有根，多个方程则视为线性方程组求解。因解方程界面没有便捷输入栏，推荐在主界面解求。线性方程组可输入系数阵a和常数列b再用inv（a）*b即可解求，多项式可使用roots（p）解求所有根。p为系数列，详细用法见已保存的函数界面',
       'HelpTabData6':
           '首先用Fun t(x):r = 2*x^3-7*x 定义被积函数，然后使用calculus(t,0,8)函数求解，t为被积函数，0到8为积分区间',
+      'removeUF' : '自定义方法被移除',
       'InputHint': '输入命令',
       'methodBody' : '函数体',
       'maximum' : '历史记录条数',
+      'newFun' : '新的函数',
+      'ok' : '确认',
       'parameter' : '参数',
       'Setting': '设置',
       'save' : '保存',
       'Saved function': '保存的函数',
       'Saved Data': '保存的数据',
       'Solve equation': '解方程',
+      'sucSave' : '保存成功',
+      'undo' : '撤销',
       'variable' : '变量',
     }
   };
@@ -153,6 +165,10 @@ class XiaomingLocalizations {
 
   get delete {
     return _localizedValues[locale.languageCode]['delete'];
+  }
+
+  get deleteAllMethod {
+    return _localizedValues[locale.languageCode]['deleteAllMethod'];
   }
 
   get empty {
@@ -247,6 +263,10 @@ class XiaomingLocalizations {
     return _localizedValues[locale.languageCode]['HistorySaving'];
   }
 
+  get removeUF {
+    return _localizedValues[locale.languageCode]['removeUF'];
+  }
+
   get inputHint {
     return _localizedValues[locale.languageCode]['InputHint'];
   }
@@ -257,6 +277,14 @@ class XiaomingLocalizations {
 
   get methodBody {
     return _localizedValues[locale.languageCode]['methodBody'];
+  }
+
+  get newFun {
+    return _localizedValues[locale.languageCode]['newFun'];
+  }
+
+  get ok {
+    return _localizedValues[locale.languageCode]['ok'];
   }
 
   get parameter {
@@ -281,6 +309,14 @@ class XiaomingLocalizations {
 
   get solveEquation {
     return _localizedValues[locale.languageCode]['Solve equation'];
+  }
+
+  get sucSave {
+    return _localizedValues[locale.languageCode]['sucSave'];
+  }
+
+  get undo {
+    return _localizedValues[locale.languageCode]['undo'];
   }
 
   get variable {

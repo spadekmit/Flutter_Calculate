@@ -104,7 +104,7 @@ class _SettingRouteState extends State<SettingRoute> {
                                     ),
                                     actions: <Widget>[
                                       FlatButton(
-                                        child: Text("确认"),
+                                        child: Text(XiaomingLocalizations.of(context).ok),
                                         onPressed: () {
                                           try {
                                             SettingData.maxTexts =
@@ -116,7 +116,7 @@ class _SettingRouteState extends State<SettingRoute> {
                                         },
                                       ),
                                       FlatButton(
-                                        child: Text('取消'),
+                                        child: Text(XiaomingLocalizations.of(context).cancel),
                                         onPressed: () {
                                           Navigator.of(alertContext).pop();
                                         },
