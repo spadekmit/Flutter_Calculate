@@ -19,8 +19,11 @@ class XiaomingLocalizations {
       'decimal digits': 'decimal digits',
       'delete' : 'delete',
       'deleteAllMethod' : 'Please confirm if you want to delete all saved custom methods',
+      'deleteAllMessage' : 'Please confirm if you want to delete all message',
+      'deleteAllData' : 'Please confirm if you want to delete all saved data',
       'empty': 'empty',
       'equations' : 'Equations',
+      'equationNotEmpty' : 'Equations cannot be empty',
       'equaHint1':
           'A linear equation is one or more equations whose highest power is one',
       'equaHint2': 'Example a00x + + a02z a01y = b0, a10x + + a12z a11y = b1,',
@@ -51,6 +54,7 @@ class XiaomingLocalizations {
           'First with a Fun t (x) : r = 2 * x ^ 3 to 7 * x defined integrand, then use the calculus dissuade (t, 0, 8) function to solve, t for the integrand, 0 to 8 for the integral interval',
       'Hint': 'Hint',
       'removeUF' : 'UserFuntion has been removed',
+      'remeveData' : 'Data has been removed',
       'InputHint': 'Input command',
       'maximum' : 'Maximum number of saves',
       'methodBody' : 'method body',
@@ -66,6 +70,7 @@ class XiaomingLocalizations {
       'sucSave' : 'successfully saved',
       'undo' : 'UNDO',
       'variable' : 'variable',
+      'variableNotEmpty' : 'Variable cannot be empty',
     },
     'zh': {
       'AppName': '计算小助手',
@@ -78,8 +83,11 @@ class XiaomingLocalizations {
       'decimal digits': '小数保留位数',
       'delete' : '删除',
       'deleteAllMethod' : '请确认是否要删除所有已保存的自定义方法',
+      'deleteAllMessage' : '请确认是否删除所有消息记录',
+      'deleteAllData' : '请确认是否要删除所有已保存的数据',
       'empty': '清空',
       'equations' : '方程',
+      'equationNotEmpty' : '方程组不能为空',
       'equaHint1': '线性方程指最高次幂为1次的一元或多元方程',
       'equaHint2': '例a00x+a01y+a02z=b0,a10x+a11y+a12z=b1,',
       'equaHint3': 'a20x+a21y+a22z=b2      变量栏输入x,y,z',
@@ -114,6 +122,7 @@ class XiaomingLocalizations {
       'HelpTabData6':
           '首先用Fun t(x):r = 2*x^3-7*x 定义被积函数，然后使用calculus(t,0,8)函数求解，t为被积函数，0到8为积分区间',
       'removeUF' : '自定义方法被移除',
+      'removeData' : '数据被移除',
       'InputHint': '输入命令',
       'methodBody' : '函数体',
       'maximum' : '历史记录条数',
@@ -128,6 +137,7 @@ class XiaomingLocalizations {
       'sucSave' : '保存成功',
       'undo' : '撤销',
       'variable' : '变量',
+      'variableNotEmpty' : '变量不能为空',
     }
   };
 
@@ -171,8 +181,20 @@ class XiaomingLocalizations {
     return _localizedValues[locale.languageCode]['deleteAllMethod'];
   }
 
+  get deleteAllMessage {
+    return _localizedValues[locale.languageCode]['deleteAllMessage'];
+  }
+
+  get deleteAllData {
+    return _localizedValues[locale.languageCode]['deleteAllData'];
+  }
+
   get empty {
     return _localizedValues[locale.languageCode]['empty'];
+  }
+
+  get equationNotEmpty {
+    return _localizedValues[locale.languageCode]['equationNotEmpty'];
   }
 
   get equations {
@@ -267,6 +289,10 @@ class XiaomingLocalizations {
     return _localizedValues[locale.languageCode]['removeUF'];
   }
 
+  get removeData {
+    return _localizedValues[locale.languageCode]['removeData'];
+  }
+
   get inputHint {
     return _localizedValues[locale.languageCode]['InputHint'];
   }
@@ -321,6 +347,10 @@ class XiaomingLocalizations {
 
   get variable {
     return _localizedValues[locale.languageCode]['variable'];
+  }
+
+  get variableNotEmpty {
+    return _localizedValues[locale.languageCode]['variableNotEmpty'];
   }
 
   static XiaomingLocalizations of(BuildContext context) {

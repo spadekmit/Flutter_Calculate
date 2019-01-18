@@ -72,6 +72,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
       _texts.add(textView);
       textView.animationController.forward();
     });
+    
     super.initState();
   }
 
@@ -234,7 +235,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("请确认是否删除所有消息记录"),
+                          title: Text(XiaomingLocalizations.of(context).deleteAllMessage),
                           actions: <Widget>[
                             FlatButton(
                               child: Text(

@@ -154,12 +154,12 @@ class _LineQuationsViewState extends State<LineQuationsView> {
         });
       } else {
         setState(() {
-          result = '变量不能为空';
+          result = XiaomingLocalizations.of(context).variableNotEmpty;
         });
       }
     } else {
       setState(() {
-        result = '方程组不能为空';
+        result = XiaomingLocalizations.of(context).equationNotEmpty;
       });
     }
   }

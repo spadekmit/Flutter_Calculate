@@ -26,7 +26,7 @@ class _DataRouteState extends State<DataRoute> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('请确认是否要删除所有已保存的数据'),
+              title: Text(XiaomingLocalizations.of(context).deleteAllData),
               actions: <Widget>[
                 FlatButton(
                   child: Text(XiaomingLocalizations.of(context).delete),
@@ -70,9 +70,9 @@ class _DataRouteState extends State<DataRoute> {
                       UserData.matrixs.remove(name);
                     });
                     Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text("Data has been removed"),
+                      content: Text(XiaomingLocalizations.of(context).removeData),
                       action: SnackBarAction(
-                          label: "UNDO",
+                          label: XiaomingLocalizations.of(context).undo,
                           onPressed: () => setState(() {
                                 UserData.matrixs[name] = list;
                               })),
@@ -100,9 +100,9 @@ class _DataRouteState extends State<DataRoute> {
                       UserData.dbs.remove(name);
                     });
                     Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text("Data has been removed"),
+                      content: Text(XiaomingLocalizations.of(context).removeData),
                       action: SnackBarAction(
-                          label: "UNDO",
+                          label: XiaomingLocalizations.of(context).undo,
                           onPressed: () => setState(() {
                                 UserData.dbs[name] = value;
                               })),
