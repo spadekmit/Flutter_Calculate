@@ -2,9 +2,10 @@ import 'package:xiaoming/src/command/handleCommand.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 class UserData {
-
   static String language = 'en';
 
   static Map<String, num> dbs = new Map(); //存储浮点数变量
@@ -147,7 +148,7 @@ class UserData {
 
   //加载用户自定义函数，小数和矩阵
   static Future loadData() async {
-    readDbs();
+    readNum();
     readMatrixs();
     readUserFun();
     await readText();
@@ -318,6 +319,55 @@ class UserData {
     var sb = new StringBuffer();
     strs.forEach((str) => sb.write('$str|||'));
     textFile.writeAsStringSync(sb.toString());
+  }
+
+  ///获取当前平台的数据库路径
+  static Future<String> getDBPath() async {
+    String dbPath = await getDatabasesPath();
+    return join(dbPath, 'xiaoming.db');
+  }
+
+  static void addNum(String name, num value) async {
+    String path = await getDBPath();
+    if(!File(path).existsSync()){
+      openDatabase(path, version: 1, onCreate: (Database db, int version) async {
+        await db.execute(
+            'create table Xiaoming(name TEXT primary key, value DOUBLE)');
+      }).then((Database db) {
+        db.rawInsert('INSERT INTO Xiaoming(name, value) VALUES("$name", $value)');
+      });
+    }else {
+      openDatabase(path, version: 1).then((db){
+        db.rawInsert('insert into Xiaoming(name, value) values("$name", $value)');
+      });
+    }
+  }
+
+  static void readNum() {
+    getDatabasesPath().then((String dbPath) async {
+      String path = join(dbPath, 'xiaoming.db');
+      if(File(path).existsSync()){
+        print("进入了扫描文件");
+        openDatabase(path, version: 1).then((db){
+          db.rawQuery('SELECT * FROM Xiaoming').then((list){
+            list.forEach((m){
+              dbs[m['name']] = num.parse(m['value'].toString());
+            });
+          });
+        });
+      }
+    });
+  }
+
+  static Future<void> deleteAllNum() async {
+    String path = await getDBPath();
+    await File(path).delete();
+  }
+
+  static Future<void> updateNum(String name, num value) async {
+    String path = await getDBPath();
+    Database db = await openDatabase(path, version: 1);
+    db.rawUpdate('UPDATE Xiaoming SET value = $value WHERE name = "$name"');
   }
 }
 

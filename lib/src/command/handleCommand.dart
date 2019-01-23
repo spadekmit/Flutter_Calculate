@@ -93,9 +93,13 @@ String _handleMatrixArithmetic(String cmd) {
         UserData.writeMatrix();
         result = MatrixUtil.mtoString(name: name, list: UserData.matrixs[name]);
       } else if (re is num) {
-        UserData.matrixs.remove(name);
+        if(UserData.dbs.containsKey(name)){
+          UserData.matrixs.remove(name);
+          UserData.updateNum(name, re);
+        }else{
+          UserData.addNum(name, re);
+        }
         UserData.dbs[name] = re; //将运算得到的浮点数添加到浮点池
-        UserData.writeDb();
         result = '$name = ' + re.toStringAsFixed(SettingData.fixedNum.round());
       } else {
         result = '该类型不能存储  $re';
