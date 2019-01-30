@@ -54,7 +54,7 @@ class XiaomingLocalizations {
           'First with a Fun t (x) : r = 2 * x ^ 3 to 7 * x defined integrand, then use the calculus dissuade (t, 0, 8) function to solve, t for the integrand, 0 to 8 for the integral interval',
       'Hint': 'Hint',
       'removeUF' : 'UserFuntion has been removed',
-      'remeveData' : 'Data has been removed',
+      'removeData' : 'Data has been removed',
       'InputHint': 'Input command',
       'maximum' : 'Maximum number of saves',
       'methodBody' : 'method body',

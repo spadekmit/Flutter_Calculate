@@ -1,7 +1,6 @@
 import 'package:xiaoming/src/command/handleCommand.dart';
 import 'dart:io';
 import 'dart:async';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -146,125 +145,44 @@ class UserData {
         "用法：radToDeg(A), A必须为数字 例：'reForDeg(1) = 57.29578 "),
   ];
 
-  //加载用户自定义函数，小数和矩阵
+  ///加载用户自定义函数,浮点数和矩阵
   static Future loadData() async {
     readNum();
-    readMatrixs();
+    readMatrix();
     readUserFun();
     await readText();
   }
 
-  ///获取存储矩阵的文件
-  static Future<File> _getMatrixsFile() async {
-    // get the path to the document directory.
-    String dir = (await getApplicationDocumentsDirectory()).path;
-    return new File('$dir/matrixs.txt');
-  }
-
-  ///获取存储数字的文件
-  static Future<File> _getDbsFile() async {
-    // get the path to the document directory.
-    String dir = (await getApplicationDocumentsDirectory()).path;
-    return new File('$dir/dbs.txt');
-  }
-
-  ///获取存储用户自定义函数的文件
-  static Future<File> _getUserFunFile() async {
-    String dir = (await getApplicationDocumentsDirectory()).path;
-    return new File('$dir/userFun.txt');
-  }
-
-  ///获取存储用户消息队列的文件
-  static Future<File> _getTextFile() async {
-    String dir = (await getApplicationDocumentsDirectory()).path;
-    return new File('$dir/text.txt');
-  }
-
-  ///读取存储的矩阵
-  static void readMatrixs() async {
-    File matrixFile = await _getMatrixsFile();
-    if (matrixFile.existsSync()) {
-      String matrixsStr = matrixFile.readAsStringSync();
-      List<String> matrixStr = matrixsStr.split(';');
-      for (String str in matrixStr) {
-        if (str.contains(':')) {
-          List<String> strs = str.split(':');
-          String name = strs[0];
-          List<List<num>> value = stringToList(strs[1]);
-          matrixs[name] = value;
-        }
-      }
-    }
-  }
-
-  ///读取存储的数字
-  static void readDbs() async {
-    File dbsFile = await _getDbsFile();
-    if (dbsFile.existsSync()) {
-      String matrixsStr = dbsFile.readAsStringSync();
-      List<String> dbstr = matrixsStr.split(';');
-      for (String str in dbstr) {
-        if (str.contains(':')) {
-          List<String> strs = str.split(':');
-          String name = strs[0];
-          num value = num.parse(strs[1]);
-          dbs[name] = value;
-        }
-      }
-    }
+  ///从数据库中读取存储的矩阵
+  static Future<void> readMatrix() async {
+    Database db = await getDB();
+    var list = await db.rawQuery('select * from Matrixs');
+    list.forEach((m) {
+      matrixs[m['name']] = stringToList(m['value']);
+    });
   }
 
   ///读取存储的用户自定义函数
-  static void readUserFun() {
-    _getUserFunFile().then((file) {
-      if (file.existsSync()) {
-        String userFunStr = file.readAsStringSync();
-        List<String> ufstr = userFunStr.split('/');
-        for (String str in ufstr) {
-          if (str.length == 0) continue;
-          List<String> strs = str.split('|');
-          String funName = strs[0];
-          List<String> paras =
-              strs[1].substring(1, strs[1].length - 1).split(',');
-          List<String> funCmds =
-              strs[2].substring(1, strs[2].length - 1).split(',');
-          UserFunction uf = new UserFunction(funName, paras, funCmds);
-          userFunctions.add(uf);
-        }
-      }
+  static Future<void> readUserFun() async {
+    Database db = await getDB();
+    var list = await db.rawQuery('select * from UserFunction');
+    list.forEach((m) {
+      String funName = m['funName'];
+      List<String> paras =
+          m['paras'].substring(1, m['paras'].length - 1).replaceAll(' ', '').split(',');
+      List<String> funCmds =
+          m['funCmds'].substring(1, m['funCmds'].length - 1).split(',');
+      UserFunction uf = new UserFunction(funName, paras, funCmds);
+      userFunctions.add(uf);
     });
   }
 
   ///从文件中读取消息队列
   static Future readText() async {
-    File textFile = await _getTextFile();
-    if (textFile.existsSync()) {
-      String textStr = textFile.readAsStringSync();
-      List<String> texts = textStr.split('|||');
-      for (String text in texts) {
-        if (text.length == 0) continue;
-        strs.add(text);
-      }
-    }
-  }
-
-  ///将用户自定义函数写入到文件
-  static void writeUserFun() {
-    _getUserFunFile().then((file) {
-      if (file.existsSync()) {
-        file.delete();
-      }
-      file.createSync();
-      var sb = new StringBuffer();
-      userFunctions.forEach((UserFunction u) {
-        sb.write(u.funName);
-        sb.write('|');
-        sb.write(u.paras);
-        sb.write('|');
-        sb.write(u.funCmds);
-        sb.write('/');
-      });
-      file.writeAsStringSync(sb.toString());
+    Database db = await getDB();
+    var list = await db.rawQuery('select * from Message');
+    list.forEach((m) {
+      strs.insert(0, m['msg']);
     });
   }
 
@@ -285,98 +203,120 @@ class UserData {
     return result;
   }
 
-  ///将内存中的矩阵列存储到文件
-  static writeMatrix() async {
-    File matrixsFile = await _getMatrixsFile();
-    if (matrixsFile.existsSync()) {
-      matrixsFile.delete();
-    }
-    await matrixsFile.create();
-    var sb = new StringBuffer();
-    matrixs.forEach((name, value) => sb.write('$name:$value;'));
-    matrixsFile.writeAsStringSync(sb.toString());
-  }
-
-  ///将内存中的数字列存储到文件
-  static writeDb() async {
-    File dbsFile = await _getDbsFile();
-    if (dbsFile.existsSync()) {
-      dbsFile.delete();
-    }
-    await dbsFile.create();
-    var sb = new StringBuffer();
-    dbs.forEach((name, value) => sb.write('$name:$value;'));
-    dbsFile.writeAsStringSync(sb.toString());
-  }
-
-  ///将内存中的消息队列写入到文件
-  static writeText() async {
-    File textFile = await _getTextFile();
-    if (textFile.existsSync()) {
-      textFile.delete();
-    }
-    await textFile.create();
-    var sb = new StringBuffer();
-    strs.forEach((str) => sb.write('$str|||'));
-    textFile.writeAsStringSync(sb.toString());
-  }
-
   ///获取当前平台的数据库路径
-  static Future<String> getDBPath() async {
+  static Future<Database> getDB() async {
     String dbPath = await getDatabasesPath();
-    return join(dbPath, 'xiaoming.db');
-  }
-
-  static void addNum(String name, num value) async {
-    String path = await getDBPath();
-    if(!File(path).existsSync()){
-      openDatabase(path, version: 1, onCreate: (Database db, int version) async {
+    String path = join(dbPath, 'xiaoming.db');
+    if (!File(path).existsSync()) {
+      return openDatabase(path, version: 1, onCreate: (db, version) async {
+        await db
+            .execute('create table Nums(name TEXT primary key, value DOUBLE);');
         await db.execute(
-            'create table Xiaoming(name TEXT primary key, value DOUBLE)');
-      }).then((Database db) {
-        db.rawInsert('INSERT INTO Xiaoming(name, value) VALUES("$name", $value)');
+            'create table Matrixs(name TEXT primary key, value TEXT);');
+        await db.execute('''
+            create table UserFunction(funName TEXT primary key,
+            paras TEXT, funCmds TEXT);
+            ''');
+        await db.execute('create table Message(id integer primary key autoincrement, msg TEXT);');
       });
-    }else {
-      openDatabase(path, version: 1).then((db){
-        db.rawInsert('insert into Xiaoming(name, value) values("$name", $value)');
-      });
+    } else {
+      return openDatabase(path, version: 1);
     }
   }
 
+  ///添加Num到数据库
+  static void addNum(String name, num value) async {
+    Database db = await getDB();
+    db.rawInsert('INSERT INTO Nums(name, value) VALUES("$name", $value)');
+  }
+
+  ///从数据库中读取num
   static void readNum() {
-    getDatabasesPath().then((String dbPath) async {
-      String path = join(dbPath, 'xiaoming.db');
-      if(File(path).existsSync()){
-        print("进入了扫描文件");
-        openDatabase(path, version: 1).then((db){
-          db.rawQuery('SELECT * FROM Xiaoming').then((list){
-            list.forEach((m){
-              dbs[m['name']] = num.parse(m['value'].toString());
-            });
-          });
+    getDB().then((db) {
+      db.rawQuery('SELECT * FROM Nums').then((list) {
+        list.forEach((m) {
+          dbs[m['name']] = num.parse(m['value'].toString());
         });
-      }
+      });
     });
   }
 
+  ///删除数据库中所有Num
   static Future<void> deleteAllNum() async {
-    String path = await getDBPath();
-    await File(path).delete();
+    Database db = await getDB();
+    db.rawDelete('DELETE FROM Nums');
   }
 
+  ///更新数据库中某个num的值
   static Future<void> updateNum(String name, num value) async {
-    String path = await getDBPath();
-    Database db = await openDatabase(path, version: 1);
-    db.rawUpdate('UPDATE Xiaoming SET value = $value WHERE name = "$name"');
+    Database db = await getDB();
+    db.rawUpdate('UPDATE Nums SET value = $value WHERE name = "$name"');
+  }
+
+  static Future<void> deleteNum(String name) async {
+    Database db = await getDB();
+    db.rawDelete('delete from Nums where name = "$name"');
+  }
+
+  ///添加Matrix到数据库
+  static Future<void> addMatrix(String name, List<List<num>> matrix) async {
+    Database db = await getDB();
+    db.rawInsert(
+        'insert into Matrixs(name, value) values("$name", "${matrix.toString()}")');
+  }
+
+  ///更新数据库中对应name的值
+  static Future<void> updateMatrix(String name, List<List<num>> matrix) async {
+    Database db = await getDB();
+    db.rawUpdate(
+        'update Matrixs set value = "${matrix.toString()}" where name = "$name"');
+  }
+
+  static Future<void> deleteMatrix(String name) async {
+    Database db = await getDB();
+    db.rawDelete('delete from Matrixs where name = "$name"');
+  }
+
+  ///删除数据库中所有Matrix
+  static Future<void> deleteAllMatrix() async {
+    Database db = await getDB();
+    db.rawDelete('delete from Matrixs');
+  }
+
+  static Future<void> addMessage(String msg) async {
+    Database db = await getDB();
+    db.rawInsert('insert into Message(msg) values("$msg")');
+  }
+
+  static Future<void> deleteAllMessage() async {
+    Database db = await getDB();
+    db.rawDelete('delete from Message');
+  }
+
+  static Future<void> addUF(
+      String funName, List<String> paras, List<String> funCmds) async {
+    Database db = await getDB();
+    db.rawInsert(
+        'insert into UserFunction(funName, paras, funCmds) values("$funName", "${paras.toString()}", "${funCmds.toString()}")');
+  }
+
+  static Future<void> deleteUF(String funName) async {
+    Database db = await getDB();
+    db.rawDelete('delete from UserFunction where funName = "$funName"');
+  }
+
+  static Future<void> deleteAllUF() async {
+    Database db = await getDB();
+    db.rawDelete('delete from UserFunction');
   }
 }
 
 ///内置的命令行函数
 class CmdMethod {
   String name; //函数名
-  String ename;
+  String ename; //函数的英文名
   String cmdText; //函数命令
-  String emethodDescription; //函数操作文本
+  String emethodDescription; //函数的英文详细描述
   String methodDescription; //函数详细描述
 
   CmdMethod(this.name, this.ename, this.cmdText, this.emethodDescription,

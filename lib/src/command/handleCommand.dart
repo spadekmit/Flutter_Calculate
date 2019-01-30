@@ -62,10 +62,15 @@ String _handleGetMatrix(String cmd) {
     }
     index++;
   }
-  UserData.matrixs.remove(name);
-  UserData.dbs.remove(name);
+  if(UserData.matrixs.containsKey(name)){
+    UserData.updateMatrix(name, list);
+  }else if(UserData.dbs.containsKey(name)){
+    UserData.dbs.remove(name);
+    UserData.deleteNum(name);
+  }else{
+    UserData.addMatrix(name, list);
+  }
   UserData.matrixs[name] = list;
-  UserData.writeMatrix();
   return MatrixUtil.mtoString(name: name, list: list);
 }
 
@@ -88,14 +93,22 @@ String _handleMatrixArithmetic(String cmd) {
     var re = handleCalcuStr(newcmd);
     if (name != null) {
       if (re is List<List<num>>) {
-        UserData.dbs.remove(name);
+        if(UserData.matrixs.containsKey(name)){
+          UserData.updateMatrix(name, re);
+        }else if(UserData.dbs.containsKey(name)){
+          UserData.dbs.remove(name);
+          UserData.deleteNum(name);
+        }else{
+          UserData.addMatrix(name, re);
+        }
         UserData.matrixs[name] = MatrixUtil.copyMatrix(re); //将运算得到的矩阵添加到矩阵池
-        UserData.writeMatrix();
         result = MatrixUtil.mtoString(name: name, list: UserData.matrixs[name]);
       } else if (re is num) {
         if(UserData.dbs.containsKey(name)){
-          UserData.matrixs.remove(name);
           UserData.updateNum(name, re);
+        }else if(UserData.matrixs.containsKey(name)){
+          UserData.matrixs.remove(name);
+          UserData.deleteMatrix(name);
         }else{
           UserData.addNum(name, re);
         }
@@ -282,7 +295,7 @@ String _handleDefinFunction(String cmd) {
     UserData.userFunctions.remove(getUfByName(funName));
   }
   UserData.userFunctions.add(new UserFunction(funName, funPara, cmds));
-  UserData.writeUserFun();
+  UserData.addUF(funName, funPara, cmds);
   return '已保存';
 }
 

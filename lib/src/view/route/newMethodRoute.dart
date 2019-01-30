@@ -44,7 +44,7 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
                               UserData.userFunctions.remove(getUfByName(_funName));
                             }
                             UserData.userFunctions.add(uf);
-                            UserData.writeUserFun();
+                            UserData.addUF(uf.funName, uf.paras, uf.funCmds);
                             Navigator.of(context)
                               ..pop()
                               ..pop();

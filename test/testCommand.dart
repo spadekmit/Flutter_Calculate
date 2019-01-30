@@ -8,9 +8,9 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
 
   test('userFunction', () {
-    String cmd = 'Fun test(x):2x^3-6x';
+    String cmd = 'Fun test(x,y):x*y';
     print(handleCommand(cmd));
-    print(handleCommand('test(3)'));
+    print(handleCommand('test(3,4)'));
   });
 
   test('_formatCmdStr', (){

@@ -32,7 +32,7 @@ class _MethodRouteState extends State<MethodRoute> {
                   onPressed: () {
                     setState(() {
                       UserData.userFunctions = [];
-                      UserData.writeUserFun();
+                      UserData.deleteAllUF();
                     });
                     Navigator.of(context).pop();
                   },
@@ -76,14 +76,15 @@ class _MethodRouteState extends State<MethodRoute> {
                 var temp;
                 setState(() {
                   temp = UserData.userFunctions.removeAt(index);
+                  UserData.deleteUF(u.funName);
                 });
                 Scaffold.of(context).showSnackBar(SnackBar(
                   content: Text(XiaomingLocalizations.of(context).removeUF),
                   action: SnackBarAction(label: XiaomingLocalizations.of(context).undo, onPressed: ()=>setState((){
                     UserData.userFunctions.insert(index, temp);
+                    UserData.addUF(u.funName, u.paras, u.funCmds);
                   })),
                 ));
-                UserData.writeUserFun();
               },
               background: Container(
                 color: Colors.red,
