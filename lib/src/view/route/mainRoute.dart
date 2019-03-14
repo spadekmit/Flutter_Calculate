@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return CupertinoApp(
         color: Colors.white,
         debugShowCheckedModeBanner: false,
         localizationsDelegates: [
@@ -30,13 +30,10 @@ class MyApp extends StatelessWidget {
         onGenerateTitle: (context) {
           return XiaomingLocalizations.of(context).appName;
         },
-        theme: ThemeData(
-          primaryColor: Colors.white,
-        ),
         home: Builder(
           builder: (context) => Scaffold(
                 drawer: buildDrawer(context: context),
-                appBar: buildMainAppBar(context: context),
+                appBar: CupertinoNavigationBar(middle: Text(XiaomingLocalizations.of(context).appName),),
                 body: TextScreen(),
               ),
         ));

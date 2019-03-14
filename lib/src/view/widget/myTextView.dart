@@ -17,11 +17,13 @@ class TextView extends StatelessWidget {
           parent: animationController, curve: Curves.easeOut),
       axisAlignment: 0.0,
       child: new GestureDetector(
-        child: new ListTile(
-            title: new Container(
-          margin: const EdgeInsets.only(left: 5.0),
-          child: new Text(text),
-        )),
+        child: new Container(
+          margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          child: new Text(
+            text,
+            style:TextStyle(fontSize : 20.0)
+          ),
+        ),
         onLongPress: _handleLongPress,
       ),
     );
