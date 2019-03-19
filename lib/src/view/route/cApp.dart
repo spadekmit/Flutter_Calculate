@@ -12,7 +12,7 @@ class cApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoApp(
+    return MaterialApp(
         color: Colors.white,
         debugShowCheckedModeBanner: false,
         localizationsDelegates: [
@@ -34,9 +34,21 @@ class cApp extends StatelessWidget {
               ),
             ]),
             tabBuilder: (BuildContext context, int index) {
-              return CupertinoTabView(builder: (BuildContext context) {
-                return CupertinoPageScaffold(child: TextScreen());
-              });
+              switch (index) {
+                case 0:
+                  return CupertinoTabView(builder: (BuildContext context) {
+                    return TextScreen();
+                  });
+                  break;
+                case 1:
+                  return CupertinoTabView(builder: (BuildContext context) {
+                    return CupertinoPageScaffold(
+                      child: Center(
+                        child: Text("Hello Wrold!"),
+                      ),
+                    );
+                  });
+              }
             }));
   }
 }
@@ -88,58 +100,53 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
     });
 
     ///主界面布局
-    return Builder(
-        builder: (context) => Column(
-              children: <Widget>[
-                new Flexible(
-                    child: new GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: () {
-                          _textFocusNode.unfocus();
-                          setState(() {
-                            _isExpanded = false;
-                          });
-                        },
-                        child: new ListView.builder(
-                          padding: new EdgeInsets.only(left: 5.0),
-                          reverse: true,
-                          itemBuilder: (context, int index) {
-                            //_texts[index].context = context;
-                            return _texts[index];
-                          },
-                          itemCount: _texts.length,
-                        ))),
-                new Divider(height: 1.0),
-                new Container(
-                  decoration: new BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                  ),
-                  child: _buildButtons(),
-                ),
-                new Divider(height: 1.0),
-                new Container(
-                  decoration: new BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                  ),
-                  child: _buildTextComposer(context),
-                )
-              ],
-            ));
+    return CupertinoPageScaffold(
+        child: Column(
+          children: <Widget>[
+            new Flexible(
+                child: new GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      _textFocusNode.unfocus();
+                      setState(() {
+                        _isExpanded = false;
+                      });
+                    },
+                    child: new ListView.builder(
+                      padding: new EdgeInsets.only(left: 5.0),
+                      reverse: true,
+                      itemBuilder: (context, int index) {
+                        //_texts[index].context = context;
+                        return _texts[index];
+                      },
+                      itemCount: _texts.length,
+                    ))),
+            new Divider(height: 1.0),
+            // new Container(
+            //   decoration: new BoxDecoration(
+            //     color: Theme.of(context).cardColor,
+            //   ),
+            //   child: _buildButtons(),
+            // ),
+            // new Divider(height: 1.0),
+            new Container(
+              decoration: new BoxDecoration(
+                color: Theme.of(context).cardColor,
+              ),
+              child: _buildTextComposer(context),
+            ),
+            new SizedBox(height: 50.0,)
+          ],
+        ));
   }
 
   ///输入控件，包含一个输入框和一个按钮
   Widget _buildTextComposer(BuildContext context) {
-    return Container(
-      height: 100.0,
-      padding: EdgeInsets.only(bottom: 45.0),
-          child: GestureDetector(
-        onTap: () => setState(() {
-              _isExpanded = true;
-            }),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(width: 10.0,),
+    return Row(
+        children: <Widget>[
+          SizedBox(
+            width: 10.0,
+          ),
           Flexible(
             child: CupertinoTextField(
               focusNode: _textFocusNode,
@@ -166,9 +173,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                   : null,
             ),
           )
-        ]),
-      ),
-    );
+        ]);
   }
 
   ///处理发送按钮的点击事件
