@@ -6,13 +6,15 @@ import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/widget/myTextView.dart';
+import 'dataRoute.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 class cApp extends StatelessWidget {
   cApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return CupertinoApp(
         color: Colors.white,
         debugShowCheckedModeBanner: false,
         localizationsDelegates: [
@@ -44,11 +46,7 @@ class cApp extends StatelessWidget {
                   break;
                 case 1:
                   return CupertinoTabView(builder: (BuildContext context) {
-                    return CupertinoPageScaffold(
-                      child: Center(
-                        child: Text("Hello Wrold!"),
-                      ),
-                    );
+                    return DataRoute();
                   });
               }
             }));
@@ -66,7 +64,8 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   FocusNode _textFocusNode;
   List<TextView> _texts = <TextView>[]; //存储消息的列表
   bool _isComposing = false;
-  bool _isExpanded = false;
+  double inputHeight = 50.0;
+  bool _buttonsIsVisable = false;
 
   ///初始化对象及加载数据
   @override
@@ -85,61 +84,66 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
       textView.animationController.forward();
     });
 
+    KeyboardVisibilityNotification().addNewListener(
+      onChange: (bool visible) {
+        if(visible){
+          inputHeight = 280.0;
+          _buttonsIsVisable = true;
+        }else {
+          inputHeight = 50.0;
+          _buttonsIsVisable = false;
+        }
+      },
+    );
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    //记录当前语言
     UserData.language = Localizations.localeOf(context).languageCode;
-    _textFocusNode.addListener(() {
-      if (SettingData.isAutoExpanded) {
-        if (_textFocusNode.hasFocus) {
-          setState(() {
-            _isExpanded = true;
-          });
-        }
-      }
-    });
 
     ///主界面布局
     return CupertinoPageScaffold(
-        child: Column(
-          children: <Widget>[
-            new Flexible(
-                child: new GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      _textFocusNode.unfocus();
-                      setState(() {
-                        _isExpanded = false;
-                      });
+      child: Column(
+        children: <Widget>[
+          new Flexible(
+              child: new GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    _textFocusNode.unfocus();
+                  },
+                  child: new ListView.builder(
+                    padding: new EdgeInsets.only(left: 5.0),
+                    reverse: true,
+                    itemBuilder: (context, int index) {
+                      //_texts[index].context = context;
+                      return _texts[index];
                     },
-                    child: new ListView.builder(
-                      padding: new EdgeInsets.only(left: 5.0),
-                      reverse: true,
-                      itemBuilder: (context, int index) {
-                        //_texts[index].context = context;
-                        return _texts[index];
-                      },
-                      itemCount: _texts.length,
-                    ))),
-            new Divider(height: 1.0),
-            // new Container(
-            //   decoration: new BoxDecoration(
-            //     color: Theme.of(context).cardColor,
-            //   ),
-            //   child: _buildButtons(),
-            // ),
-            // new Divider(height: 1.0),
-            new Container(
-              decoration: new BoxDecoration(
-                color: Theme.of(context).cardColor,
-              ),
-              child: _buildTextComposer(context),
+                    itemCount: _texts.length,
+                  ))),
+          new Divider(height: 1.0),
+           new Container(
+             decoration: new BoxDecoration(
+               color: Theme.of(context).cardColor,
+             ),
+             child: Container(
+               height: _buttonsIsVisable ? 220.0 : 0.0,
+               child: _buildButtons(),
+             ),
+           ),
+           new Divider(height: 1.0),
+          new Container(
+            decoration: new BoxDecoration(
+              color: Theme.of(context).cardColor,
             ),
-            new SizedBox(height: 50.0,)
-          ],
-        ));
+            child: _buildTextComposer(context),
+          ),
+          new SizedBox(height: inputHeight,),
+        ],
+      ),
+    );
   }
 
   ///输入控件，包含一个输入框和一个按钮
@@ -152,7 +156,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
           Flexible(
             child: CupertinoTextField(
               focusNode: _textFocusNode,
-              maxLines: null,
+              maxLines: 1,
               controller: _textController,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.0),
@@ -174,7 +178,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                   ? () => _handleSubmitted(context, _textController.text)
                   : null,
             ),
-          )
+          ),
         ]);
   }
 
@@ -182,7 +186,6 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   void _handleSubmitted(BuildContext context, String text) {
     _textController.clear();
     setState(() {
-      _isExpanded = false;
       _isComposing = false;
     });
     UserData.strs.insert(0, text);
@@ -223,154 +226,101 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
 
   //创建方便输入的按钮栏
   Widget _buildButtons() {
-    return ExpansionPanelList(
-      expansionCallback: (int i, bool b) => setState(() {
-            _isExpanded = !_isExpanded;
-          }),
-      children: <ExpansionPanel>[
-        ExpansionPanel(
-          headerBuilder: (context, isExpanded) {
-            return Align(
-              alignment: Alignment.centerLeft,
-              child: CupertinoButton(
-                child: Icon(Icons.delete),
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text(XiaomingLocalizations.of(context)
-                              .deleteAllMessage),
-                          actions: <Widget>[
-                            FlatButton(
-                              child: Text(
-                                  XiaomingLocalizations.of(context).delete),
-                              onPressed: () {
-                                setState(() {
-                                  UserData.strs.clear();
-                                  _texts.clear();
-                                });
-                                UserData.deleteAllMessage();
-                                Navigator.of(context).pop();
-                                setState(() {
-                                  _isExpanded = false;
-                                });
-                              },
-                            ),
-                            FlatButton(
-                              child: Text(
-                                  XiaomingLocalizations.of(context).cancel),
-                              onPressed: () => Navigator.of(context).pop(),
-                            )
-                          ],
-                        );
-                      });
-                },
+    return Column(children: <Widget>[
+      Flexible(
+        child: Scrollbar(
+          child: ListView(
+            children: <Widget>[
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  _buildTextButton('Fun', width: double.infinity),
+                  _buildTextButton('inv(', width: double.infinity),
+                  _buildTextButton('tran(', width: double.infinity),
+                  _buildTextButton('value(', width: double.infinity),
+                ],
               ),
-            );
-          },
-          isExpanded: _isExpanded,
-          body: LimitedBox(
-            maxHeight: SettingData.buttonsHeight,
-            child: Column(children: <Widget>[
-              Flexible(
-                child: Scrollbar(
-                  child: ListView(
-                    children: <Widget>[
-                      new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          _buildTextButton('Fun', width: double.infinity),
-                          _buildTextButton('inv(', width: double.infinity),
-                          _buildTextButton('tran(', width: double.infinity),
-                          _buildTextButton('value(', width: double.infinity),
-                        ],
-                      ),
-                      new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          _buildTextButton('upmat(', width: double.infinity),
-                          _buildTextButton('cofa(', width: double.infinity),
-                          _buildTextButton('calculus(', width: double.infinity),
-                          _buildTextButton('roots(', width: double.infinity),
-                        ],
-                      ),
-                      new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          _buildTextButton('sum(', width: double.infinity),
-                          _buildTextButton('average(', width: double.infinity),
-                          _buildTextButton('factorial(',
-                              width: double.infinity),
-                          _buildTextButton('sin(', width: double.infinity),
-                        ],
-                      ),
-                      new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          _buildTextButton('cos(', width: double.infinity),
-                          _buildTextButton('tan(', width: double.infinity),
-                          _buildTextButton('asin(', width: double.infinity),
-                          _buildTextButton('acos(', width: double.infinity),
-                        ],
-                      ),
-                      new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          _buildTextButton('atan(', width: double.infinity),
-                          _buildTextButton('formatDeg(',
-                              width: double.infinity),
-                          _buildTextButton('reForDeg(', width: double.infinity),
-                          _buildTextButton('absSum(', width: double.infinity),
-                        ],
-                      ),
-                      new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          _buildTextButton('absAverage(',
-                              width: double.infinity),
-                          _buildTextButton('radToDeg(', width: double.infinity),
-                          _buildTextButton('lagrange(', width: double.infinity),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  _buildTextButton('upmat(', width: double.infinity),
+                  _buildTextButton('cofa(', width: double.infinity),
+                  _buildTextButton('calculus(', width: double.infinity),
+                  _buildTextButton('roots(', width: double.infinity),
+                ],
               ),
-              Divider(height: 1.0),
-              LimitedBox(
-                maxHeight: 40,
-                child: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    _buildTextButton(','),
-                    _buildTextButton(';'),
-                    _buildTextButton(':'),
-                    _buildTextButton('['),
-                    _buildTextButton('='),
-                    _buildTextButton('('),
-                  ],
-                ),
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  _buildTextButton('sum(', width: double.infinity),
+                  _buildTextButton('average(', width: double.infinity),
+                  _buildTextButton('factorial(',
+                      width: double.infinity),
+                  _buildTextButton('sin(', width: double.infinity),
+                ],
               ),
-              Divider(height: 1.0),
-              LimitedBox(
-                maxHeight: 40,
-                child: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    _buildTextButton('^'),
-                    _buildTextButton('+'),
-                    _buildTextButton('-'),
-                    _buildTextButton('*'),
-                    _buildTextButton('/'),
-                  ],
-                ),
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  _buildTextButton('cos(', width: double.infinity),
+                  _buildTextButton('tan(', width: double.infinity),
+                  _buildTextButton('asin(', width: double.infinity),
+                  _buildTextButton('acos(', width: double.infinity),
+                ],
               ),
-            ]),
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  _buildTextButton('atan(', width: double.infinity),
+                  _buildTextButton('formatDeg(',
+                      width: double.infinity),
+                  _buildTextButton('reForDeg(', width: double.infinity),
+                  _buildTextButton('absSum(', width: double.infinity),
+                ],
+              ),
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  _buildTextButton('absAverage(',
+                      width: double.infinity),
+                  _buildTextButton('radToDeg(', width: double.infinity),
+                  _buildTextButton('lagrange(', width: double.infinity),
+                ],
+              ),
+            ],
           ),
         ),
-      ],
-    );
+      ),
+      Divider(height: 1.0),
+      LimitedBox(
+        maxHeight: 40,
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            _buildTextButton(','),
+            _buildTextButton(';'),
+            _buildTextButton(':'),
+            _buildTextButton('['),
+            _buildTextButton('='),
+            _buildTextButton('('),
+          ],
+        ),
+      ),
+      Divider(height: 1.0),
+      LimitedBox(
+        maxHeight: 40,
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            _buildTextButton('^'),
+            _buildTextButton('+'),
+            _buildTextButton('-'),
+            _buildTextButton('*'),
+            _buildTextButton('/'),
+          ],
+        ),
+      ),
+    ]);
   }
 
   /// 处理便捷输入按钮的点击事件

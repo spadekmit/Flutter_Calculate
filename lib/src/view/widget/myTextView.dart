@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
 ///单个输出文本的视图
 class TextView extends StatelessWidget {
-  ScaffoldState scaffoldState = new ScaffoldState();
   TextView({this.context, this.text, this.animationController});
   final BuildContext context;
   final AnimationController animationController;
@@ -17,11 +17,20 @@ class TextView extends StatelessWidget {
           parent: animationController, curve: Curves.easeOut),
       axisAlignment: 0.0,
       child: new GestureDetector(
-        child: new Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(18.0)),
+            color: CupertinoColors.lightBackgroundGray,
+          ),
+          margin: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
+          padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10.0),
           child: new Text(
             text,
-            style:TextStyle(fontSize : 20.0)
+            style:TextStyle(
+              fontSize : 18.0,
+              color: CupertinoColors.black,
+              fontWeight: FontWeight.w400,
+            )
           ),
         ),
         onLongPress: _handleLongPress,
