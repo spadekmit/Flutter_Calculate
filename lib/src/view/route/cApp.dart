@@ -25,12 +25,14 @@ class cApp extends StatelessWidget {
           const Locale('zh', 'CH'),
         ],
         home: CupertinoTabScaffold(
-            tabBar: CupertinoTabBar(items: <BottomNavigationBarItem>[
+            tabBar: CupertinoTabBar(items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.message),
+                title: Text("Home"),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.dashboard),
+                title: Text("Data"),
               ),
             ]),
             tabBuilder: (BuildContext context, int index) {
