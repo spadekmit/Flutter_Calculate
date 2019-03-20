@@ -5,9 +5,11 @@ import 'package:xiaoming/src/command/handleCommand.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
+import 'package:xiaoming/src/view/route/methodRoute.dart';
 import 'package:xiaoming/src/view/widget/myTextView.dart';
 import 'package:xiaoming/src/view/route/dataRoute.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:xiaoming/src/view/widget/DeleteButton.dart';
 
 class MyApp extends StatelessWidget {
   MyApp({Key key}) : super(key: key);
@@ -15,43 +17,70 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
-        color: Colors.white,
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          XiaomingLocalizationsDelegate.delegate,
-        ],
-        supportedLocales: [
-          const Locale('en', 'US'),
-          const Locale('zh', 'CH'),
-        ],
-        home: CupertinoTabScaffold(
-            tabBar: CupertinoTabBar(items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.message),
-                title: Text("Home"),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.dashboard),
-                title: Text("Data"),
-              ),
-            ]),
-            tabBuilder: (BuildContext context, int index) {
-              switch (index) {
-                case 0:
-                  return CupertinoTabView(builder: (BuildContext context) {
-                    return TextScreen();
-                  });
-                  break;
-                case 1:
-                  return CupertinoTabView(builder: (BuildContext context) {
-                    return DataRoute();
-                  });
-              }
-            }));
+      color: Colors.white,
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        XiaomingLocalizationsDelegate.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'),
+        const Locale('zh', 'CH'),
+      ],
+      home: myTabScaffold,
+    );
   }
 }
+
+final Widget myTabScaffold = CupertinoTabScaffold(
+    tabBar: CupertinoTabBar(items: const <BottomNavigationBarItem>[
+      BottomNavigationBarItem(
+        icon: Icon(Icons.message),
+        title: Text("Home"),
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.save),
+        title: Text("Saved"),
+      ),
+    ]),
+    tabBuilder: (BuildContext context, int index) {
+      switch (index) {
+        case 0:
+          return CupertinoTabView(builder: (BuildContext context) {
+            return TextScreen();
+          });
+          break;
+        case 1:
+          return CupertinoTabView(builder: (BuildContext context) {
+            return CupertinoTabScaffold(
+              tabBar: CupertinoTabBar(items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.dashboard),
+                  title: Text("Data"),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.date_range),
+                  title: Text("Method"),
+                ),
+              ]),
+              tabBuilder: (BuildContext context, int index){
+                switch (index) {
+                  case 0:
+                    return CupertinoTabView(builder: (BuildContext context) {
+                      return DataRoute();
+                    },);
+                    break;
+                  case 1:
+                    return CupertinoTabView(builder: (BuildContext context) {
+                      return MethodRoute();
+                    },);
+                }
+              },
+            );
+          });
+      }
+    });
 
 /// 主界面，包含一个listview显示输出的文本，一个输入框和发送按钮，两排方便输入的按钮
 /// _texts用来存储要显示的文本
@@ -64,8 +93,8 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   FocusNode _textFocusNode;
   List<TextView> _texts = <TextView>[]; //存储消息的列表
   bool _isComposing = false;
-  double inputHeight = 50.0;
-  bool _buttonsIsVisable = false;
+  bool _buttonsIsVisible = false;
+  double tabHeight;
 
   ///初始化对象及加载数据
   @override
@@ -86,12 +115,12 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
 
     KeyboardVisibilityNotification().addNewListener(
       onChange: (bool visible) {
-        if(visible){
-          inputHeight = 280.0;
-          _buttonsIsVisable = true;
-        }else {
-          inputHeight = 50.0;
-          _buttonsIsVisable = false;
+        if (visible) {
+          tabHeight = 0.0;
+          _buttonsIsVisible = true;
+        } else {
+          tabHeight = MediaQuery.of(context).padding.bottom;
+          _buttonsIsVisible = false;
         }
       },
     );
@@ -103,9 +132,59 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     //记录当前语言
     UserData.language = Localizations.localeOf(context).languageCode;
+    tabHeight = MediaQuery.of(context).padding.bottom;
+
+    ///Home界面导航栏，包含帮助按钮和删除按钮
+    final Widget trailingBar = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        CupertinoButton(
+          padding: EdgeInsets.zero,
+          child: Semantics(
+            label: 'Help',
+            child: const Icon(CupertinoIcons.book),
+          ),
+          onPressed: () {},
+        ),
+        const SizedBox(
+          width: 8.0,
+        ),
+        DeleteButton(0, (){
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return CupertinoAlertDialog(
+                  title: Text(XiaomingLocalizations.of(context).deleteAllMessage),
+                  actions: <Widget>[
+                    CupertinoDialogAction(
+                      child: Text(
+                          XiaomingLocalizations.of(context).delete),
+                      onPressed: () {
+                        setState(() {
+                          UserData.strs.clear();
+                          _texts.clear();
+                        });
+                        UserData.deleteAllMessage();
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    CupertinoDialogAction(
+                      child: Text(
+                          XiaomingLocalizations.of(context).cancel),
+                      onPressed: () => Navigator.of(context).pop(),
+                    )
+                  ],
+                );
+              });
+        }),
+      ],
+    );
 
     ///主界面布局
     return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        trailing: trailingBar,
+      ),
       resizeToAvoidBottomInset: false,
       child: Column(
         children: <Widget>[
@@ -125,23 +204,25 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                     itemCount: _texts.length,
                   ))),
           new Divider(height: 1.0),
-           new Container(
-             decoration: new BoxDecoration(
-               color: Theme.of(context).cardColor,
-             ),
-             child: Container(
-               height: _buttonsIsVisable ? 220.0 : 0.0,
-               child: _buildButtons(),
-             ),
-           ),
-           new Divider(height: 1.0),
+          new Container(
+            decoration: new BoxDecoration(
+              color: Theme.of(context).cardColor,
+            ),
+            child: Container(
+              height: _buttonsIsVisible ? 220.0 : 0.0,
+              child: _buildButtons(),
+            ),
+          ),
+          new Divider(height: 1.0),
           new Container(
             decoration: new BoxDecoration(
               color: Theme.of(context).cardColor,
             ),
             child: _buildTextComposer(context),
           ),
-          new SizedBox(height: inputHeight,),
+          new SizedBox(
+            height: MediaQuery.of(context).padding.bottom,
+          ),
         ],
       ),
     );
@@ -149,38 +230,37 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
 
   ///输入控件，包含一个输入框和一个按钮
   Widget _buildTextComposer(BuildContext context) {
-    return Row(
-        children: <Widget>[
-          SizedBox(
-            width: 10.0,
+    return Row(children: <Widget>[
+      SizedBox(
+        width: 10.0,
+      ),
+      Flexible(
+        child: CupertinoTextField(
+          focusNode: _textFocusNode,
+          maxLines: 1,
+          controller: _textController,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(color: Colors.orange, width: 2.0),
           ),
-          Flexible(
-            child: CupertinoTextField(
-              focusNode: _textFocusNode,
-              maxLines: 1,
-              controller: _textController,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                border: Border.all(color: Colors.orange, width: 2.0),
-              ),
-              onChanged: (String text) {
-                setState(() {
-                  _isComposing = text.length > 0;
-                });
-              },
-              onSubmitted: (String text) => _handleSubmitted(context, text),
-            ),
-          ),
-          new Container(
-            margin: new EdgeInsets.symmetric(horizontal: 4.0),
-            child: new CupertinoButton(
-              child: new Icon(Icons.send),
-              onPressed: _isComposing
-                  ? () => _handleSubmitted(context, _textController.text)
-                  : null,
-            ),
-          ),
-        ]);
+          onChanged: (String text) {
+            setState(() {
+              _isComposing = text.length > 0;
+            });
+          },
+          onSubmitted: (String text) => _handleSubmitted(context, text),
+        ),
+      ),
+      new Container(
+        margin: new EdgeInsets.symmetric(horizontal: 4.0),
+        child: new CupertinoButton(
+          child: new Icon(Icons.send),
+          onPressed: _isComposing
+              ? () => _handleSubmitted(context, _textController.text)
+              : null,
+        ),
+      ),
+    ]);
   }
 
   ///处理发送按钮的点击事件
@@ -255,8 +335,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                 children: <Widget>[
                   _buildTextButton('sum(', width: double.infinity),
                   _buildTextButton('average(', width: double.infinity),
-                  _buildTextButton('factorial(',
-                      width: double.infinity),
+                  _buildTextButton('factorial(', width: double.infinity),
                   _buildTextButton('sin(', width: double.infinity),
                 ],
               ),
@@ -273,8 +352,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   _buildTextButton('atan(', width: double.infinity),
-                  _buildTextButton('formatDeg(',
-                      width: double.infinity),
+                  _buildTextButton('formatDeg(', width: double.infinity),
                   _buildTextButton('reForDeg(', width: double.infinity),
                   _buildTextButton('absSum(', width: double.infinity),
                 ],
@@ -282,8 +360,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
               new Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  _buildTextButton('absAverage(',
-                      width: double.infinity),
+                  _buildTextButton('absAverage(', width: double.infinity),
                   _buildTextButton('radToDeg(', width: double.infinity),
                   _buildTextButton('lagrange(', width: double.infinity),
                 ],

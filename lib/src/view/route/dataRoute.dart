@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:xiaoming/src/command/matrix.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
+import 'package:xiaoming/src/view/widget/DeleteButton.dart';
 
 class DataRoute extends StatefulWidget {
   @override
@@ -17,10 +18,10 @@ class _DataRouteState extends State<DataRoute> {
       showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
+            return CupertinoAlertDialog(
               title: Text(XiaomingLocalizations.of(context).deleteAllData),
               actions: <Widget>[
-                FlatButton(
+                CupertinoDialogAction(
                   child: Text(XiaomingLocalizations.of(context).delete),
                   onPressed: () {
                     setState(() {
@@ -32,7 +33,7 @@ class _DataRouteState extends State<DataRoute> {
                     Navigator.of(context).pop();
                   },
                 ),
-                FlatButton(
+                CupertinoDialogAction(
                   child: Text(XiaomingLocalizations.of(context).cancel),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -44,6 +45,9 @@ class _DataRouteState extends State<DataRoute> {
     }
 
     return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        trailing: DeleteButton(1, _handleEmpty),
+      ),
       child: Builder(
         builder: (context) {
           ///保存的浮点数和矩阵组成的卡片列表

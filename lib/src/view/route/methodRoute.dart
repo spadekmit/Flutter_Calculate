@@ -4,13 +4,6 @@ import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/route/newMethodRoute.dart';
 
-///保存的方法界面
-void popMethodRoute(BuildContext context) {
-  Navigator.of(context).push(new CupertinoPageRoute(builder: (context) {
-    return MethodRoute();
-  }));
-}
-
 class MethodRoute extends StatefulWidget {
   @override
   _MethodRouteState createState() => _MethodRouteState();
@@ -48,18 +41,8 @@ class _MethodRouteState extends State<MethodRoute> {
           });
     }
 
-    return Scaffold(
-      appBar: new AppBar(
-        elevation: 1.0,
-        title: new Text(XiaomingLocalizations.of(context).savedFunction),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => popNewMethodRoute(context),
-          )
-        ],
-      ),
-      body: Builder(
+    return CupertinoPageScaffold(
+      child: Builder(
         builder: (context) {
 
           ///存储方法卡片列表
@@ -130,10 +113,6 @@ class _MethodRouteState extends State<MethodRoute> {
             children: divided,
           );
         } ,
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.delete),
-        onPressed: _handleDelete,
       ),
     );
   }
