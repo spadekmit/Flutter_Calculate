@@ -11,6 +11,7 @@ import 'package:xiaoming/src/view/route/dataRoute.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:xiaoming/src/view/widget/DeleteButton.dart';
 
+///FlutterApp入口
 class MyApp extends StatelessWidget {
   MyApp({Key key}) : super(key: key);
 
@@ -53,31 +54,7 @@ final Widget myTabScaffold = CupertinoTabScaffold(
           break;
         case 1:
           return CupertinoTabView(builder: (BuildContext context) {
-            return CupertinoTabScaffold(
-              tabBar: CupertinoTabBar(items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.dashboard),
-                  title: Text("Data"),
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.date_range),
-                  title: Text("Method"),
-                ),
-              ]),
-              tabBuilder: (BuildContext context, int index){
-                switch (index) {
-                  case 0:
-                    return CupertinoTabView(builder: (BuildContext context) {
-                      return DataRoute();
-                    },);
-                    break;
-                  case 1:
-                    return CupertinoTabView(builder: (BuildContext context) {
-                      return MethodRoute();
-                    },);
-                }
-              },
-            );
+            return DataRoute();
           });
       }
     });
@@ -99,10 +76,12 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   ///初始化对象及加载数据
   @override
   void initState() {
-    SettingData.readSettingData();
+
+    SettingData.readSettingData(); //读取设置数据
     _textController = new TextEditingController();
     _textFocusNode = new FocusNode();
     UserData.strs.forEach((text) {
+      //将保存的历史消息添加进列表并播放动画
       var textView = TextView(
         context: context,
         text: text,
@@ -110,17 +89,22 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
             duration: new Duration(milliseconds: 200), vsync: this),
       );
       _texts.add(textView);
-      textView.animationController.forward();
+      textView.animationController.forward(); //执行完动画Widget才可见
     });
 
+    ///添加虚拟键盘事件监听器
     KeyboardVisibilityNotification().addNewListener(
       onChange: (bool visible) {
         if (visible) {
-          tabHeight = 0.0;
-          _buttonsIsVisible = true;
+          setState(() {
+            tabHeight = 0.0;
+            _buttonsIsVisible = true;
+          });
         } else {
-          tabHeight = MediaQuery.of(context).padding.bottom;
-          _buttonsIsVisible = false;
+          setState(() {
+            tabHeight = MediaQuery.of(context).padding.bottom;
+            _buttonsIsVisible = false;
+          });
         }
       },
     );
@@ -132,7 +116,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     //记录当前语言
     UserData.language = Localizations.localeOf(context).languageCode;
-    tabHeight = MediaQuery.of(context).padding.bottom;
+    tabHeight = MediaQuery.of(context).padding.bottom; //初始化底部导航栏高度
 
     ///Home界面导航栏，包含帮助按钮和删除按钮
     final Widget trailingBar = Row(
@@ -149,16 +133,16 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
         const SizedBox(
           width: 8.0,
         ),
-        DeleteButton(0, (){
+        DeleteButton(0, () {
           showDialog(
               context: context,
               builder: (BuildContext context) {
                 return CupertinoAlertDialog(
-                  title: Text(XiaomingLocalizations.of(context).deleteAllMessage),
+                  title:
+                      Text(XiaomingLocalizations.of(context).deleteAllMessage),
                   actions: <Widget>[
                     CupertinoDialogAction(
-                      child: Text(
-                          XiaomingLocalizations.of(context).delete),
+                      child: Text(XiaomingLocalizations.of(context).delete),
                       onPressed: () {
                         setState(() {
                           UserData.strs.clear();
@@ -169,8 +153,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                       },
                     ),
                     CupertinoDialogAction(
-                      child: Text(
-                          XiaomingLocalizations.of(context).cancel),
+                      child: Text(XiaomingLocalizations.of(context).cancel),
                       onPressed: () => Navigator.of(context).pop(),
                     )
                   ],
@@ -185,7 +168,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
       navigationBar: CupertinoNavigationBar(
         trailing: trailingBar,
       ),
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       child: Column(
         children: <Widget>[
           new Flexible(
@@ -203,13 +186,13 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                     },
                     itemCount: _texts.length,
                   ))),
-          new Divider(height: 1.0),
+          new Divider(height: 1.0, color: _buttonsIsVisible ? Colors.black : null,),
           new Container(
             decoration: new BoxDecoration(
               color: Theme.of(context).cardColor,
             ),
             child: Container(
-              height: _buttonsIsVisible ? 220.0 : 0.0,
+              height: _buttonsIsVisible ? 200.0 : 0.0,
               child: _buildButtons(),
             ),
           ),
@@ -221,7 +204,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
             child: _buildTextComposer(context),
           ),
           new SizedBox(
-            height: MediaQuery.of(context).padding.bottom,
+            height: tabHeight,
           ),
         ],
       ),
@@ -230,7 +213,8 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
 
   ///输入控件，包含一个输入框和一个按钮
   Widget _buildTextComposer(BuildContext context) {
-    return Row(children: <Widget>[
+    return Row(
+        children: <Widget>[
       SizedBox(
         width: 10.0,
       ),
@@ -254,7 +238,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
       new Container(
         margin: new EdgeInsets.symmetric(horizontal: 4.0),
         child: new CupertinoButton(
-          child: new Icon(Icons.send),
+          child: new Icon(CupertinoIcons.forward),
           onPressed: _isComposing
               ? () => _handleSubmitted(context, _textController.text)
               : null,
@@ -305,12 +289,13 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
     );
   }
 
-  //创建方便输入的按钮栏
+  ///创建方便输入的按钮栏
   Widget _buildButtons() {
     return Column(children: <Widget>[
       Flexible(
         child: Scrollbar(
           child: ListView(
+            reverse: true,
             children: <Widget>[
               new Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -53,6 +53,8 @@ class _DataRouteState extends State<DataRoute> {
           ///保存的浮点数和矩阵组成的卡片列表
           List<Dismissible> tiles = <Dismissible>[];
 
+
+
           ///加载矩阵列表
           if (UserData.matrixs.isNotEmpty) {
             UserData.matrixs.forEach((name, list) => tiles.add(Dismissible(
@@ -125,8 +127,18 @@ class _DataRouteState extends State<DataRoute> {
             tiles: tiles.reversed, //将后存入的数据显示在上方
           ).toList();
 
-          return ListView(
-            children: divided,
+          Map<int, Widget> savedWidgets = <int, Widget>{
+            0 : Text("Data"),
+            1 : Text("Method"),
+          };
+
+          return CupertinoSegmentedControl<int>(
+            children: savedWidgets,
+            onValueChanged: (int val) {
+              setState(() {
+
+              });
+            },
           );
         },
       ),

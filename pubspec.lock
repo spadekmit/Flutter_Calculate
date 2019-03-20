@@ -150,7 +150,7 @@ packages:
       name: pedantic
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.4.0"
+    version: "1.5.0"
   petitparser:
     dependency: transitive
     description:
@@ -176,7 +176,7 @@ packages:
       name: source_span
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.5.4"
+    version: "1.5.5"
   sqflite:
     dependency: "direct main"
     description:
@@ -255,5 +255,5 @@ packages:
     source: hosted
     version: "2.1.15"
 sdks:
-  dart: ">=2.1.0 <3.0.0"
+  dart: ">=2.1.1-dev.0.0 <3.0.0"
   flutter: ">=0.1.4 <2.0.0"
