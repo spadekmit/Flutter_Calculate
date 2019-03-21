@@ -46,12 +46,40 @@ class _DataRouteState extends State<DataRoute> {
           });
     }
 
+    void _handleDelete() {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(XiaomingLocalizations.of(context).deleteAllMethod),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(XiaomingLocalizations.of(context).delete),
+                  onPressed: () {
+                    setState(() {
+                      UserData.userFunctions = [];
+                      UserData.deleteAllUF();
+                    });
+                    Navigator.of(context).pop();
+                  },
+                ),
+                FlatButton(
+                  child: Text(XiaomingLocalizations.of(context).cancel),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+    }
+
     ///保存的浮点数和矩阵组成的卡片列表
-    List<Dismissible> tiles = <Dismissible>[];
+    List<Dismissible> datas = <Dismissible>[];
 
     ///加载矩阵列表
     if (UserData.matrixs.isNotEmpty) {
-      UserData.matrixs.forEach((name, list) => tiles.add(Dismissible(
+      UserData.matrixs.forEach((name, list) => datas.add(Dismissible(
             key: Key(name),
             onDismissed: (item) {
               setState(() {
@@ -84,7 +112,7 @@ class _DataRouteState extends State<DataRoute> {
 
     ///加载浮点数列表
     if (UserData.dbs.isNotEmpty) {
-      UserData.dbs.forEach((name, value) => tiles.add(Dismissible(
+      UserData.dbs.forEach((name, value) => datas.add(Dismissible(
             key: Key(name),
             onDismissed: (item) {
               setState(() {
@@ -114,10 +142,73 @@ class _DataRouteState extends State<DataRoute> {
             ),
           )));
     }
-    final List<Widget> divided = ListTile.divideTiles(
+    final List<Widget> divided1 = ListTile.divideTiles(
       context: context,
-      tiles: tiles.reversed, //将后存入的数据显示在上方
+      tiles: datas.reversed, //将后存入的数据显示在上方
     ).toList();
+
+    final List<Widget> methods = <Widget>[];
+          Locale myLocale = Localizations.localeOf(context);
+          String funName;
+          String funDescrip;
+
+          ///将内置方法及已保存的方法加载进tiles
+          for (int index = 0; index < UserData.userFunctions.length; index ++) {
+            var u = UserData.userFunctions[index];
+            methods.add(Dismissible(
+              onDismissed: (item) {
+                var temp;
+                setState(() {
+                  temp = UserData.userFunctions.removeAt(index);
+                  UserData.deleteUF(u.funName);
+                });
+                Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Text(XiaomingLocalizations.of(context).removeUF),
+                  action: SnackBarAction(label: XiaomingLocalizations.of(context).undo, onPressed: ()=>setState((){
+                    UserData.userFunctions.insert(index, temp);
+                    UserData.addUF(u.funName, u.paras, u.funCmds);
+                  })),
+                ));
+              },
+              background: Container(
+                color: Colors.red,
+              ),
+              key: Key(u.funName),
+              child: Card(
+                color: Colors.purple,
+                child: new ListTile(
+                  leading: new Text(
+                    u.funName,
+                  ),
+                  title: new Text(
+                      '${u.funName}(${u.paras.toString().substring(1, u.paras.toString().length - 1)})'),
+                  subtitle: new Text(u.funCmds.toString()),
+                ),
+              ),
+            ));
+          }
+          for (CmdMethod method in UserData.cmdMethods) {
+            if (myLocale.countryCode == 'CH') {
+              funName = method.name;
+              funDescrip = method.methodDescription;
+            } else {
+              funName = method.ename;
+              funDescrip = method.emethodDescription;
+            }
+            methods.add(Card(
+              color: Colors.yellow,
+              child: ListTile(
+                title: Text(
+                  funName,
+                ),
+                subtitle: Text(funDescrip),
+              ),
+            ));
+          }
+          final List<Widget> divided2 = ListTile.divideTiles(
+            context: context,
+            tiles: methods,
+          ).toList();
 
     final Map<int, Widget> titles = const <int, Widget>{
       0: Text("Data"),
@@ -126,10 +217,10 @@ class _DataRouteState extends State<DataRoute> {
 
     Map<int, Widget> lists = <int, Widget>{
       0: ListView(
-        children: divided,
+        children: divided1,
       ),
       1: ListView(
-        children: <Widget>[Text("asdfasdf")],
+        children: divided2,
       ),
     };
 
