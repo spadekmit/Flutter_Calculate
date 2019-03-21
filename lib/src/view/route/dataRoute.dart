@@ -12,42 +12,44 @@ class DataRoute extends StatefulWidget {
 }
 
 class _DataRouteState extends State<DataRoute> {
-  int sharedValue = 0;  //当前卡片序号
+  int sharedValue = 0; //当前卡片序号
+  
+  ///处理清空按钮调用函数
+  void _handleEmpty() {
+    showCupertinoDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text("Delete All Data?"),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                child: Text("Delete"),
+                onPressed: () {
+                  setState(() {
+                    UserData.dbs = new Map();
+                    UserData.matrixs = new Map();
+                    UserData.deleteAllMatrix();
+                    UserData.deleteAllNum();
+                    UserData.userFunctions = [];
+                    UserData.deleteAllUF();
+                  });
+                  Navigator.of(context).pop();
+                },
+              ),
+              CupertinoDialogAction(
+                child: Text("Cancel"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
-    ///处理清空按钮调用函数
-    void _handleEmpty() {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return CupertinoAlertDialog(
-              title: Text(XiaomingLocalizations.of(context).deleteAllData),
-              actions: <Widget>[
-                CupertinoDialogAction(
-                  child: Text(XiaomingLocalizations.of(context).delete),
-                  onPressed: () {
-                    setState(() {
-                      UserData.dbs = new Map();
-                      UserData.matrixs = new Map();
-                      UserData.deleteAllMatrix();
-                      UserData.deleteAllNum();
-                      UserData.userFunctions = [];
-                      UserData.deleteAllUF();
-                    });
-                    Navigator.of(context).pop();
-                  },
-                ),
-                CupertinoDialogAction(
-                  child: Text(XiaomingLocalizations.of(context).cancel),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          });
-    }
+    
 
     ///保存的浮点数和矩阵组成的卡片列表
     List<Dismissible> datas = <Dismissible>[];
@@ -62,32 +64,31 @@ class _DataRouteState extends State<DataRoute> {
                 UserData.deleteMatrix(name);
               });
               showDialog(
-                context: context,
-                builder: (BuildContext context){
-                  return CupertinoAlertDialog(
-                    title: Text(XiaomingLocalizations.of(context).removeData),
-                    actions: <Widget>[
-                      CupertinoDialogAction(
-                        isDestructiveAction: true,
-                        child: Text("Delete"),
-                        onPressed: (){
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      CupertinoDialogAction(
-                        child: Text("Cancel"),
-                        onPressed: (){
-                          setState(() {
-                            UserData.matrixs[name] = list;
-                            UserData.addMatrix(name, list);
-                          });
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  );
-                }
-              );
+                  context: context,
+                  builder: (BuildContext context) {
+                    return CupertinoAlertDialog(
+                      title: Text(XiaomingLocalizations.of(context).removeData),
+                      actions: <Widget>[
+                        CupertinoDialogAction(
+                          isDestructiveAction: true,
+                          child: Text("Delete"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        CupertinoDialogAction(
+                          child: Text("Cancel"),
+                          onPressed: () {
+                            setState(() {
+                              UserData.matrixs[name] = list;
+                              UserData.addMatrix(name, list);
+                            });
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  });
             },
             background: Container(
               color: Colors.red,
@@ -113,20 +114,20 @@ class _DataRouteState extends State<DataRoute> {
               });
               showDialog(
                   context: context,
-                  builder: (BuildContext context){
+                  builder: (BuildContext context) {
                     return CupertinoAlertDialog(
                       title: Text(XiaomingLocalizations.of(context).removeData),
                       actions: <Widget>[
                         CupertinoDialogAction(
                           isDestructiveAction: true,
                           child: Text("Delete"),
-                          onPressed: (){
+                          onPressed: () {
                             Navigator.of(context).pop();
                           },
                         ),
                         CupertinoDialogAction(
                           child: Text("Cancel"),
-                          onPressed: (){
+                          onPressed: () {
                             setState(() {
                               UserData.dbs[name] = value;
                               UserData.addNum(name, value);
@@ -136,8 +137,7 @@ class _DataRouteState extends State<DataRoute> {
                         ),
                       ],
                     );
-                  }
-              );
+                  });
             },
             background: Container(
               color: Colors.red,
@@ -176,20 +176,20 @@ class _DataRouteState extends State<DataRoute> {
           });
           showDialog(
               context: context,
-              builder: (BuildContext context){
+              builder: (BuildContext context) {
                 return CupertinoAlertDialog(
                   title: Text(XiaomingLocalizations.of(context).removeUF),
                   actions: <Widget>[
                     CupertinoDialogAction(
                       isDestructiveAction: true,
                       child: Text("Delete"),
-                      onPressed: (){
+                      onPressed: () {
                         Navigator.of(context).pop();
                       },
                     ),
                     CupertinoDialogAction(
                       child: Text("Cancel"),
-                      onPressed: (){
+                      onPressed: () {
                         setState(() {
                           UserData.userFunctions.insert(index, temp);
                           UserData.addUF(u.funName, u.paras, u.funCmds);
@@ -199,8 +199,7 @@ class _DataRouteState extends State<DataRoute> {
                     ),
                   ],
                 );
-              }
-          );
+              });
         },
         background: Container(
           color: Colors.red,
