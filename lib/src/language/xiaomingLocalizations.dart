@@ -18,9 +18,8 @@ class XiaomingLocalizations {
       'CopyHint': 'The content has been copied to the clipboard',
       'decimal digits': 'decimal digits',
       'delete' : 'delete',
-      'deleteAllMethod' : 'Please confirm if you want to delete all saved custom methods',
       'deleteAllMessage' : 'Please confirm if you want to delete all message',
-      'deleteAllData' : 'Please confirm if you want to delete all saved data',
+      'deleteAllData' : 'Please confirm if you want to delete all saved data and method',
       'empty': 'empty',
       'equations' : 'Equations',
       'equationNotEmpty' : 'Equations cannot be empty',
@@ -82,9 +81,8 @@ class XiaomingLocalizations {
       'CopyHint': '内容已复制到剪切板',
       'decimal digits': '小数保留位数',
       'delete' : '删除',
-      'deleteAllMethod' : '请确认是否要删除所有已保存的自定义方法',
       'deleteAllMessage' : '请确认是否删除所有消息记录',
-      'deleteAllData' : '请确认是否要删除所有已保存的数据',
+      'deleteAllData' : '请确认是否要删除所有已保存的数据和方法',
       'empty': '清空',
       'equations' : '方程',
       'equationNotEmpty' : '方程组不能为空',
@@ -175,10 +173,6 @@ class XiaomingLocalizations {
 
   get delete {
     return _localizedValues[locale.languageCode]['delete'];
-  }
-
-  get deleteAllMethod {
-    return _localizedValues[locale.languageCode]['deleteAllMethod'];
   }
 
   get deleteAllMessage {

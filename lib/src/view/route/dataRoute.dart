@@ -5,13 +5,14 @@ import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/widget/DeleteButton.dart';
 
+///保存的数据与方法界面
 class DataRoute extends StatefulWidget {
   @override
   _DataRouteState createState() => _DataRouteState();
 }
 
 class _DataRouteState extends State<DataRoute> {
-  int sharedValue = 0;
+  int sharedValue = 0;  //当前卡片序号
 
   @override
   Widget build(BuildContext context) {
@@ -31,39 +32,13 @@ class _DataRouteState extends State<DataRoute> {
                       UserData.matrixs = new Map();
                       UserData.deleteAllMatrix();
                       UserData.deleteAllNum();
-                    });
-                    Navigator.of(context).pop();
-                  },
-                ),
-                CupertinoDialogAction(
-                  child: Text(XiaomingLocalizations.of(context).cancel),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          });
-    }
-
-    void _handleDelete() {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text(XiaomingLocalizations.of(context).deleteAllMethod),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text(XiaomingLocalizations.of(context).delete),
-                  onPressed: () {
-                    setState(() {
                       UserData.userFunctions = [];
                       UserData.deleteAllUF();
                     });
                     Navigator.of(context).pop();
                   },
                 ),
-                FlatButton(
+                CupertinoDialogAction(
                   child: Text(XiaomingLocalizations.of(context).cancel),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -86,16 +61,33 @@ class _DataRouteState extends State<DataRoute> {
                 UserData.matrixs.remove(name);
                 UserData.deleteMatrix(name);
               });
-              Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text(XiaomingLocalizations.of(context).removeData),
-                action: SnackBarAction(
-                    label: XiaomingLocalizations.of(context).undo,
-                    onPressed: () => setState(() {
-                          UserData.matrixs[name] = list;
-                          UserData.addMatrix(name, list);
-                        })),
-                duration: Duration(seconds: 2),
-              ));
+              showDialog(
+                context: context,
+                builder: (BuildContext context){
+                  return CupertinoAlertDialog(
+                    title: Text(XiaomingLocalizations.of(context).removeData),
+                    actions: <Widget>[
+                      CupertinoDialogAction(
+                        isDestructiveAction: true,
+                        child: Text("Delete"),
+                        onPressed: (){
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      CupertinoDialogAction(
+                        child: Text("Cancel"),
+                        onPressed: (){
+                          setState(() {
+                            UserData.matrixs[name] = list;
+                            UserData.addMatrix(name, list);
+                          });
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                }
+              );
             },
             background: Container(
               color: Colors.red,
@@ -119,16 +111,33 @@ class _DataRouteState extends State<DataRoute> {
                 UserData.dbs.remove(name);
                 UserData.deleteNum(name);
               });
-              Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text(XiaomingLocalizations.of(context).removeData),
-                action: SnackBarAction(
-                    label: XiaomingLocalizations.of(context).undo,
-                    onPressed: () => setState(() {
-                          UserData.dbs[name] = value;
-                          UserData.addNum(name, value);
-                        })),
-                duration: Duration(seconds: 2),
-              ));
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context){
+                    return CupertinoAlertDialog(
+                      title: Text(XiaomingLocalizations.of(context).removeData),
+                      actions: <Widget>[
+                        CupertinoDialogAction(
+                          isDestructiveAction: true,
+                          child: Text("Delete"),
+                          onPressed: (){
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        CupertinoDialogAction(
+                          child: Text("Cancel"),
+                          onPressed: (){
+                            setState(() {
+                              UserData.dbs[name] = value;
+                              UserData.addNum(name, value);
+                            });
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  }
+              );
             },
             background: Container(
               color: Colors.red,
@@ -142,88 +151,120 @@ class _DataRouteState extends State<DataRoute> {
             ),
           )));
     }
+
+    ///添加完分割线的数据列表
     final List<Widget> divided1 = ListTile.divideTiles(
       context: context,
       tiles: datas.reversed, //将后存入的数据显示在上方
     ).toList();
 
+    ///保存的方法列表
     final List<Widget> methods = <Widget>[];
-          Locale myLocale = Localizations.localeOf(context);
-          String funName;
-          String funDescrip;
+    Locale myLocale = Localizations.localeOf(context);
+    String funName;
+    String funDescrip;
 
-          ///将内置方法及已保存的方法加载进tiles
-          for (int index = 0; index < UserData.userFunctions.length; index ++) {
-            var u = UserData.userFunctions[index];
-            methods.add(Dismissible(
-              onDismissed: (item) {
-                var temp;
-                setState(() {
-                  temp = UserData.userFunctions.removeAt(index);
-                  UserData.deleteUF(u.funName);
-                });
-                Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text(XiaomingLocalizations.of(context).removeUF),
-                  action: SnackBarAction(label: XiaomingLocalizations.of(context).undo, onPressed: ()=>setState((){
-                    UserData.userFunctions.insert(index, temp);
-                    UserData.addUF(u.funName, u.paras, u.funCmds);
-                  })),
-                ));
-              },
-              background: Container(
-                color: Colors.red,
-              ),
-              key: Key(u.funName),
-              child: Card(
-                color: Colors.purple,
-                child: new ListTile(
-                  leading: new Text(
-                    u.funName,
-                  ),
-                  title: new Text(
-                      '${u.funName}(${u.paras.toString().substring(1, u.paras.toString().length - 1)})'),
-                  subtitle: new Text(u.funCmds.toString()),
-                ),
-              ),
-            ));
-          }
-          for (CmdMethod method in UserData.cmdMethods) {
-            if (myLocale.countryCode == 'CH') {
-              funName = method.name;
-              funDescrip = method.methodDescription;
-            } else {
-              funName = method.ename;
-              funDescrip = method.emethodDescription;
-            }
-            methods.add(Card(
-              color: Colors.yellow,
-              child: ListTile(
-                title: Text(
-                  funName,
-                ),
-                subtitle: Text(funDescrip),
-              ),
-            ));
-          }
-          final List<Widget> divided2 = ListTile.divideTiles(
-            context: context,
-            tiles: methods,
-          ).toList();
+    ///将内置方法及已保存的方法加载进methods
+    for (int index = 0; index < UserData.userFunctions.length; index++) {
+      var u = UserData.userFunctions[index];
+      methods.add(Dismissible(
+        onDismissed: (item) {
+          var temp;
+          setState(() {
+            temp = UserData.userFunctions.removeAt(index);
+            UserData.deleteUF(u.funName);
+          });
+          showDialog(
+              context: context,
+              builder: (BuildContext context){
+                return CupertinoAlertDialog(
+                  title: Text(XiaomingLocalizations.of(context).removeUF),
+                  actions: <Widget>[
+                    CupertinoDialogAction(
+                      isDestructiveAction: true,
+                      child: Text("Delete"),
+                      onPressed: (){
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    CupertinoDialogAction(
+                      child: Text("Cancel"),
+                      onPressed: (){
+                        setState(() {
+                          UserData.userFunctions.insert(index, temp);
+                          UserData.addUF(u.funName, u.paras, u.funCmds);
+                        });
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              }
+          );
+        },
+        background: Container(
+          color: Colors.red,
+        ),
+        key: Key(u.funName),
+        child: Card(
+          color: Colors.purple,
+          child: new ListTile(
+            leading: new Text(
+              u.funName,
+            ),
+            title: new Text(
+                '${u.funName}(${u.paras.toString().substring(1, u.paras.toString().length - 1)})'),
+            subtitle: new Text(u.funCmds.toString()),
+          ),
+        ),
+      ));
+    }
+    for (CmdMethod method in UserData.cmdMethods) {
+      if (myLocale.countryCode == 'CH') {
+        funName = method.name;
+        funDescrip = method.methodDescription;
+      } else {
+        funName = method.ename;
+        funDescrip = method.emethodDescription;
+      }
+      methods.add(Card(
+        color: Colors.yellow,
+        child: ListTile(
+          title: Text(
+            funName,
+          ),
+          subtitle: Text(funDescrip),
+        ),
+      ));
+    }
 
+    ///添加完分隔线的方法列表
+    final List<Widget> divided2 = ListTile.divideTiles(
+      context: context,
+      tiles: methods,
+    ).toList();
+
+    ///标题栏
     final Map<int, Widget> titles = const <int, Widget>{
       0: Text("Data"),
       1: Text("Method"),
     };
 
+    ///内容栏
     Map<int, Widget> lists = <int, Widget>{
-      0: ListView(
-        children: divided1,
+      0: Scrollbar(
+        child: ListView(
+          children: divided1,
+        ),
       ),
-      1: ListView(
-        children: divided2,
-      ),
+      1: Scrollbar(
+        child: ListView(
+          children: divided2,
+        ),
+      )
     };
 
+    ///保存的数据界面布局
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         trailing: DeleteButton(1, _handleEmpty),

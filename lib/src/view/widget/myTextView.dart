@@ -40,9 +40,14 @@ class TextView extends StatelessWidget {
 
   void _handleLongPress() {
     Clipboard.setData(new ClipboardData(text: text));
-    Scaffold.of(context).showSnackBar(SnackBar(
-      duration: Duration(milliseconds: 1000),
-      content: new Text(XiaomingLocalizations.of(context).copyHint),
-    ));
+    Navigator.of(context, rootNavigator: true);
+    showDialog(
+        context: context,
+      builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text(XiaomingLocalizations.of(context).copyHint),
+          );
+      }
+    );
   }
 }
