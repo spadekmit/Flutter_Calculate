@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
+import 'package:xiaoming/src/view/route/helpDetailRoute.dart';
 
 ///帮助界面
 class HelpView extends StatefulWidget {
@@ -26,7 +27,13 @@ class _HelpViewState extends State<HelpView> {
               CupertinoButton(
                 child: Icon(CupertinoIcons.forward),
                 onPressed: () {
-
+                  Navigator.of(context).push(
+                    CupertinoPageRoute(
+                      builder: (BuildContext context) {
+                        return HelpDetailRoute(index);
+                      }
+                    )
+                  );
                 },
               ),
             ],
