@@ -4,7 +4,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:xiaoming/src/command/handleCommand.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
+import 'package:xiaoming/src/language/ChineseCupertinoLocalizations.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
+import 'package:xiaoming/src/view/route/helpRoute.dart';
 import 'package:xiaoming/src/view/widget/myTextView.dart';
 import 'package:xiaoming/src/view/route/dataRoute.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
@@ -20,9 +22,11 @@ class MyApp extends StatelessWidget {
       color: Colors.white,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: [
+        ChineseCupertinoLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         XiaomingLocalizationsDelegate.delegate,
+        DefaultCupertinoLocalizations.delegate,
       ],
       supportedLocales: [
         const Locale('en', 'US'),
@@ -75,7 +79,6 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   ///初始化对象及加载数据
   @override
   void initState() {
-
     SettingData.readSettingData(); //读取设置数据
     _textController = new TextEditingController();
     _textFocusNode = new FocusNode();
@@ -127,12 +130,18 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
             label: 'Help',
             child: const Icon(CupertinoIcons.book),
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context)
+                .push(CupertinoPageRoute(builder: (BuildContext context) {
+              return HelpView();
+            }));
+          },
         ),
         const SizedBox(
           width: 8.0,
         ),
         DeleteButton(0, () {
+          Navigator.of(context, rootNavigator: true);
           showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -141,6 +150,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                       Text(XiaomingLocalizations.of(context).deleteAllMessage),
                   actions: <Widget>[
                     CupertinoDialogAction(
+                      isDestructiveAction: true,
                       child: Text(XiaomingLocalizations.of(context).delete),
                       onPressed: () {
                         setState(() {
@@ -148,12 +158,13 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
                           _texts.clear();
                         });
                         UserData.deleteAllMessage();
-                        Navigator.of(context).pop();
+                        Navigator.of(context, rootNavigator: true).pop();
                       },
                     ),
                     CupertinoDialogAction(
                       child: Text(XiaomingLocalizations.of(context).cancel),
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () =>
+                          Navigator.of(context, rootNavigator: true).pop(),
                     )
                   ],
                 );
@@ -163,57 +174,67 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
     );
 
     ///主界面布局
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        trailing: trailingBar,
+    return DefaultTextStyle(
+      style: const TextStyle(
+        fontFamily: '.SF UI Text',
+        inherit: false,
+        fontSize: 17.0,
+        color: CupertinoColors.black,
       ),
-      resizeToAvoidBottomInset: true,
-      child: Column(
-        children: <Widget>[
-          new Flexible(
-              child: new GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    _textFocusNode.unfocus();
-                  },
-                  child: new ListView.builder(
-                    padding: new EdgeInsets.only(left: 5.0),
-                    reverse: true,
-                    itemBuilder: (context, int index) {
-                      //_texts[index].context = context;
-                      return _texts[index];
+      child: CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(
+          trailing: trailingBar,
+        ),
+        resizeToAvoidBottomInset: true,
+        child: Column(
+          children: <Widget>[
+            new Flexible(
+                child: new GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      _textFocusNode.unfocus();
                     },
-                    itemCount: _texts.length,
-                  ))),
-          new Divider(height: 1.0, color: _buttonsIsVisible ? Colors.black : null,),
-          new Container(
-            decoration: new BoxDecoration(
-              color: Theme.of(context).cardColor,
+                    child: new ListView.builder(
+                      padding: new EdgeInsets.only(left: 5.0),
+                      reverse: true,
+                      itemBuilder: (context, int index) {
+                        //_texts[index].context = context;
+                        return _texts[index];
+                      },
+                      itemCount: _texts.length,
+                    ))),
+            new Divider(
+              height: 1.0,
+              color: _buttonsIsVisible ? Colors.black : null,
             ),
-            child: Container(
-              height: _buttonsIsVisible ? 200.0 : 0.0,
-              child: _buildButtons(),
+            new Container(
+              decoration: new BoxDecoration(
+                color: Theme.of(context).cardColor,
+              ),
+              child: Container(
+                height: _buttonsIsVisible ? 200.0 : 0.0,
+                child: _buildButtons(),
+              ),
             ),
-          ),
-          new Divider(height: 1.0),
-          new Container(
-            decoration: new BoxDecoration(
-              color: Theme.of(context).cardColor,
+            new Divider(height: 1.0),
+            new Container(
+              decoration: new BoxDecoration(
+                color: Theme.of(context).cardColor,
+              ),
+              child: _buildTextComposer(context),
             ),
-            child: _buildTextComposer(context),
-          ),
-          new SizedBox(
-            height: tabHeight,
-          ),
-        ],
+            new SizedBox(
+              height: tabHeight,
+            ),
+          ],
+        ),
       ),
     );
   }
 
   ///输入控件，包含一个输入框和一个按钮
   Widget _buildTextComposer(BuildContext context) {
-    return Row(
-        children: <Widget>[
+    return Row(children: <Widget>[
       SizedBox(
         width: 10.0,
       ),
@@ -221,10 +242,14 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
         child: CupertinoTextField(
           focusNode: _textFocusNode,
           maxLines: 1,
+          placeholder: 'Input Command',
           controller: _textController,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-            border: Border.all(color: Colors.orange, width: 2.0),
+            borderRadius: BorderRadius.circular(15.0),
+            border: Border.all(
+              color: CupertinoColors.inactiveGray,
+              width: 0.0,
+            ),
           ),
           onChanged: (String text) {
             setState(() {
@@ -292,7 +317,7 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
   Widget _buildButtons() {
     return Column(children: <Widget>[
       Flexible(
-        child: Scrollbar(
+        child: CupertinoScrollbar(
           child: ListView(
             reverse: true,
             children: <Widget>[

@@ -12,7 +12,7 @@ class DataRoute extends StatefulWidget {
 }
 
 class _DataRouteState extends State<DataRoute> {
-  int sharedValue = 0;  //当前卡片序号
+  int _sharedValue = 0;  //当前卡片序号
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +25,7 @@ class _DataRouteState extends State<DataRoute> {
               title: Text(XiaomingLocalizations.of(context).deleteAllData),
               actions: <Widget>[
                 CupertinoDialogAction(
+                  isDestructiveAction: true,
                   child: Text(XiaomingLocalizations.of(context).delete),
                   onPressed: () {
                     setState(() {
@@ -69,13 +70,13 @@ class _DataRouteState extends State<DataRoute> {
                     actions: <Widget>[
                       CupertinoDialogAction(
                         isDestructiveAction: true,
-                        child: Text("Delete"),
+                        child: Text(XiaomingLocalizations.of(context).delete),
                         onPressed: (){
                           Navigator.of(context).pop();
                         },
                       ),
                       CupertinoDialogAction(
-                        child: Text("Cancel"),
+                        child: Text(XiaomingLocalizations.of(context).cancel),
                         onPressed: (){
                           setState(() {
                             UserData.matrixs[name] = list;
@@ -119,13 +120,13 @@ class _DataRouteState extends State<DataRoute> {
                       actions: <Widget>[
                         CupertinoDialogAction(
                           isDestructiveAction: true,
-                          child: Text("Delete"),
+                          child: Text(XiaomingLocalizations.of(context).delete),
                           onPressed: (){
                             Navigator.of(context).pop();
                           },
                         ),
                         CupertinoDialogAction(
-                          child: Text("Cancel"),
+                          child: Text(XiaomingLocalizations.of(context).cancel),
                           onPressed: (){
                             setState(() {
                               UserData.dbs[name] = value;
@@ -182,13 +183,13 @@ class _DataRouteState extends State<DataRoute> {
                   actions: <Widget>[
                     CupertinoDialogAction(
                       isDestructiveAction: true,
-                      child: Text("Delete"),
+                      child: Text(XiaomingLocalizations.of(context).delete),
                       onPressed: (){
                         Navigator.of(context).pop();
                       },
                     ),
                     CupertinoDialogAction(
-                      child: Text("Cancel"),
+                      child: Text(XiaomingLocalizations.of(context).cancel),
                       onPressed: (){
                         setState(() {
                           UserData.userFunctions.insert(index, temp);
@@ -252,12 +253,12 @@ class _DataRouteState extends State<DataRoute> {
 
     ///内容栏
     Map<int, Widget> lists = <int, Widget>{
-      0: Scrollbar(
+      0: CupertinoScrollbar(
         child: ListView(
           children: divided1,
         ),
       ),
-      1: Scrollbar(
+      1: CupertinoScrollbar(
         child: ListView(
           children: divided2,
         ),
@@ -280,10 +281,10 @@ class _DataRouteState extends State<DataRoute> {
               children: titles,
               onValueChanged: (int newValue) {
                 setState(() {
-                  sharedValue = newValue;
+                  _sharedValue = newValue;
                 });
               },
-              groupValue: sharedValue,
+              groupValue: _sharedValue,
             ),
           ),
           SizedBox(
@@ -292,7 +293,7 @@ class _DataRouteState extends State<DataRoute> {
           Container(
             height: 450.0,
             width: 350.0,
-            child: lists[sharedValue],
+            child: lists[_sharedValue],
           ),
         ],
       ),

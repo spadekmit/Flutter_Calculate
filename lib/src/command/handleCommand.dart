@@ -7,7 +7,7 @@ import 'package:xiaoming/src/data/settingData.dart';
 
 ///处理字符命令
 String handleCommand(String command) {
-  String cmd = command.trim().replaceAll(new RegExp(r'\r|\t|\n'), '');
+  String cmd = command.trim().replaceAll(new RegExp('\n'), '');
   String result;
   //矩阵赋值语法的正则表达式
   RegExp inputMatrix = new RegExp(r"[A-Za-z][A-Za-z0-9]*(\s*)=(\s*)\[(.+)\]");
