@@ -6,7 +6,7 @@ import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
 import 'package:xiaoming/src/language/ChineseCupertinoLocalizations.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
-import 'package:xiaoming/src/view/route/helpRoute.dart';
+import 'package:xiaoming/src/view/route/newHelpRoute.dart';
 import 'package:xiaoming/src/view/widget/myTextView.dart';
 import 'package:xiaoming/src/view/route/dataRoute.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
