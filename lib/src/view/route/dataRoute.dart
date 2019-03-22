@@ -114,7 +114,7 @@ class _DataRouteState extends State<DataRoute> {
               });
               showDialog(
                   context: context,
-                  builder: (BuildContext context){
+                  builder: (BuildContext context) {
                     return CupertinoAlertDialog(
                       title: Text(XiaomingLocalizations.of(context).removeData),
                       actions: <Widget>[
@@ -137,8 +137,7 @@ class _DataRouteState extends State<DataRoute> {
                         ),
                       ],
                     );
-                  }
-              );
+                  });
             },
             background: Container(
               color: Colors.red,
@@ -177,7 +176,7 @@ class _DataRouteState extends State<DataRoute> {
           });
           showDialog(
               context: context,
-              builder: (BuildContext context){
+              builder: (BuildContext context) {
                 return CupertinoAlertDialog(
                   title: Text(XiaomingLocalizations.of(context).removeUF),
                   actions: <Widget>[
@@ -200,8 +199,7 @@ class _DataRouteState extends State<DataRoute> {
                     ),
                   ],
                 );
-              }
-          );
+              });
         },
         background: Container(
           color: Colors.red,
