@@ -1,13 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
-
-void pophelpRoute(BuildContext context) {
-  Navigator.of(context)
-      .push(new CupertinoPageRoute<void>(builder: (BuildContext context) {
-    return new HelpView();
-  }));
-}
+import 'package:xiaoming/src/view/route/helpDetailRoute.dart';
 
 ///帮助界面
 class HelpView extends StatefulWidget {
@@ -16,23 +10,56 @@ class HelpView extends StatefulWidget {
   _HelpViewState createState() => _HelpViewState();
 }
 
-class HelpItem {
-  bool isExpanded;
-  HelpItem(this.isExpanded);
-}
-
 ///控制帮助界面的状态
 class _HelpViewState extends State<HelpView> {
-  List<HelpItem> items = <HelpItem>[
-    new HelpItem(false),
-    new HelpItem(false),
-    new HelpItem(false),
-    new HelpItem(false),
-    new HelpItem(false),
-    new HelpItem(false),
-  ];
+
+  Card _buildCard(String text, int index){
+    return Card(
+      elevation: 0.0,
+      margin: EdgeInsets.zero,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: Text(text),
+              ),
+              CupertinoButton(
+                child: Icon(CupertinoIcons.forward),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    CupertinoPageRoute(
+                      builder: (BuildContext context) {
+                        return HelpDetailRoute(index);
+                      }
+                    )
+                  );
+                },
+              ),
+            ],
+          ),
+    );
+  }
+  
   @override
   Widget build(BuildContext context) {
+
+    final lists = ListView(
+      children: <Widget>[
+        _buildCard(XiaomingLocalizations.of(context).helpTab1, 1),
+        const Divider(height: 1.0,),
+        _buildCard(XiaomingLocalizations.of(context).helpTab2, 2),
+        const Divider(height: 1.0,),
+        _buildCard(XiaomingLocalizations.of(context).helpTab3, 3),
+        const Divider(height: 1.0,),
+        _buildCard(XiaomingLocalizations.of(context).helpTab4, 4),
+        const Divider(height: 1.0,),
+        _buildCard(XiaomingLocalizations.of(context).helpTab5, 5),
+        const Divider(height: 1.0,),
+        _buildCard(XiaomingLocalizations.of(context).helpTab6, 6),
+      ],
+    );
+
     return DefaultTextStyle(
       style: const TextStyle(
         fontFamily: '.SF UI Text',
@@ -48,120 +75,7 @@ class _HelpViewState extends State<HelpView> {
         ),
         child: Container(
           margin: const EdgeInsets.all(12.0),
-          child: ListView(
-            children: <Widget>[
-              new Card(
-                  child: new ExpansionPanelList(
-                expansionCallback: (int i, bool b) => setState(() {
-                      items[i].isExpanded = !items[i].isExpanded;
-                    }),
-                children: <ExpansionPanel>[
-                  new ExpansionPanel(
-                    headerBuilder: (context, isExpanded) {
-                      return new ListTile(
-                        leading: new Text(
-                            XiaomingLocalizations.of(context).helpTab1,
-                            style: TextStyle(
-                                fontSize: 18.0, color: Colors.deepOrange)),
-                      );
-                    },
-                    isExpanded: items[0].isExpanded,
-                    body: Container(
-                      margin: EdgeInsets.only(
-                          left: 16.0, right: 16.0, bottom: 16.0),
-                      child: new Text(
-                          XiaomingLocalizations.of(context).helpTabData1),
-                    ),
-                  ),
-                  new ExpansionPanel(
-                    headerBuilder: (context, isExpanded) {
-                      return new ListTile(
-                        leading: new Text(
-                            XiaomingLocalizations.of(context).helpTab2,
-                            style: TextStyle(
-                                fontSize: 18.0, color: Colors.deepOrange)),
-                      );
-                    },
-                    isExpanded: items[1].isExpanded,
-                    body: Container(
-                      margin: EdgeInsets.only(
-                          left: 16.0, right: 16.0, bottom: 16.0),
-                      child: new Text(
-                          XiaomingLocalizations.of(context).helpTabData2),
-                    ),
-                  ),
-                  new ExpansionPanel(
-                    headerBuilder: (context, isExpanded) {
-                      return new ListTile(
-                        leading: new Text(
-                            XiaomingLocalizations.of(context).helpTab3,
-                            style: TextStyle(
-                                fontSize: 18.0, color: Colors.deepOrange)),
-                      );
-                    },
-                    isExpanded: items[2].isExpanded,
-                    body: Container(
-                      margin: EdgeInsets.only(
-                          left: 16.0, right: 16.0, bottom: 16.0),
-                      child: new Text(
-                          XiaomingLocalizations.of(context).helpTabData3),
-                    ),
-                  ),
-                  new ExpansionPanel(
-                    headerBuilder: (context, isExpanded) {
-                      return new ListTile(
-                        leading: new Text(
-                            XiaomingLocalizations.of(context).helpTab4,
-                            style: TextStyle(
-                                fontSize: 18.0, color: Colors.deepOrange)),
-                      );
-                    },
-                    isExpanded: items[3].isExpanded,
-                    body: Container(
-                      margin: EdgeInsets.only(
-                          left: 16.0, right: 16.0, bottom: 16.0),
-                      child: new Text(
-                          XiaomingLocalizations.of(context).helpTabData4),
-                    ),
-                  ),
-                  new ExpansionPanel(
-                    headerBuilder: (context, isExpanded) {
-                      return new ListTile(
-                        leading: new Text(
-                            XiaomingLocalizations.of(context).helpTab5,
-                            style: TextStyle(
-                                fontSize: 18.0, color: Colors.deepOrange)),
-                      );
-                    },
-                    isExpanded: items[4].isExpanded,
-                    body: Container(
-                      margin: EdgeInsets.only(
-                          left: 16.0, right: 16.0, bottom: 16.0),
-                      child: new Text(
-                          XiaomingLocalizations.of(context).helpTabData5),
-                    ),
-                  ),
-                  new ExpansionPanel(
-                    headerBuilder: (context, isExpanded) {
-                      return new ListTile(
-                        leading: new Text(
-                            XiaomingLocalizations.of(context).helpTab6,
-                            style: TextStyle(
-                                fontSize: 18.0, color: Colors.deepOrange)),
-                      );
-                    },
-                    isExpanded: items[5].isExpanded,
-                    body: Container(
-                      margin: EdgeInsets.only(
-                          left: 16.0, right: 16.0, bottom: 16.0),
-                      child: new Text(
-                          XiaomingLocalizations.of(context).helpTabData6),
-                    ),
-                  ),
-                ],
-              ))
-            ],
-          ),
+          child: lists,
         ),
       ),
     );
