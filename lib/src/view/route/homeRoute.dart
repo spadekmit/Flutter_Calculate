@@ -1,80 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:xiaoming/src/command/handleCommand.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
-import 'package:xiaoming/src/language/ChineseCupertinoLocalizations.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/route/helpRoute.dart';
-import 'package:xiaoming/src/view/widget/myTextView.dart';
-import 'package:xiaoming/src/view/route/dataRoute.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:xiaoming/src/view/widget/myButtons.dart';
+import 'package:xiaoming/src/view/widget/myTextView.dart';
 
-///FlutterApp入口
-class MyApp extends StatelessWidget {
-  MyApp({Key key}) : super(key: key);
+class HomeRoute extends StatefulWidget {
+  HomeRoute({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return CupertinoApp(
-      color: Colors.white,
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
-        ChineseCupertinoLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        XiaomingLocalizationsDelegate.delegate,
-        DefaultCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale('en', 'US'),
-        const Locale('zh', 'CH'),
-      ],
-      home: myTabScaffold,
-    );
-  }
+  HomeRouteState createState() => new HomeRouteState();
 }
 
-final Widget myTabScaffold = CupertinoTabScaffold(
-    tabBar: CupertinoTabBar(items: const <BottomNavigationBarItem>[
-      BottomNavigationBarItem(
-        icon: Icon(Icons.message),
-        title: Text("Home"),
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.save),
-        title: Text("Saved"),
-      ),
-    ]),
-    tabBuilder: (BuildContext context, int index) {
-      switch (index) {
-        case 0:
-          return CupertinoTabView(builder: (BuildContext context) {
-            return TextScreen();
-          });
-          break;
-        case 1:
-          return CupertinoTabView(builder: (BuildContext context) {
-            return DataRoute();
-          });
-      }
-    });
-
-/// 主界面，包含一个listview显示输出的文本，一个输入框和发送按钮，两排方便输入的按钮
-/// _texts用来存储要显示的文本
-/// _textFocusNode用来控制键盘弹出/收回
-/// _textController用来获取输入文本和控制输入焦点
-/// funMap存储自带函数和自定义函数
-/// 状态栏包含两个菜单控件，用来进入函数界面和数据界面
-class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
+class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
+  /// _texts用来存储要显示的文本
+  /// _textFocusNode用来控制键盘弹出/收回
+  /// _textController用来获取输入文本和控制输入焦点
   TextEditingController _textController;
   FocusNode _textFocusNode;
   List<TextView> _texts = <TextView>[]; //存储消息的列表
-  bool _isComposing = false;
-  bool _buttonsIsVisible = false;
-  double tabHeight;
+  bool _isComposing = false;   //判断是否有输入
+  bool _buttonsIsVisible = false;  //控制便捷输入栏显示与隐藏
+  double tabHeight;  //输入框底部高度（防止被底部导航栏遮挡）
 
   ///初始化对象及加载数据
   @override
@@ -121,13 +72,12 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
     tabHeight = MediaQuery.of(context).padding.bottom; //初始化底部导航栏高度
 
     ///删除所有交互命令
-    void _deleteAllMessage(){
+    void _deleteAllMessage() {
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return CupertinoAlertDialog(
-              title:
-              Text(XiaomingLocalizations.of(context).deleteAllMessage),
+              title: Text(XiaomingLocalizations.of(context).deleteAllMessage),
               actions: <Widget>[
                 CupertinoDialogAction(
                   isDestructiveAction: true,
@@ -446,8 +396,6 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
     }
   }
 
-
-
   ///退出该路由时释放动画资源
   @override
   void dispose() {
@@ -459,11 +407,4 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
     }
     _textFocusNode.dispose();
   }
-}
-
-class TextScreen extends StatefulWidget {
-  TextScreen({Key key}) : super(key: key);
-
-  @override
-  TextScreenState createState() => new TextScreenState();
 }

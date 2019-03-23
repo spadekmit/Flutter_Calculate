@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xiaoming/src/data/appData.dart';
-import 'package:xiaoming/src/view/route/mainRoute.dart';
+import 'package:xiaoming/src/view/route/app.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 
