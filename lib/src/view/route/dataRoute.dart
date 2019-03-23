@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:xiaoming/src/command/matrix.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
-import 'package:xiaoming/src/view/widget/DeleteButton.dart';
+import 'package:xiaoming/src/view/widget/myButtons.dart';
 
 ///保存的数据与方法界面
 class DataRoute extends StatefulWidget {
@@ -262,8 +262,6 @@ class _DataRouteState extends State<DataRoute> {
         ),
       )
     };
-    print('w = ${MediaQuery.of(context).size.width}');
-    print('h = ${MediaQuery.of(context).size.height}');
     ///保存的数据界面布局
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(

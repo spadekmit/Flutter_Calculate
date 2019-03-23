@@ -6,11 +6,11 @@ import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
 import 'package:xiaoming/src/language/ChineseCupertinoLocalizations.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
-import 'package:xiaoming/src/view/route/newHelpRoute.dart';
+import 'package:xiaoming/src/view/route/helpRoute.dart';
 import 'package:xiaoming/src/view/widget/myTextView.dart';
 import 'package:xiaoming/src/view/route/dataRoute.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
-import 'package:xiaoming/src/view/widget/DeleteButton.dart';
+import 'package:xiaoming/src/view/widget/myButtons.dart';
 
 ///FlutterApp入口
 class MyApp extends StatelessWidget {
@@ -120,56 +120,60 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
     UserData.language = Localizations.localeOf(context).languageCode;
     tabHeight = MediaQuery.of(context).padding.bottom; //初始化底部导航栏高度
 
+    ///删除所有交互命令
+    void _deleteAllMessage(){
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CupertinoAlertDialog(
+              title:
+              Text(XiaomingLocalizations.of(context).deleteAllMessage),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  isDestructiveAction: true,
+                  child: Text(XiaomingLocalizations.of(context).delete),
+                  onPressed: () {
+                    setState(() {
+                      UserData.strs.clear();
+                      _texts.clear();
+                    });
+                    UserData.deleteAllMessage();
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                ),
+                CupertinoDialogAction(
+                  child: Text(XiaomingLocalizations.of(context).cancel),
+                  onPressed: () =>
+                      Navigator.of(context, rootNavigator: true).pop(),
+                )
+              ],
+            );
+          });
+    }
+
+    final helpButton = CupertinoButton(
+      padding: EdgeInsets.zero,
+      child: Semantics(
+        label: 'Help',
+        child: const Icon(CupertinoIcons.book),
+      ),
+      onPressed: () {
+        Navigator.of(context)
+            .push(CupertinoPageRoute(builder: (BuildContext context) {
+          return HelpView();
+        }));
+      },
+    );
+
     ///Home界面导航栏，包含帮助按钮和删除按钮
     final Widget trailingBar = Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        CupertinoButton(
-          padding: EdgeInsets.zero,
-          child: Semantics(
-            label: 'Help',
-            child: const Icon(CupertinoIcons.book),
-          ),
-          onPressed: () {
-            Navigator.of(context)
-                .push(CupertinoPageRoute(builder: (BuildContext context) {
-              return HelpView();
-            }));
-          },
-        ),
+        helpButton,
         const SizedBox(
           width: 8.0,
         ),
-        DeleteButton(0, () {
-          Navigator.of(context, rootNavigator: true);
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return CupertinoAlertDialog(
-                  title:
-                      Text(XiaomingLocalizations.of(context).deleteAllMessage),
-                  actions: <Widget>[
-                    CupertinoDialogAction(
-                      isDestructiveAction: true,
-                      child: Text(XiaomingLocalizations.of(context).delete),
-                      onPressed: () {
-                        setState(() {
-                          UserData.strs.clear();
-                          _texts.clear();
-                        });
-                        UserData.deleteAllMessage();
-                        Navigator.of(context, rootNavigator: true).pop();
-                      },
-                    ),
-                    CupertinoDialogAction(
-                      child: Text(XiaomingLocalizations.of(context).cancel),
-                      onPressed: () =>
-                          Navigator.of(context, rootNavigator: true).pop(),
-                    )
-                  ],
-                );
-              });
-        }),
+        DeleteButton(0, _deleteAllMessage),
       ],
     );
 
@@ -441,6 +445,8 @@ class TextScreenState extends State<TextScreen> with TickerProviderStateMixin {
       );
     }
   }
+
+
 
   ///退出该路由时释放动画资源
   @override
