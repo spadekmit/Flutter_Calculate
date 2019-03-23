@@ -262,7 +262,8 @@ class _DataRouteState extends State<DataRoute> {
         ),
       )
     };
-
+    print('w = ${MediaQuery.of(context).size.width}');
+    print('h = ${MediaQuery.of(context).size.height}');
     ///保存的数据界面布局
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
@@ -271,7 +272,7 @@ class _DataRouteState extends State<DataRoute> {
       child: Column(
         children: <Widget>[
           SizedBox(
-            height: 100.0,
+            height: MediaQuery.of(context).padding.top + 90.0,
           ),
           SizedBox(
             width: 500.0,
