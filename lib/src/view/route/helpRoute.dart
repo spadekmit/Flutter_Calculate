@@ -32,9 +32,13 @@ class _HelpViewState extends State<HelpView> {
               child: Text(text),
             ),
             CupertinoButton(
-                onPressed: () {},
-                child: Icon(CupertinoIcons.forward)
-            ),
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(CupertinoPageRoute(builder: (BuildContext context) {
+                    return HelpDetailRoute(index);
+                  }));
+                },
+                child: Icon(CupertinoIcons.forward)),
           ],
         ),
       ),
