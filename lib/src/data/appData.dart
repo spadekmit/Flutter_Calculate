@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 
 class UserData {
   static String language = 'en';
+  static bool isUnload = true;
 
   static Map<String, num> dbs = new Map(); //存储浮点数变量
 
@@ -147,10 +148,15 @@ class UserData {
 
   ///加载用户自定义函数,浮点数和矩阵
   static Future loadData() async {
-    readNum();
-    readMatrix();
-    readUserFun();
-    await readText();
+    if (dbs.isEmpty &&
+        matrixs.isEmpty &&
+        userFunctions.isEmpty &&
+        strs.isEmpty) {
+      readNum();
+      readMatrix();
+      readUserFun();
+      await readText();
+    }
   }
 
   ///从数据库中读取存储的矩阵
@@ -168,8 +174,10 @@ class UserData {
     var list = await db.rawQuery('select * from UserFunction');
     list.forEach((m) {
       String funName = m['funName'];
-      List<String> paras =
-          m['paras'].substring(1, m['paras'].length - 1).replaceAll(' ', '').split(',');
+      List<String> paras = m['paras']
+          .substring(1, m['paras'].length - 1)
+          .replaceAll(' ', '')
+          .split(',');
       List<String> funCmds =
           m['funCmds'].substring(1, m['funCmds'].length - 1).split(',');
       UserFunction uf = new UserFunction(funName, paras, funCmds);
@@ -217,7 +225,8 @@ class UserData {
             create table UserFunction(funName TEXT primary key,
             paras TEXT, funCmds TEXT);
             ''');
-        await db.execute('create table Message(id integer primary key autoincrement, msg TEXT);');
+        await db.execute(
+            'create table Message(id integer primary key autoincrement, msg TEXT);');
       });
     } else {
       return openDatabase(path, version: 1);

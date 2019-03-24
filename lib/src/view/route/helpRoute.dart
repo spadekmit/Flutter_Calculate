@@ -29,7 +29,7 @@ class _HelpViewState extends State<HelpView> {
           children: <Widget>[
             Container(
               padding: const EdgeInsets.only(left: 20.0),
-              child: Text(text),
+              child: SizedBox(child: Text(text, overflow: TextOverflow.ellipsis,), width: 200.0,),
             ),
             CupertinoButton(
                 onPressed: () {

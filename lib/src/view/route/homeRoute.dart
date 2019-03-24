@@ -23,27 +23,18 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
   TextEditingController _textController;
   FocusNode _textFocusNode;
   List<TextView> _texts = <TextView>[]; //存储消息的列表
-  bool _isComposing = false;   //判断是否有输入
-  bool _buttonsIsVisible = false;  //控制便捷输入栏显示与隐藏
-  double tabHeight;  //输入框底部高度（防止被底部导航栏遮挡）
+  bool _isComposing = false; //判断是否有输入
+  bool _buttonsIsVisible = false; //控制便捷输入栏显示与隐藏
+  double tabHeight; //输入框底部高度（防止被底部导航栏遮挡）
 
   ///初始化对象及加载数据
   @override
   void initState() {
+    loadText();
+
     SettingData.readSettingData(); //读取设置数据
     _textController = new TextEditingController();
     _textFocusNode = new FocusNode();
-    UserData.strs.forEach((text) {
-      //将保存的历史消息添加进列表并播放动画
-      var textView = TextView(
-        context: context,
-        text: text,
-        animationController: AnimationController(
-            duration: new Duration(milliseconds: 200), vsync: this),
-      );
-      _texts.add(textView);
-      textView.animationController.forward(); //执行完动画Widget才可见
-    });
 
     ///添加虚拟键盘事件监听器
     KeyboardVisibilityNotification().addNewListener(
@@ -65,11 +56,78 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
     super.initState();
   }
 
+  Future<void> loadText() async {
+    if (UserData.isUnload) {
+      await UserData.loadData();
+      UserData.strs.forEach((text) {
+        //将保存的历史消息添加进列表并播放动画
+        var textView = TextView(
+          context: context,
+          text: text,
+          animationController: AnimationController(
+              duration: new Duration(milliseconds: 200), vsync: this),
+        );
+        _texts.add(textView);
+        textView.animationController.forward(); //执行完动画Widget才可见
+      });
+      setState(() {
+        UserData.isUnload = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     //记录当前语言
     UserData.language = Localizations.localeOf(context).languageCode;
     tabHeight = MediaQuery.of(context).padding.bottom; //初始化底部导航栏高度
+
+    Widget _buildList() {
+      return UserData.isUnload
+          ? Center(child: CupertinoActivityIndicator())
+          : Column(
+              children: <Widget>[
+                new Flexible(
+                    child: new GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          _textFocusNode.unfocus();
+                        },
+                        child: ListView.builder(
+                          padding: new EdgeInsets.only(left: 5.0),
+                          reverse: true,
+                          itemBuilder: (context, int index) {
+                            //_texts[index].context = context;
+                            return _texts[index];
+                          },
+                          itemCount: _texts.length,
+                        ))),
+                new Divider(
+                  height: _buttonsIsVisible ? 1.0 : 0.0,
+                  color: _buttonsIsVisible ? Colors.black : null,
+                ),
+                new Container(
+                  decoration: new BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                  ),
+                  child: Container(
+                    height: _buttonsIsVisible ? 200.0 : 0.0,
+                    child: _buildButtons(),
+                  ),
+                ),
+                new Divider(height: 1.0),
+                new Container(
+                  decoration: new BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                  ),
+                  child: _buildTextComposer(context),
+                ),
+                new SizedBox(
+                  height: tabHeight,
+                ),
+              ],
+            );
+    }
 
     ///删除所有交互命令
     void _deleteAllMessage() {
@@ -140,48 +198,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
           trailing: trailingBar,
         ),
         resizeToAvoidBottomInset: true,
-        child: Column(
-          children: <Widget>[
-            new Flexible(
-                child: new GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      _textFocusNode.unfocus();
-                    },
-                    child: new ListView.builder(
-                      padding: new EdgeInsets.only(left: 5.0),
-                      reverse: true,
-                      itemBuilder: (context, int index) {
-                        //_texts[index].context = context;
-                        return _texts[index];
-                      },
-                      itemCount: _texts.length,
-                    ))),
-            new Divider(
-              height: 1.0,
-              color: _buttonsIsVisible ? Colors.black : null,
-            ),
-            new Container(
-              decoration: new BoxDecoration(
-                color: Theme.of(context).cardColor,
-              ),
-              child: Container(
-                height: _buttonsIsVisible ? 200.0 : 0.0,
-                child: _buildButtons(),
-              ),
-            ),
-            new Divider(height: 1.0),
-            new Container(
-              decoration: new BoxDecoration(
-                color: Theme.of(context).cardColor,
-              ),
-              child: _buildTextComposer(context),
-            ),
-            new SizedBox(
-              height: tabHeight,
-            ),
-          ],
-        ),
+        child: _buildList(),
       ),
     );
   }

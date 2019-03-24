@@ -32,11 +32,11 @@ class XiaomingLocalizations {
       'equaHint5': "Example: x^2-2x+1",
       'funName' : 'method name',
       'Help': 'HELP',
-      'HelpTab1': 'Matrix assignment',
-      'HelpTab2': 'function call',
-      'HelpTab3': 'self-defining function',
-      'HelpTab4': 'Set the decimal number',
-      'HelpTab5': 'Calculates polynomials and systems of linear equations',
+      'HelpTab1': 'Data input',
+      'HelpTab2': 'Calculator',
+      'HelpTab3': 'Method',
+      'HelpTab4': 'Precision',
+      'HelpTab5': 'Equation',
       'HelpTab6': 'Definite integral',
       'HelpTabData1':
           'The format of the matrix assignment statement is: a=[1,2,3;4,5,6;7,8,9], the name can consist of letters and numbers, but must start with a letter.'
@@ -94,12 +94,12 @@ class XiaomingLocalizations {
       'funName' : '函数名',
       'Hint': '提示',
       'Help': '帮助',
-      'HelpTab1': '矩阵赋值',
-      'HelpTab2': '函数调用',
-      'HelpTab3': '自定义函数',
-      'HelpTab4': '设置小数位数',
-      'HelpTab5': '计算多项式与线性方程组',
-      'HelpTab6': '计算定积分',
+      'HelpTab1': '数据输入',
+      'HelpTab2': '计算',
+      'HelpTab3': '函数',
+      'HelpTab4': '精度',
+      'HelpTab5': '方程',
+      'HelpTab6': '定积分',
       'HelpTabData1': '矩阵赋值的语句格式为：a=[1,2,3;4,5,6;7,8,9],'
           ' 名称可以由字母和数字组成,但必须以字母开头。'
           '每一行的多个值用逗号分隔开，行之间用分号分隔开。输入框的上方有方便输入的'
