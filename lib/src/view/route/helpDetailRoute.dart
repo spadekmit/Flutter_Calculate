@@ -58,23 +58,24 @@ class _HelpDetailRouteState extends State<HelpDetailRoute> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                  
-                  Image.asset(
-                    'assets/image/help1.png',
-                    width: 200.0,
-                    height: 200.0,
-                    fit: BoxFit.fitWidth,
-                  ),
-                  SizedBox(width: 3.0,),
-                  Image.asset(
-                    'assets/image/help2.png',
-                    width: 200.0,
-                    height: 200.0,
-                    fit: BoxFit.fitWidth,
-                  )
-                ]),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Image.asset(
+                        'assets/image/help1.png',
+                        width: 200.0,
+                        height: 200.0,
+                        fit: BoxFit.fitWidth,
+                      ),
+                      SizedBox(
+                        width: 3.0,
+                      ),
+                      Image.asset(
+                        'assets/image/help2.png',
+                        width: 200.0,
+                        height: 200.0,
+                        fit: BoxFit.fitWidth,
+                      )
+                    ]),
                 Container(
                   margin: const EdgeInsets.all(12.0),
                   child: Card(

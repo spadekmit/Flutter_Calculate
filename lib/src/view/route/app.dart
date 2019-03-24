@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:xiaoming/src/command/handleCommand.dart';
 import 'package:xiaoming/src/language/ChineseCupertinoLocalizations.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/widget/myTabScaffold.dart';
