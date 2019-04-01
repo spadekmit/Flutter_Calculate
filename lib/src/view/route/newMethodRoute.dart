@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/command/handleCommand.dart';
+import 'package:xiaoming/src/view/route/dataRoute.dart';
 
 class NewMethodRoute extends StatefulWidget {
   @override
@@ -25,47 +26,60 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
 
   @override
   Widget build(BuildContext context) {
+    bool isPop = false;
     UserData.pageContext = context;
     void _saveMethod() {
-      // _formKey.currentState.save();
-      // if (_funName != null || _parm != null || _cmds != null) {
-      //   if (_funName.length != 0 || _parm.length != 0 || _cmds.length != 0) {
-      //     if (!_funName.contains(RegExp(r'[^A-Za-z0-9]'))) {
-      //       if (!_parm.contains(RegExp(r'[^A-Za-z,]'))) {
-      //         showDialog(
-      //             context: context,
-      //             builder: (alertContext) {
-      //               return AlertDialog(
-      //                 title: Text(XiaomingLocalizations.of(context).sucSave),
-      //                 actions: <Widget>[
-      //                   FlatButton(
-      //                     child: Text(XiaomingLocalizations.of(context).ok),
-      //                     onPressed: () {
-      //                       UserFunction uf = new UserFunction(
-      //                           _funName, _parm.split(','), _cmds.split(';'));
-      //                       if(isUserFun(_funName)){
-      //                         UserData.userFunctions.remove(getUfByName(_funName));
-      //                       }
-      //                       UserData.userFunctions.add(uf);
-      //                       UserData.addUF(uf.funName, uf.paras, uf.funCmds);
-      //                       Navigator.of(context)
-      //                         ..pop()
-      //                         ..pop();
-      //                     },
-      //                   ),
-      //                   FlatButton(
-      //                     child: Text(XiaomingLocalizations.of(context).cancel),
-      //                     onPressed: () {
-      //                       Navigator.pop(alertContext);
-      //                     },
-      //                   ),
-      //                 ],
-      //               );
-      //             });
-      //       }
-      //     }
-      //   }
-      // }
+        if (_funName.text.length != 0 || _parm.text.length != 0 || _cmds.text.length > 1){
+          if (!_funName.text.contains(RegExp(r'[^A-Za-z0-9]'))){
+            if (!_parm.text.contains(RegExp(r'[^A-Za-z,]'))) {
+              showCupertinoDialog(
+                  context: context,
+                  builder: (alertContext) {
+                    return CupertinoAlertDialog(
+                      title: Text(XiaomingLocalizations.of(context).sucSave),
+                      actions: <Widget>[
+                        CupertinoActionSheetAction(
+                          child: Text(XiaomingLocalizations.of(context).ok),
+                          isDestructiveAction: true,
+                          onPressed: () {
+                            isPop = true;
+                            UserFunction uf = new UserFunction(
+                                _funName.text, _parm.text.split(','), _cmds.text.split(';'));
+                            if(isUserFun(_funName.text)){
+                              UserData.userFunctions.remove(getUfByName(_funName.text));
+                              UserData.deleteUF(_funName.text);
+                            }
+                            UserData.userFunctions.add(uf);
+                            UserData.addUF(uf.funName, uf.paras, uf.funCmds);
+                            Navigator.pop(alertContext);
+                          },
+                        ),
+                        CupertinoActionSheetAction(
+                          child: Text(XiaomingLocalizations.of(context).cancel),
+                          onPressed: () {
+                            Navigator.pop(alertContext);
+                          },
+                        ),
+                      ],
+                    );
+                  }).then((value){
+                    if(isPop){
+                      Navigator.pop(context);
+                    } 
+                  });
+            }
+          }
+        }else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return CupertinoAlertDialog(
+                title: Text('请输入函数名，函数参数，函数体'),
+                actions: <Widget>[],
+              );
+            }
+          );
+        }
     }
 
     return DefaultTextStyle(

@@ -71,16 +71,16 @@ class _HelpDetailRouteState extends State<HelpDetailRoute> {
                     children: <Widget>[
                       Image.asset(
                         'assets/image/help1.png',
-                        width: 200.0,
+                        width: MediaQuery.of(context).size.width / 3,
                         height: 200.0,
                         fit: BoxFit.fitWidth,
                       ),
                       SizedBox(
-                        width: 3.0,
+                        width: MediaQuery.of(context).size.width / 12,
                       ),
                       Image.asset(
                         'assets/image/help2.png',
-                        width: 200.0,
+                        width: MediaQuery.of(context).size.width / 3,
                         height: 200.0,
                         fit: BoxFit.fitWidth,
                       )
