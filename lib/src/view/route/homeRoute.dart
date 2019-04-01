@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
@@ -5,7 +6,6 @@ import 'package:xiaoming/src/command/handleCommand.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
-import 'package:xiaoming/src/view/route/helpRoute.dart';
 import 'package:xiaoming/src/view/widget/myButtons.dart';
 import 'package:xiaoming/src/view/widget/myTextView.dart';
 
@@ -31,7 +31,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
   @override
   void initState() {
     loadText();
-
+    UserData.nowPage = 0;
     SettingData.readSettingData(); //读取设置数据
     _textController = new TextEditingController();
     _textFocusNode = new FocusNode();
@@ -56,8 +56,10 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
     super.initState();
   }
 
+  ///加载数据库中的历史数据
   Future<void> loadText() async {
     if (UserData.isUnload) {
+      Future.delayed(Duration(seconds: 40));
       await UserData.loadData();
       UserData.strs.forEach((text) {
         //将保存的历史消息添加进列表并播放动画
@@ -76,6 +78,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
     }
   }
 
+  ///home界面布局
   @override
   Widget build(BuildContext context) {
     //记录当前语言
@@ -159,32 +162,6 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
           });
     }
 
-    final helpButton = CupertinoButton(
-      padding: EdgeInsets.zero,
-      child: Semantics(
-        label: 'Help',
-        child: const Icon(CupertinoIcons.book),
-      ),
-      onPressed: () {
-        Navigator.of(context)
-            .push(CupertinoPageRoute(builder: (BuildContext context) {
-          return HelpView();
-        }));
-      },
-    );
-
-    ///Home界面导航栏，包含帮助按钮和删除按钮
-    final Widget trailingBar = Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        helpButton,
-        const SizedBox(
-          width: 8.0,
-        ),
-        DeleteButton(0, _deleteAllMessage),
-      ],
-    );
-
     ///主界面布局
     return DefaultTextStyle(
       style: const TextStyle(
@@ -195,7 +172,13 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
       ),
       child: CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
-          trailing: trailingBar,
+          trailing: buildTrailingBar(<Widget>[
+            buildHelpButton(context),
+            const SizedBox(
+              width: 8.0,
+            ),
+            DeleteButton(0, _deleteAllMessage),
+          ]),
         ),
         resizeToAvoidBottomInset: true,
         child: _buildList(),
@@ -272,7 +255,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
     textView2.animationController.forward();
   }
 
-  //创建便捷输入按钮
+  ///创建便捷输入按钮
   Widget _buildTextButton(String label, {double width = 50.0}) {
     return LimitedBox(
       maxWidth: width,

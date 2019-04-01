@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
 class HelpDetailRoute extends StatefulWidget {
@@ -15,11 +16,19 @@ class _HelpDetailRouteState extends State<HelpDetailRoute> {
   _HelpDetailRouteState(this.index);
 
   final int index;
-
   Text text;
 
   @override
+  void initState() {
+    UserData.nowPage = 2;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
+    UserData.pageContext = context;
+
     switch (index) {
       case 1:
         text = Text(XiaomingLocalizations.of(context).helpTabData1);

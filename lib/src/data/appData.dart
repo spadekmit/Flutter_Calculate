@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:xiaoming/src/command/handleCommand.dart';
 import 'dart:io';
 import 'dart:async';
@@ -7,7 +8,8 @@ import 'package:path/path.dart';
 class UserData {
   static String language = 'en';
   static bool isUnload = true;
-
+  static int nowPage = 0;
+  static BuildContext pageContext;
   static Map<String, num> dbs = new Map(); //存储浮点数变量
 
   static Map<String, List<List<num>>> matrixs = new Map(); //存储矩阵变量

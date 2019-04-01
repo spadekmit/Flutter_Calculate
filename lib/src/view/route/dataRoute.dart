@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:xiaoming/src/command/matrix.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
+import 'package:xiaoming/src/view/route/newMethodRoute.dart';
 import 'package:xiaoming/src/view/widget/myButtons.dart';
 
 ///保存的数据与方法界面
@@ -15,7 +16,14 @@ class _DataRouteState extends State<DataRoute> {
   int _sharedValue = 0;  //当前卡片序号
 
   @override
+  void initState() {
+    UserData.nowPage = 0;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     ///处理清空按钮调用函数
     void _handleEmpty() {
       showDialog(
@@ -265,7 +273,23 @@ class _DataRouteState extends State<DataRoute> {
     ///保存的数据界面布局
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        trailing: DeleteButton(1, _handleEmpty),
+        trailing: buildTrailingBar(<Widget>[
+          CupertinoButton(
+            padding: const EdgeInsets.all(0.0),
+            child: Icon(CupertinoIcons.add),
+            onPressed: _sharedValue == 1 ? (){
+              Navigator.of(context).push(CupertinoPageRoute(builder: (BuildContext context) {
+                return NewMethodRoute();
+              }));
+            } : null,
+            
+          ),
+          SizedBox(width: 8.0,),
+          DeleteButton(1, _handleEmpty),
+        ])
+        
+        
+        
       ),
       child: Column(
         children: <Widget>[

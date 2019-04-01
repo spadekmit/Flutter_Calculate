@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/route/helpDetailRoute.dart';
 
@@ -29,7 +30,13 @@ class _HelpViewState extends State<HelpView> {
           children: <Widget>[
             Container(
               padding: const EdgeInsets.only(left: 20.0),
-              child: SizedBox(child: Text(text, overflow: TextOverflow.ellipsis,), width: 200.0,),
+              child: SizedBox(
+                child: Text(
+                  text,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                width: 200.0,
+              ),
             ),
             CupertinoButton(
                 onPressed: () {
@@ -46,7 +53,15 @@ class _HelpViewState extends State<HelpView> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    UserData.nowPage = 1;
+    UserData.pageContext = context;
+
     final lists = ListView(
       children: <Widget>[
         _buildCard(XiaomingLocalizations.of(context).helpTab1, 1),
