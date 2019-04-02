@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/command/handleCommand.dart';
-import 'package:xiaoming/src/view/route/dataRoute.dart';
 
 class NewMethodRoute extends StatefulWidget {
   @override
