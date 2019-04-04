@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/view/route/dataRoute.dart';
 import 'package:xiaoming/src/view/route/equationRoute.dart';
+import 'package:xiaoming/src/view/route/functionsRoute.dart';
 import 'package:xiaoming/src/view/route/homeRoute.dart';
 
 final Widget myTabScaffold = WillPopScope(
@@ -40,7 +41,7 @@ final Widget myTabScaffold = WillPopScope(
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.apps),
-          title: Text("Equation"),
+          title: Text("Functions"),
         ),
       ]),
       tabBuilder: (BuildContext context, int index) {
@@ -56,7 +57,7 @@ final Widget myTabScaffold = WillPopScope(
             });
           case 2:
             return CupertinoTabView(builder: (BuildContext context) {
-              return EquationRoute();
+              return FunctionsRoute();
             });
         }
       }),

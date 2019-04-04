@@ -85,6 +85,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
     UserData.language = Localizations.localeOf(context).languageCode;
     tabHeight = MediaQuery.of(context).padding.bottom; //初始化底部导航栏高度
 
+    ///构造消息列表，未加载完成时显示加载中动画
     Widget _buildList() {
       return UserData.isUnload
           ? Center(child: CupertinoActivityIndicator())
@@ -179,6 +180,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
             ),
             DeleteButton(0, _deleteAllMessage),
           ]),
+          middle: Text("Home"),
         ),
         resizeToAvoidBottomInset: true,
         child: _buildList(),
@@ -186,7 +188,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
     );
   }
 
-  ///输入控件，包含一个输入框和一个按钮
+  ///构造输入框和发送按钮
   Widget _buildTextComposer(BuildContext context) {
     return Row(children: <Widget>[
       SizedBox(
@@ -272,64 +274,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
     return Column(children: <Widget>[
       Flexible(
         child: CupertinoScrollbar(
-          child: ListView(
-            reverse: true,
-            children: <Widget>[
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  _buildTextButton('Fun', width: double.infinity),
-                  _buildTextButton('inv(', width: double.infinity),
-                  _buildTextButton('tran(', width: double.infinity),
-                  _buildTextButton('value(', width: double.infinity),
-                ],
-              ),
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  _buildTextButton('upmat(', width: double.infinity),
-                  _buildTextButton('cofa(', width: double.infinity),
-                  _buildTextButton('calculus(', width: double.infinity),
-                  _buildTextButton('roots(', width: double.infinity),
-                ],
-              ),
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  _buildTextButton('sum(', width: double.infinity),
-                  _buildTextButton('average(', width: double.infinity),
-                  _buildTextButton('factorial(', width: double.infinity),
-                  _buildTextButton('sin(', width: double.infinity),
-                ],
-              ),
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  _buildTextButton('cos(', width: double.infinity),
-                  _buildTextButton('tan(', width: double.infinity),
-                  _buildTextButton('asin(', width: double.infinity),
-                  _buildTextButton('acos(', width: double.infinity),
-                ],
-              ),
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  _buildTextButton('atan(', width: double.infinity),
-                  _buildTextButton('formatDeg(', width: double.infinity),
-                  _buildTextButton('reForDeg(', width: double.infinity),
-                  _buildTextButton('absSum(', width: double.infinity),
-                ],
-              ),
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  _buildTextButton('absAverage(', width: double.infinity),
-                  _buildTextButton('radToDeg(', width: double.infinity),
-                  _buildTextButton('lagrange(', width: double.infinity),
-                ],
-              ),
-            ],
-          ),
+          child: _buildMethodButtons(),
         ),
       ),
       Divider(height: 1.0),
@@ -362,6 +307,92 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
         ),
       ),
     ]);
+  }
+
+  ///构造方法按钮列表
+  ListView _buildMethodButtons() {
+    List<Widget> list = [];
+    if (UserData.userFunctions.isNotEmpty) {
+      int i = 0;
+      var blist = <Widget>[];
+      UserData.userFunctions.forEach((u) {
+        blist.add(_buildTextButton(u.funName + '(', width: double.infinity));
+        i++;
+        if (i == 4) {
+          list.add(Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: blist,
+          ));
+          blist.clear();
+          i = 0;
+        }
+      });
+      if (i != 0) {
+        list.add(Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: blist,
+        ));
+      }
+    }
+    list
+      ..add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          _buildTextButton('Fun', width: double.infinity),
+          _buildTextButton('inv(', width: double.infinity),
+          _buildTextButton('tran(', width: double.infinity),
+          _buildTextButton('value(', width: double.infinity),
+        ],
+      ))
+      ..add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          _buildTextButton('upmat(', width: double.infinity),
+          _buildTextButton('cofa(', width: double.infinity),
+          _buildTextButton('calculus(', width: double.infinity),
+          _buildTextButton('roots(', width: double.infinity),
+        ],
+      ))
+      ..add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          _buildTextButton('sum(', width: double.infinity),
+          _buildTextButton('average(', width: double.infinity),
+          _buildTextButton('factorial(', width: double.infinity),
+          _buildTextButton('sin(', width: double.infinity),
+        ],
+      ))
+      ..add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          _buildTextButton('cos(', width: double.infinity),
+          _buildTextButton('tan(', width: double.infinity),
+          _buildTextButton('asin(', width: double.infinity),
+          _buildTextButton('acos(', width: double.infinity),
+        ],
+      ))
+      ..add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          _buildTextButton('atan(', width: double.infinity),
+          _buildTextButton('formatDeg(', width: double.infinity),
+          _buildTextButton('reForDeg(', width: double.infinity),
+          _buildTextButton('absSum(', width: double.infinity),
+        ],
+      ))
+      ..add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          _buildTextButton('absAverage(', width: double.infinity),
+          _buildTextButton('radToDeg(', width: double.infinity),
+          _buildTextButton('lagrange(', width: double.infinity),
+        ],
+      ));
+    
+    return ListView(
+      reverse: true,
+      children: list,
+    );
   }
 
   /// 处理便捷输入按钮的点击事件

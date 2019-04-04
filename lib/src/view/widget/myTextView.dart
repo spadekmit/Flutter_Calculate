@@ -24,14 +24,12 @@ class TextView extends StatelessWidget {
           ),
           margin: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
           padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10.0),
-          child: new Text(
-            text,
-            style:TextStyle(
-              fontSize : 18.0,
-              color: CupertinoColors.black,
-              fontWeight: FontWeight.w400,
-            )
-          ),
+          child: new Text(text,
+              style: TextStyle(
+                fontSize: 18.0,
+                color: CupertinoColors.black,
+                fontWeight: FontWeight.w400,
+              )),
         ),
         onLongPress: _handleLongPress,
       ),
@@ -43,11 +41,10 @@ class TextView extends StatelessWidget {
     Navigator.of(context, rootNavigator: true);
     showDialog(
         context: context,
-      builder: (BuildContext context) {
+        builder: (BuildContext context) {
           return CupertinoAlertDialog(
             title: Text(XiaomingLocalizations.of(context).copyHint),
           );
-      }
-    );
+        });
   }
 }

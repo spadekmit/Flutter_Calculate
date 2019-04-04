@@ -11,7 +11,8 @@ class EquationRoute extends StatefulWidget {
   _EquationRouteState createState() => _EquationRouteState();
 }
 
-class _EquationRouteState extends State<EquationRoute> with TickerProviderStateMixin {
+class _EquationRouteState extends State<EquationRoute>
+    with TickerProviderStateMixin {
   final TextEditingController _lineQuasController = TextEditingController();
   final TextEditingController _varController = TextEditingController();
   final FocusNode _lineQuasFocusNode = new FocusNode();
@@ -22,15 +23,103 @@ class _EquationRouteState extends State<EquationRoute> with TickerProviderStateM
 
   @override
   void initState() {
-    controller = AnimationController(duration: Duration(seconds: 1), vsync: this);
+    controller =
+        AnimationController(duration: Duration(seconds: 1), vsync: this);
     animation = Tween(begin: 0.0, end: 1.0).animate(controller);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget _page1() {
+      return ListView(
+        children: <Widget>[
+          SizedBox(
+            height: 150.0,
+          ),
+          Container(
+            //方程输入窗口
+            padding: EdgeInsets.only(left: 12.0, bottom: 50.0),
+            child: CupertinoTextField(
+              clearButtonMode: OverlayVisibilityMode.editing,
+              focusNode: _lineQuasFocusNode,
+              controller: _lineQuasController,
+              textCapitalization: TextCapitalization.words,
+              decoration: BoxDecoration(
+                border: Border(
+                    bottom: BorderSide(
+                        width: 0.0, color: CupertinoColors.inactiveGray)),
+              ),
+              placeholder: 'Equation',
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(
+              left: 12.0,
+              bottom: 50.0,
+            ),
+            child: CupertinoTextField(
+              clearButtonMode: OverlayVisibilityMode.editing,
+              focusNode: _varFocusNode,
+              controller: _varController,
+              textCapitalization: TextCapitalization.words,
+              decoration: BoxDecoration(
+                border: Border(
+                    bottom: BorderSide(
+                        width: 0.0, color: CupertinoColors.inactiveGray)),
+              ),
+              placeholder: 'Parameter',
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 50.0,
+              vertical: 20.0,
+            ),
+            child: CupertinoButton(
+              color: Colors.blue,
+              onPressed: () => _handleLineEquation(),
+              child: Text(XiaomingLocalizations.of(context).calculate),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.only(top: 40.0),
+            child: Center(
+              child: GestureDetector(
+                onLongPress: () {
+                  Clipboard.setData(new ClipboardData(text: result));
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    duration: Duration(milliseconds: 1000),
+                    content:
+                        new Text(XiaomingLocalizations.of(context).copyHint),
+                  ));
+                },
+                child: Text(
+                  result,
+                  style: TextStyle(color: Colors.purple, fontSize: 20.0),
+                ),
+              ),
+            ),
+          ),
+          FadeTransition(
+            opacity: animation,
+            child: CupertinoButton(
+              child: Icon(Icons.clear),
+              onPressed: () {
+                setState(() {
+                  result = "";
+                  controller.reverse();
+                });
+              },
+            ),
+          )
+        ],
+      );
+    }
+
     ///主界面
-    return DefaultTextStyle(  ///指定默认文字格式
+    return DefaultTextStyle(
+      ///指定默认文字格式
       style: const TextStyle(
         fontFamily: '.SF UI Text',
         inherit: false,
@@ -41,24 +130,24 @@ class _EquationRouteState extends State<EquationRoute> with TickerProviderStateM
         navigationBar: CupertinoNavigationBar(
           trailing: buildTrailingBar(<Widget>[
             CupertinoButton(
+              padding: EdgeInsets.zero,
               child: Icon(Icons.help),
-              onPressed: (){
+              onPressed: () {
                 showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return CupertinoAlertDialog(
-                      title: Column(
-                        children: <Widget>[
-                          Text(XiaomingLocalizations.of(context).equaHint1),
-                          Text(XiaomingLocalizations.of(context).equaHint2),
-                          Text(XiaomingLocalizations.of(context).equaHint3),
-                          Text(XiaomingLocalizations.of(context).equaHint4),
-                          Text(XiaomingLocalizations.of(context).equaHint5),
-                        ],
-                      ),
-                    );
-                  }
-                );
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CupertinoAlertDialog(
+                        title: Column(
+                          children: <Widget>[
+                            Text(XiaomingLocalizations.of(context).equaHint1),
+                            Text(XiaomingLocalizations.of(context).equaHint2),
+                            Text(XiaomingLocalizations.of(context).equaHint3),
+                            Text(XiaomingLocalizations.of(context).equaHint4),
+                            Text(XiaomingLocalizations.of(context).equaHint5),
+                          ],
+                        ),
+                      );
+                    });
               },
             )
           ]),
@@ -70,84 +159,11 @@ class _EquationRouteState extends State<EquationRoute> with TickerProviderStateM
             _lineQuasFocusNode.unfocus();
             _varFocusNode.unfocus();
           },
-          child: Container(
-            padding: const EdgeInsets.only(
-                right: 12.0, left: 12.0, bottom: 12.0, top: 12.0),
-            child: ListView(
-              children: <Widget>[
-                SizedBox(height: 150.0,),
-                Container(
-                  //方程输入窗口
-                  padding: EdgeInsets.only(left: 12.0, bottom: 50.0),
-                  child: CupertinoTextField(
-                    clearButtonMode: OverlayVisibilityMode.editing,
-                    focusNode: _lineQuasFocusNode,
-                    controller: _lineQuasController,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                              width: 0.0, color: CupertinoColors.inactiveGray)),
-                    ),
-                    placeholder: 'Equation',
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 12.0, bottom: 50.0,),
-                  child: CupertinoTextField(
-                    clearButtonMode: OverlayVisibilityMode.editing,
-                    focusNode: _varFocusNode,
-                    controller: _varController,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                              width: 0.0, color: CupertinoColors.inactiveGray)),
-                    ),
-                    placeholder: 'Parameter',
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0,),
-                  child: CupertinoButton(
-                    color: Colors.blue,
-                    onPressed: () => _handleLineEquation(),
-                    child: Text(XiaomingLocalizations.of(context).calculate),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(top: 40.0),
-                  child: Center(
-                    child: GestureDetector(
-                      onLongPress: () {
-                        Clipboard.setData(new ClipboardData(text: result));
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                          duration: Duration(milliseconds: 1000),
-                          content: new Text(
-                              XiaomingLocalizations.of(context).copyHint),
-                        ));
-                      },
-                      child: Text(
-                        result,
-                        style: TextStyle(color: Colors.purple, fontSize: 20.0),
-                      ),
-                    ),
-                  ),
-                ),
-                FadeTransition(
-                  opacity: animation,
-                  //result.length == 0 ? 1.0 : 0.0,
-                  child: CupertinoButton(
-                    child: Icon(Icons.clear),
-                    onPressed: () {
-                      setState(() {
-                        result = "";
-                        controller.reverse();
-                      });
-                    },
-                  ),
-                )
-              ],
+          child: Center(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * 5 / 6,
+              width: MediaQuery.of(context).size.width * 5 / 6,
+              child: _page1(),
             ),
           ),
         ),
@@ -177,5 +193,11 @@ class _EquationRouteState extends State<EquationRoute> with TickerProviderStateM
       });
     }
     controller.forward();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }
