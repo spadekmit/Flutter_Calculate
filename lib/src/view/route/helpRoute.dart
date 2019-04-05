@@ -84,7 +84,7 @@ class _HelpViewState extends State<HelpView> {
         const Divider(
           height: 1.0,
         ),
-        _buildCard(XiaomingLocalizations.of(context).helpTab6, 6),
+        _buildCard(XiaomingLocalizations.of(context).definiteIntegral, 6),
       ],
     );
 

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:xiaoming/src/command/handleEquations.dart';
 import 'package:flutter/services.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
@@ -35,7 +36,7 @@ class _EquationRouteState extends State<EquationRoute>
       return ListView(
         children: <Widget>[
           SizedBox(
-            height: 150.0,
+            height: 80.0,
           ),
           Container(
             //方程输入窗口
@@ -112,7 +113,7 @@ class _EquationRouteState extends State<EquationRoute>
                 });
               },
             ),
-          )
+          ),
         ],
       );
     }
@@ -131,7 +132,7 @@ class _EquationRouteState extends State<EquationRoute>
           trailing: buildTrailingBar(<Widget>[
             CupertinoButton(
               padding: EdgeInsets.zero,
-              child: Icon(Icons.help),
+              child: Icon(CupertinoIcons.info),
               onPressed: () {
                 showDialog(
                     context: context,
@@ -149,8 +150,10 @@ class _EquationRouteState extends State<EquationRoute>
                       );
                     });
               },
-            )
+            ),
           ]),
+          middle: Text(XiaomingLocalizations.of(context).equations),
+          previousPageTitle: "Functions",
         ),
         child: GestureDetector(
           //点击空白区域收起键盘

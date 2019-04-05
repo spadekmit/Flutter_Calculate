@@ -60,7 +60,7 @@ class FunctionsRoute extends StatelessWidget {
                 }));
               }),
               Divider(height: 1.0, color: CupertinoColors.black,),
-              _buildCard(XiaomingLocalizations.of(context).calculate, (){}),
+              _buildCard(XiaomingLocalizations.of(context).definiteIntegral, (){}),
             ],
           ),
         ),

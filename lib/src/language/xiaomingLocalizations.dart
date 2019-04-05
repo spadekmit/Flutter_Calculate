@@ -20,6 +20,7 @@ class XiaomingLocalizations {
       'delete' : 'delete',
       'deleteAllMessage' : 'Please confirm if you want to delete all message',
       'deleteAllData' : 'Please confirm if you want to delete all saved data and method',
+      'definite integral' : 'Definite Integral',
       'empty': 'empty',
       'equations' : 'Equations',
       'equationNotEmpty' : 'Equations cannot be empty',
@@ -37,7 +38,6 @@ class XiaomingLocalizations {
       'HelpTab3': 'Method',
       'HelpTab4': 'Precision',
       'HelpTab5': 'Equation',
-      'HelpTab6': 'Definite integral',
       'HelpTabData1':
           'The format of the matrix assignment statement is: a=[1,2,3;4,5,6;7,8,9], the name can consist of letters and numbers, but must start with a letter.'
           'Multiple values for each line are separated by commas, separated by semicolons. Above the input box is a comma and semicolon button for easy entry. The matrix and real numbers are automatically saved to the file, and the data with the same name will be replaced (enter a=2 will also replace the original a=[1,2,3;4,5,6]',
@@ -83,6 +83,7 @@ class XiaomingLocalizations {
       'delete' : '删除',
       'deleteAllMessage' : '请确认是否删除所有消息记录',
       'deleteAllData' : '请确认是否要删除所有已保存的数据和方法',
+      'definite integral' : '定积分',
       'empty': '清空',
       'equations' : '方程',
       'equationNotEmpty' : '方程组不能为空',
@@ -99,7 +100,6 @@ class XiaomingLocalizations {
       'HelpTab3': '函数',
       'HelpTab4': '精度',
       'HelpTab5': '方程',
-      'HelpTab6': '定积分',
       'HelpTabData1': '矩阵赋值的语句格式为：a=[1,2,3;4,5,6;7,8,9],'
           ' 名称可以由字母和数字组成,但必须以字母开头。'
           '每一行的多个值用逗号分隔开，行之间用分号分隔开。输入框的上方有方便输入的'
@@ -181,6 +181,10 @@ class XiaomingLocalizations {
 
   get deleteAllData {
     return _localizedValues[locale.languageCode]['deleteAllData'];
+  }
+
+  get definiteIntegral {
+    return _localizedValues[locale.languageCode]['definite integral'];
   }
 
   get empty {
