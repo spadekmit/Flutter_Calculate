@@ -52,14 +52,17 @@ class XiaomingLocalizations {
       'HelpTabData6':
           'First with a Fun t (x) : r = 2 * x ^ 3 to 7 * x defined integrand, then use the calculus dissuade (t, 0, 8) function to solve, t for the integrand, 0 to 8 for the integral interval',
       'Hint': 'Hint',
-      'removeUF' : 'UserFuntion has been removed',
-      'removeData' : 'Data has been removed',
       'InputHint': 'Input command',
+      'IntegralFunction' : 'Integral Function',
+      'IntegralVariable' : 'Variable Of Integration',
+      'IntegralRange' : 'Integrating Range',
       'maximum' : 'Maximum number of saves',
       'methodBody' : 'method body',
       'newFun' : 'New Funtion',
       'ok' : 'OK',
       'parameter' : 'parameter',
+      'removeUF' : 'UserFuntion has been removed',
+      'removeData' : 'Data has been removed',
       'Setting': 'Setting',
       'save' : 'save',
       'Saved function': 'Saved function',
@@ -119,14 +122,17 @@ class XiaomingLocalizations {
           '在抽屉界面有解方程组按钮，点击可进入到解方程组的界面，输入单个方程则视为多项式解求所有根，多个方程则视为线性方程组求解。因解方程界面没有便捷输入栏，推荐在主界面解求。线性方程组可输入系数阵a和常数列b再用inv（a）*b即可解求，多项式可使用roots（p）解求所有根。p为系数列，详细用法见已保存的函数界面',
       'HelpTabData6':
           '首先用Fun t(x):r = 2*x^3-7*x 定义被积函数，然后使用calculus(t,0,8)函数求解，t为被积函数，0到8为积分区间',
-      'removeUF' : '自定义方法被移除',
-      'removeData' : '数据被移除',
       'InputHint': '输入命令',
+      'IntegralFunction' : '积分函数',
+      'IntegralVariable' : '积分变量',
+      'IntegralRange' : '积分区间',
       'methodBody' : '函数体',
       'maximum' : '历史记录条数',
       'newFun' : '新的函数',
       'ok' : '确认',
       'parameter' : '参数',
+      'removeUF' : '自定义方法被移除',
+      'removeData' : '数据被移除',
       'Setting': '设置',
       'save' : '保存',
       'Saved function': '保存的函数',
@@ -283,16 +289,20 @@ class XiaomingLocalizations {
     return _localizedValues[locale.languageCode]['HistorySaving'];
   }
 
-  get removeUF {
-    return _localizedValues[locale.languageCode]['removeUF'];
-  }
-
-  get removeData {
-    return _localizedValues[locale.languageCode]['removeData'];
-  }
-
   get inputHint {
     return _localizedValues[locale.languageCode]['InputHint'];
+  }
+
+  get integralFunction {
+    return _localizedValues[locale.languageCode]['IntegralFunction'];
+  }
+
+  get integralVariable {
+    return _localizedValues[locale.languageCode]['IntegralVariable'];
+  }
+
+  get integralRange {
+    return _localizedValues[locale.languageCode]['IntegralRange'];
   }
 
   get maximum {
@@ -313,6 +323,14 @@ class XiaomingLocalizations {
 
   get parameter {
     return _localizedValues[locale.languageCode]['parameter'];
+  }
+
+  get removeUF {
+    return _localizedValues[locale.languageCode]['removeUF'];
+  }
+
+  get removeData {
+    return _localizedValues[locale.languageCode]['removeData'];
   }
 
   get savedFunction {

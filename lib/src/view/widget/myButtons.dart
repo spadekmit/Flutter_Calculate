@@ -30,67 +30,63 @@ class SettingButton extends StatelessWidget {
       padding: EdgeInsets.zero,
       child: Icon(CupertinoIcons.settings),
       onPressed: () {
-        showDialog(
+        showCupertinoModalPopup(
             context: context,
             builder: (BuildContext context) {
-              return SettingDialog(onPressed);
+              return SettingSheet(onPressed);
             });
       },
     );
   }
 }
 
-class SettingDialog extends StatefulWidget {
-  SettingDialog(this.onPressed);
+class SettingSheet extends StatefulWidget {
+  SettingSheet(this.onPressed);
   final VoidCallback onPressed;
   @override
-  _SettingDialogState createState() => _SettingDialogState(onPressed);
+  _SettingSheetState createState() => _SettingSheetState(onPressed);
 }
 
-class _SettingDialogState extends State<SettingDialog> {
-  _SettingDialogState(this.onPressed);
+class _SettingSheetState extends State<SettingSheet> {
+  _SettingSheetState(this.onPressed);
   final VoidCallback onPressed;
   @override
   Widget build(BuildContext context) {
-    return CupertinoAlertDialog(
-      title: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            XiaomingLocalizations.of(context).decimalDigits + ":",
-            style: TextStyle(
-              fontSize: 20.0,
+    return CupertinoActionSheet(
+        title: Text(XiaomingLocalizations.of(context).decimalDigits),
+        message: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CupertinoSlider(
+              divisions: 8,
+              max: 9.0,
+              min: 1.0,
+              value: SettingData.fixedNum,
+              onChanged: (double d) {
+                setState(() {
+                  SettingData.fixedNum = d;
+                });
+                SettingData.writeSettingData();
+              },
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              CupertinoSlider(
-                divisions: 8,
-                max: 9.0,
-                min: 1.0,
-                value: SettingData.fixedNum,
-                onChanged: (double d) {
-                  setState(() {
-                    SettingData.fixedNum = d;
-                  });
-                  SettingData.writeSettingData();
-                },
-              ),
-              Text(SettingData.fixedNum.toString()),
-            ],
-          ),
-          Divider(
-            height: 1.0,
-            color: CupertinoColors.black,
-          ),
-          CupertinoButton(
-            onPressed: onPressed,
-            child: Text("Delete All Message"),
+            Text(SettingData.fixedNum.toString()),
+          ],
+        ),
+        actions: <Widget>[
+          CupertinoActionSheetAction(
+            onPressed: (){
+              Navigator.pop(context);
+              onPressed();
+            },
+            child: const Text("Delete All Message"),
           )
         ],
-      ),
-    );
+        cancelButton: CupertinoActionSheetAction(
+          child: const Text('Cancel'),
+          isDefaultAction: true,
+          onPressed: () => Navigator.pop(context),
+        ),
+      );
   }
 }
 

@@ -28,6 +28,16 @@ class _IntegralRouteState extends State<IntegralRoute>
     super.initState();
   }
 
+  void verifyInputData() {
+    if (_dController.text == null ||
+        _pController.text == null ||
+        _iController.text == null) {
+      setState(() {
+        _result = "积分函数，积分变量，积分区间都不能为空！";
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
@@ -39,7 +49,7 @@ class _IntegralRouteState extends State<IntegralRoute>
       ),
       child: CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
-          middle: Text("Definite Integral"),
+          middle: Text(XiaomingLocalizations.of(context).definiteIntegral),
           previousPageTitle: "Functions",
           trailing: CupertinoButton(
             padding: EdgeInsets.zero,
@@ -66,7 +76,7 @@ class _IntegralRouteState extends State<IntegralRoute>
                         bottom: BorderSide(
                             width: 0.0, color: CupertinoColors.black)),
                   ),
-                  placeholder: 'Definite Integral',
+                  placeholder: XiaomingLocalizations.of(context).integralFunction,
                 ),
               ),
               Container(
@@ -83,7 +93,7 @@ class _IntegralRouteState extends State<IntegralRoute>
                         bottom: BorderSide(
                             width: 0.0, color: CupertinoColors.black)),
                   ),
-                  placeholder: 'Parameter',
+                  placeholder: XiaomingLocalizations.of(context).integralVariable,
                 ),
               ),
               Container(
@@ -100,7 +110,7 @@ class _IntegralRouteState extends State<IntegralRoute>
                         bottom: BorderSide(
                             width: 0.0, color: CupertinoColors.black)),
                   ),
-                  placeholder: 'Integrating Range (separated by commas)',
+                  placeholder: XiaomingLocalizations.of(context).integralRange + '  ps: 3,5',
                 ),
               ),
               Container(
@@ -110,7 +120,7 @@ class _IntegralRouteState extends State<IntegralRoute>
                 ),
                 child: CupertinoButton(
                   color: Colors.blue,
-                  onPressed: () {},
+                  onPressed: verifyInputData,
                   child: Text(XiaomingLocalizations.of(context).calculate),
                 ),
               ),
