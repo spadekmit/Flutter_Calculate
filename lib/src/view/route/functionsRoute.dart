@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/route/equationRoute.dart';
+import 'package:xiaoming/src/view/route/integralRoute.dart';
 
 class FunctionsRoute extends StatelessWidget {
   @override
@@ -60,7 +61,11 @@ class FunctionsRoute extends StatelessWidget {
                 }));
               }),
               Divider(height: 1.0, color: CupertinoColors.black,),
-              _buildCard(XiaomingLocalizations.of(context).definiteIntegral, (){}),
+              _buildCard(XiaomingLocalizations.of(context).definiteIntegral, (){
+                Navigator.push(context, CupertinoPageRoute(builder: (BuildContext context) {
+                  return IntegralRoute();
+                }));
+              }),
             ],
           ),
         ),

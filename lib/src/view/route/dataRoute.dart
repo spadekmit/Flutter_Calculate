@@ -286,7 +286,7 @@ class _DataRouteState extends State<DataRoute> {
           SizedBox(
             width: 8.0,
           ),
-          DeleteButton(1, _handleEmpty),
+          DeleteButton(_handleEmpty),
         ]),
         middle: Text("Saved"),
       ),

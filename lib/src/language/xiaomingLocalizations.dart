@@ -16,7 +16,7 @@ class XiaomingLocalizations {
       'calculate': 'calculate',
       'cancel' : 'cancel',
       'CopyHint': 'The content has been copied to the clipboard',
-      'decimal digits': 'decimal digits',
+      'decimal digits': 'Decimal Digits',
       'delete' : 'delete',
       'deleteAllMessage' : 'Please confirm if you want to delete all message',
       'deleteAllData' : 'Please confirm if you want to delete all saved data and method',

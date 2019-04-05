@@ -178,7 +178,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
             const SizedBox(
               width: 8.0,
             ),
-            DeleteButton(0, _deleteAllMessage),
+            SettingButton(_deleteAllMessage),
           ]),
           middle: Text("Home"),
         ),

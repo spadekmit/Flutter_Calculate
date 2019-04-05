@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:xiaoming/src/command/handleEquations.dart';
 import 'package:flutter/services.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
@@ -48,8 +47,8 @@ class _EquationRouteState extends State<EquationRoute>
               textCapitalization: TextCapitalization.words,
               decoration: BoxDecoration(
                 border: Border(
-                    bottom: BorderSide(
-                        width: 0.0, color: CupertinoColors.inactiveGray)),
+                    bottom:
+                        BorderSide(width: 0.0, color: CupertinoColors.black)),
               ),
               placeholder: 'Equation',
             ),
@@ -66,8 +65,8 @@ class _EquationRouteState extends State<EquationRoute>
               textCapitalization: TextCapitalization.words,
               decoration: BoxDecoration(
                 border: Border(
-                    bottom: BorderSide(
-                        width: 0.0, color: CupertinoColors.inactiveGray)),
+                    bottom:
+                        BorderSide(width: 0.0, color: CupertinoColors.black)),
               ),
               placeholder: 'Parameter',
             ),
@@ -89,11 +88,14 @@ class _EquationRouteState extends State<EquationRoute>
               child: GestureDetector(
                 onLongPress: () {
                   Clipboard.setData(new ClipboardData(text: result));
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                    duration: Duration(milliseconds: 1000),
-                    content:
-                        new Text(XiaomingLocalizations.of(context).copyHint),
-                  ));
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CupertinoAlertDialog(
+                          title:
+                              Text(XiaomingLocalizations.of(context).copyHint),
+                        );
+                      });
                 },
                 child: Text(
                   result,
