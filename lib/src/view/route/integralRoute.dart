@@ -10,32 +10,26 @@ class IntegralRoute extends StatefulWidget {
 
 class _IntegralRouteState extends State<IntegralRoute>
     with TickerProviderStateMixin {
-  var _dFocusNode;
   var _dController;
-  var _pFocusNode;
   var _pController;
   var _animation;
   var _aController;
-  var _iFocusNode;
   var _iController;
   var _result = '';
 
   @override
   void initState() {
-    _dFocusNode = FocusNode();
-    _pFocusNode = FocusNode();
-    _iFocusNode = FocusNode();
     _dController = TextEditingController();
     _pController = TextEditingController();
     _iController = TextEditingController();
-    _aController = AnimationController(duration: Duration(seconds: 1), vsync: this);
+    _aController =
+        AnimationController(duration: Duration(seconds: 1), vsync: this);
     _animation = Tween(begin: 0.0, end: 1.0).animate(_aController);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return DefaultTextStyle(
       style: TextStyle(
         fontFamily: '.SF UI Text',
@@ -53,119 +47,108 @@ class _IntegralRouteState extends State<IntegralRoute>
             child: Icon(CupertinoIcons.info),
           ),
         ),
-        child: GestureDetector(
-          //点击空白区域收起键盘
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            _dFocusNode.unfocus();
-            _pFocusNode.unfocus();
-          },
-                  child: Container(
-            padding: const EdgeInsets.all(12.0),
-            child: ListView(
-              children: <Widget>[
-                SizedBox(
-                  height: 80.0,
+        child: Container(
+          padding: const EdgeInsets.all(12.0),
+          child: ListView(
+            children: <Widget>[
+              SizedBox(
+                height: 80.0,
+              ),
+              Container(
+                //方程输入窗口
+                padding: EdgeInsets.only(left: 12.0, bottom: 50.0),
+                child: CupertinoTextField(
+                  clearButtonMode: OverlayVisibilityMode.editing,
+                  controller: _dController,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(
+                            width: 0.0, color: CupertinoColors.black)),
+                  ),
+                  placeholder: 'Definite Integral',
                 ),
-                Container(
-                  //方程输入窗口
-                  padding: EdgeInsets.only(left: 12.0, bottom: 50.0),
-                  child: CupertinoTextField(
-                    clearButtonMode: OverlayVisibilityMode.editing,
-                    focusNode: _dFocusNode,
-                    controller: _dController,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                              width: 0.0, color: CupertinoColors.black)),
-                    ),
-                    placeholder: 'Definite Integral',
-                  ),
+              ),
+              Container(
+                padding: EdgeInsets.only(
+                  left: 12.0,
+                  bottom: 50.0,
                 ),
-                Container(
-                  padding: EdgeInsets.only(
-                    left: 12.0,
-                    bottom: 50.0,
+                child: CupertinoTextField(
+                  clearButtonMode: OverlayVisibilityMode.editing,
+                  controller: _pController,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(
+                            width: 0.0, color: CupertinoColors.black)),
                   ),
-                  child: CupertinoTextField(
-                    clearButtonMode: OverlayVisibilityMode.editing,
-                    focusNode: _pFocusNode,
-                    controller: _pController,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                              width: 0.0, color: CupertinoColors.black)),
-                    ),
-                    placeholder: 'Parameter',
-                  ),
+                  placeholder: 'Parameter',
                 ),
-                Container(
-                  padding: EdgeInsets.only(
-                    left: 12.0,
-                    bottom: 50.0,
-                  ),
-                  child: CupertinoTextField(
-                    clearButtonMode: OverlayVisibilityMode.editing,
-                    focusNode: _iFocusNode,
-                    controller: _iController,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                              width: 0.0, color: CupertinoColors.black)),
-                    ),
-                    placeholder: 'Integrating Range (separated by commas)',
-                  ),
+              ),
+              Container(
+                padding: EdgeInsets.only(
+                  left: 12.0,
+                  bottom: 50.0,
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 50.0,
-                    vertical: 20.0,
+                child: CupertinoTextField(
+                  clearButtonMode: OverlayVisibilityMode.editing,
+                  controller: _iController,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(
+                            width: 0.0, color: CupertinoColors.black)),
                   ),
-                  child: CupertinoButton(
-                    color: Colors.blue,
-                    onPressed: () {},
-                    child: Text(XiaomingLocalizations.of(context).calculate),
-                  ),
+                  placeholder: 'Integrating Range (separated by commas)',
                 ),
-                Container(
-                  padding: const EdgeInsets.only(top: 40.0),
-                  child: Center(
-                    child: GestureDetector(
-                      onLongPress: () {
-                        Clipboard.setData(new ClipboardData(text: _result));
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return CupertinoAlertDialog(
-                                title: Text(
-                                    XiaomingLocalizations.of(context).copyHint),
-                              );
-                            });
-                      },
-                      child: Text(
-                        _result,
-                        style: TextStyle(color: Colors.purple, fontSize: 20.0),
-                      ),
-                    ),
-                  ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 50.0,
+                  vertical: 20.0,
                 ),
-                FadeTransition(
-                  opacity: _animation,
-                  child: CupertinoButton(
-                    child: Icon(Icons.clear),
-                    onPressed: () {
-                      setState(() {
-                        _result = "";
-                        _aController.reverse();
-                      });
+                child: CupertinoButton(
+                  color: Colors.blue,
+                  onPressed: () {},
+                  child: Text(XiaomingLocalizations.of(context).calculate),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(top: 40.0),
+                child: Center(
+                  child: GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(new ClipboardData(text: _result));
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CupertinoAlertDialog(
+                              title: Text(
+                                  XiaomingLocalizations.of(context).copyHint),
+                            );
+                          });
                     },
+                    child: Text(
+                      _result,
+                      style: TextStyle(color: Colors.purple, fontSize: 20.0),
+                    ),
                   ),
                 ),
-              ],
-            ),
+              ),
+              FadeTransition(
+                opacity: _animation,
+                child: CupertinoButton(
+                  child: Icon(Icons.clear),
+                  onPressed: () {
+                    setState(() {
+                      _result = "";
+                      _aController.reverse();
+                    });
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -174,13 +157,10 @@ class _IntegralRouteState extends State<IntegralRoute>
 
   @override
   void dispose() {
-    _dFocusNode.dispose();
     _dController.dispose();
-    _pFocusNode.dispose();
     _pController.dispose();
     _aController.dispose();
     _iController.dispose();
-    _iFocusNode.dispose();
     super.dispose();
   }
 }
