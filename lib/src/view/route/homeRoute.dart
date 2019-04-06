@@ -85,53 +85,116 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
     UserData.language = Localizations.localeOf(context).languageCode;
     tabHeight = MediaQuery.of(context).padding.bottom; //初始化底部导航栏高度
 
-    ///构造消息列表，未加载完成时显示加载中动画
-    Widget _buildList() {
-      return UserData.isUnload
-          ? Center(child: CupertinoActivityIndicator())
-          : Column(
-              children: <Widget>[
-                new Flexible(
-                    child: new GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: () {
-                          _textFocusNode.unfocus();
-                        },
-                        child: ListView.builder(
-                          padding: new EdgeInsets.only(left: 5.0),
-                          reverse: true,
-                          itemBuilder: (context, int index) {
-                            //_texts[index].context = context;
-                            return _texts[index];
-                          },
-                          itemCount: _texts.length,
-                        ))),
-                new Divider(
-                  height: _buttonsIsVisible ? 1.0 : 0.0,
-                  color: _buttonsIsVisible ? Colors.black : null,
-                ),
-                new Container(
-                  decoration: new BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                  ),
-                  child: Container(
-                    height: _buttonsIsVisible ? 200.0 : 0.0,
-                    child: _buildButtons(),
-                  ),
-                ),
-                new Divider(height: 1.0),
-                new Container(
-                  decoration: new BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                  ),
-                  child: _buildTextComposer(context),
-                ),
-                new SizedBox(
-                  height: tabHeight,
-                ),
-              ],
-            );
+    ///处理发送按钮的点击事件
+    void _handleSubmitted(String text) async {
+      _textController.clear();
+      setState(() {
+        _isComposing = false;
+      });
+      UserData.strs.insert(0, text);
+      String handleText = handleCommand(text);
+      UserData.strs.insert(0, handleText);
+      UserData.addMessage(text);
+      UserData.addMessage(handleText);
+      TextView textView1 = new TextView(
+          text: text,
+          context: context,
+          animationController: new AnimationController(
+              duration: new Duration(milliseconds: 200), vsync: this));
+      TextView textView2 = new TextView(
+          text: handleText,
+          context: context,
+          animationController: new AnimationController(
+              duration: new Duration(milliseconds: 200), vsync: this));
+      setState(() {
+        _texts.insert(0, textView1);
+        _texts.insert(0, textView2);
+      });
+
+      textView1.animationController.forward();
+      textView2.animationController.forward();
     }
+
+    ///输入框和发送按钮
+    Widget _textComposer = Row(children: <Widget>[
+      SizedBox(
+        width: 10.0,
+      ),
+      Flexible(
+        child: CupertinoTextField(
+          focusNode: _textFocusNode,
+          maxLines: 1,
+          placeholder: 'Input Command',
+          controller: _textController,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15.0),
+            border: Border.all(
+              color: CupertinoColors.inactiveGray,
+              width: 0.0,
+            ),
+          ),
+          onChanged: (String text) {
+            setState(() {
+              _isComposing = text.length > 0;
+            });
+          },
+          onSubmitted: _handleSubmitted,
+        ),
+      ),
+      new Container(
+        margin: new EdgeInsets.symmetric(horizontal: 4.0),
+        child: new CupertinoButton(
+          child: new Icon(CupertinoIcons.forward),
+          onPressed: ()=>_handleSubmitted(_textController.text),
+        ),
+      ),
+    ]);
+
+    ///消息列表，未加载完成时显示加载中动画
+    Widget _textList = UserData.isUnload
+        ? Center(child: CupertinoActivityIndicator())
+        : Column(
+            children: <Widget>[
+              new Flexible(
+                  child: new GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {
+                        _textFocusNode.unfocus();
+                      },
+                      child: ListView.builder(
+                        padding: new EdgeInsets.only(left: 5.0),
+                        reverse: true,
+                        itemBuilder: (context, int index) {
+                          //_texts[index].context = context;
+                          return _texts[index];
+                        },
+                        itemCount: _texts.length,
+                      ))),
+              new Divider(
+                height: _buttonsIsVisible ? 1.0 : 0.0,
+                color: _buttonsIsVisible ? Colors.black : null,
+              ),
+              new Container(
+                decoration: new BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                ),
+                child: Container(
+                  height: _buttonsIsVisible ? 200.0 : 0.0,
+                  child: _buildButtons(),
+                ),
+              ),
+              new Divider(height: 1.0),
+              new Container(
+                decoration: new BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                ),
+                child: _textComposer,
+              ),
+              new SizedBox(
+                height: tabHeight,
+              ),
+            ],
+          );
 
     ///删除所有交互命令
     void _deleteAllMessage() {
@@ -183,78 +246,9 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
           middle: Text("Home"),
         ),
         resizeToAvoidBottomInset: true,
-        child: _buildList(),
+        child: _textList,
       ),
     );
-  }
-
-  ///构造输入框和发送按钮
-  Widget _buildTextComposer(BuildContext context) {
-    return Row(children: <Widget>[
-      SizedBox(
-        width: 10.0,
-      ),
-      Flexible(
-        child: CupertinoTextField(
-          focusNode: _textFocusNode,
-          maxLines: 1,
-          placeholder: 'Input Command',
-          controller: _textController,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15.0),
-            border: Border.all(
-              color: CupertinoColors.inactiveGray,
-              width: 0.0,
-            ),
-          ),
-          onChanged: (String text) {
-            setState(() {
-              _isComposing = text.length > 0;
-            });
-          },
-          onSubmitted: (String text) => _handleSubmitted(context, text),
-        ),
-      ),
-      new Container(
-        margin: new EdgeInsets.symmetric(horizontal: 4.0),
-        child: new CupertinoButton(
-          child: new Icon(CupertinoIcons.forward),
-          onPressed: _isComposing
-              ? () => _handleSubmitted(context, _textController.text)
-              : null,
-        ),
-      ),
-    ]);
-  }
-
-  ///处理发送按钮的点击事件
-  void _handleSubmitted(BuildContext context, String text) {
-    _textController.clear();
-    setState(() {
-      _isComposing = false;
-    });
-    UserData.strs.insert(0, text);
-    String handleText = handleCommand(text);
-    UserData.strs.insert(0, handleText);
-    UserData.addMessage(text);
-    UserData.addMessage(handleText);
-    TextView textView1 = new TextView(
-        text: text,
-        context: context,
-        animationController: new AnimationController(
-            duration: new Duration(milliseconds: 200), vsync: this));
-    TextView textView2 = new TextView(
-        text: handleText,
-        context: context,
-        animationController: new AnimationController(
-            duration: new Duration(milliseconds: 200), vsync: this));
-    setState(() {
-      _texts.insert(0, textView1);
-      _texts.insert(0, textView2);
-    });
-
-    textView1.animationController.forward();
-    textView2.animationController.forward();
   }
 
   ///创建便捷输入按钮
@@ -388,7 +382,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
           _buildTextButton('lagrange(', width: double.infinity),
         ],
       ));
-    
+
     return ListView(
       reverse: true,
       children: list,

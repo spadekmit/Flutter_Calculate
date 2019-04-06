@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:xiaoming/src/command/handleEquations.dart';
 import 'package:flutter/services.dart';
+import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/widget/myButtons.dart';
 
@@ -31,6 +32,8 @@ class _EquationRouteState extends State<EquationRoute>
 
   @override
   Widget build(BuildContext context) {
+    UserData.nowPage = 1;
+    UserData.pageContext = context;
     Widget _page1() {
       return ListView(
         children: <Widget>[

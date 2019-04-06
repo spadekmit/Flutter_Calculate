@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/view/route/dataRoute.dart';
-import 'package:xiaoming/src/view/route/equationRoute.dart';
 import 'package:xiaoming/src/view/route/functionsRoute.dart';
 import 'package:xiaoming/src/view/route/homeRoute.dart';
 

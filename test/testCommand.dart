@@ -27,8 +27,8 @@ void main() {
   });
 
   test('calculus', (){
-    handleCommand('Fun test(x):r=cos(x)');
-    expect(handleCommand('calculus(test,0,180)'), '-0.000000');
+    handleCommand('Fun test(x): r = 3*x ^ 2');
+    expect(handleCommand('calculus(test,0,4)'), '64.000000');
   });
   
   test('test _nonlinearEquation', (){

@@ -248,17 +248,11 @@ dynamic _invocationMethod(String cmd) {
       }
       return MatrixUtil.upperTriangular(vals[0]);
     case 'calculus':
-      if(vals.length != 3 && vals.length !=4){
+      if(vals.length != 3){
         throw FormatException('积分函数参数数量错误');
       }
       if(vals[0] is! UserFunction || vals[1] is! num || vals[2] is! num){
         throw FormatException('积分函数参数类型传递错误');
-      }
-      if(vals.length == 4){
-        if(vals[3] is! num){
-          throw FormatException('积分函数参数类型传递错误');
-        }
-        return CmdMethodUtil.calculus(vals[0], vals[1], vals[2],loops: vals[3]);
       }
       return CmdMethodUtil.calculus(vals[0], vals[1], vals[2]);
     case 'roots':

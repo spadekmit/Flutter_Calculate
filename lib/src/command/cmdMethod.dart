@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:xiaoming/src/command/matrix.dart';
@@ -131,8 +132,9 @@ class CmdMethodUtil {
     var rad = deg / 180 * pi;
     return rad;
   }
+  
   ///计算微积分（复合梯形公式）
-  static num calculus(UserFunction fx, num a, num b, {int loops = 1000}) {
+  static Future<num> calculus(UserFunction fx, num a, num b) async {
     num result = 0;
     if(fx.paras.length != 1){
       throw FormatException('被积分函数的参数只允许为一个');
@@ -142,6 +144,7 @@ class CmdMethodUtil {
       b = a;
       a = temp;
     }
+    var loops = (b - a) * 1000;
     num h = (b - a) / loops;
     for (int i = 0; i < loops; i++) {
       num temp1 = a + i * h;
