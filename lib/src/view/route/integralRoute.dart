@@ -31,6 +31,7 @@ class _IntegralRouteState extends State<IntegralRoute> {
   Widget build(BuildContext context) {
     UserData.nowPage = 1;
     UserData.pageContext = context;
+
     Future<String> getResult() async {
       if (_dController.text.length == 0 ||
           _pController.text.length == 0 ||
@@ -40,7 +41,6 @@ class _IntegralRouteState extends State<IntegralRoute> {
       if (!_iController.text.contains(',')) {
         return "请用逗号分隔积分区间";
       }
-
       UserFunction uf = UserFunction("__temp__", _pController.text.split(','),
           _dController.text.split(";"));
       int a = int.tryParse(_iController.text.split(',')[0]);
@@ -48,16 +48,8 @@ class _IntegralRouteState extends State<IntegralRoute> {
       if (a == null || b == null) {
         return "积分区间必须为整数";
       }
-      num r = await CmdMethodUtil.calculus(uf, a, b);
+      num r = await CmdMethodUtil.handleCalculate(uf, a, b);
       return "积分结果为：  " + r.toStringAsFixed(SettingData.fixedNum.round());
-    }
-
-    Future<void> _handleCalculate() async {
-      String str = await getResult();
-      setState(() {
-        result = str;
-        isReady = true;
-      });
     }
 
     return DefaultTextStyle(
@@ -180,7 +172,10 @@ class _IntegralRouteState extends State<IntegralRoute> {
                                 TextStyle(color: Colors.purple, fontSize: 20.0),
                           ),
                         )
-                      : CupertinoActivityIndicator(),
+                      : Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+                        CupertinoActivityIndicator(),
+                        Text("正在计算中"),
+                      ],),
                 ),
               ),
             ],

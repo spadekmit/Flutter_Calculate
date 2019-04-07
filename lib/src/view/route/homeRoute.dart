@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:provide/provide.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:xiaoming/src/command/handleCommand.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
@@ -17,20 +19,20 @@ class HomeRoute extends StatefulWidget {
 }
 
 class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
-  /// _texts用来存储要显示的文本
-  /// _textFocusNode用来控制键盘弹出/收回
-  /// _textController用来获取输入文本和控制输入焦点
-  TextEditingController _textController;
-  FocusNode _textFocusNode;
+  
+  TextEditingController _textController;  // _textController用来获取输入文本和控制输入焦点
+  FocusNode _textFocusNode;  // _textFocusNode用来控制键盘弹出/收回
   List<TextView> _texts = <TextView>[]; //存储消息的列表
   bool _isComposing = false; //判断是否有输入
   bool _buttonsIsVisible = false; //控制便捷输入栏显示与隐藏
   double tabHeight; //输入框底部高度（防止被底部导航栏遮挡）
+  bool isComplete = true;  //计算是否完成
+  static bool isUnload = true;  //历史消息是否加载
 
   ///初始化对象及加载数据
   @override
   void initState() {
-    loadText();
+    if(!isUnload) readText();
     UserData.nowPage = 0;
     SettingData.readSettingData(); //读取设置数据
     _textController = new TextEditingController();
@@ -56,28 +58,6 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
     super.initState();
   }
 
-  ///加载数据库中的历史数据
-  Future<void> loadText() async {
-    if (UserData.isUnload) {
-      Future.delayed(Duration(seconds: 40));
-      await UserData.loadData();
-      UserData.strs.forEach((text) {
-        //将保存的历史消息添加进列表并播放动画
-        var textView = TextView(
-          context: context,
-          text: text,
-          animationController: AnimationController(
-              duration: new Duration(milliseconds: 200), vsync: this),
-        );
-        _texts.add(textView);
-        textView.animationController.forward(); //执行完动画Widget才可见
-      });
-      setState(() {
-        UserData.isUnload = false;
-      });
-    }
-  }
-
   ///home界面布局
   @override
   Widget build(BuildContext context) {
@@ -90,12 +70,11 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
       _textController.clear();
       setState(() {
         _isComposing = false;
+        isComplete = false;
       });
-      UserData.strs.insert(0, text);
-      String handleText = handleCommand(text);
-      UserData.strs.insert(0, handleText);
-      UserData.addMessage(text);
-      UserData.addMessage(handleText);
+      String handleText = await handleCommand(text);
+      addMessage(text);
+      addMessage(handleText);
       TextView textView1 = new TextView(
           text: text,
           context: context,
@@ -107,6 +86,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
           animationController: new AnimationController(
               duration: new Duration(milliseconds: 200), vsync: this));
       setState(() {
+        isComplete = true;
         _texts.insert(0, textView1);
         _texts.insert(0, textView2);
       });
@@ -145,15 +125,18 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
         margin: new EdgeInsets.symmetric(horizontal: 4.0),
         child: new CupertinoButton(
           child: new Icon(CupertinoIcons.forward),
-          onPressed: ()=>_handleSubmitted(_textController.text),
+          onPressed: _isComposing ? ()=>_handleSubmitted(_textController.text) : null,
         ),
       ),
     ]);
 
     ///消息列表，未加载完成时显示加载中动画
-    Widget _textList = UserData.isUnload
-        ? Center(child: CupertinoActivityIndicator())
-        : Column(
+    Widget _buildList() {
+      if(isUnload) {
+        return Center(child: CupertinoActivityIndicator());
+      }else {
+        if(isComplete) {
+          return Column(
             children: <Widget>[
               new Flexible(
                   child: new GestureDetector(
@@ -195,6 +178,17 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
               ),
             ],
           );
+        }else {
+          return Center(child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CupertinoActivityIndicator(),
+              Text("正在计算中"),
+            ],
+          ));
+        }
+      }
+    }  
 
     ///删除所有交互命令
     void _deleteAllMessage() {
@@ -209,10 +203,9 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
                   child: Text(XiaomingLocalizations.of(context).delete),
                   onPressed: () {
                     setState(() {
-                      UserData.strs.clear();
                       _texts.clear();
                     });
-                    UserData.deleteAllMessage();
+                    deleteAllMessage();
                     Navigator.of(context, rootNavigator: true).pop();
                   },
                 ),
@@ -246,7 +239,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
           middle: Text("Home"),
         ),
         resizeToAvoidBottomInset: true,
-        child: _textList,
+        child: _buildList(),
       ),
     );
   }
@@ -431,5 +424,35 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
       textView.animationController.dispose();
     }
     _textFocusNode.dispose();
+  }
+
+  ///加载数据库中的历史数据
+  Future readText() async {
+    Database db = await UserData.getDB();
+    var list = await db.rawQuery('select * from Message');
+    list.forEach((m) {
+      var textView = TextView(
+          context: context,
+          text: m['msg'],
+          animationController: AnimationController(
+              duration: new Duration(milliseconds: 200), vsync: this),
+        );
+      _texts.add(textView);
+      textView.animationController.forward();
+    });
+    setState(() {
+     isUnload = false; 
+    });
+  }
+
+  
+  Future<void> addMessage(String msg) async {
+    Database db = await UserData.getDB();
+    db.rawInsert('insert into Message(msg) values("$msg")');
+  }
+  
+  Future<void> deleteAllMessage() async {
+    Database db = await UserData.getDB();
+    db.rawDelete('delete from Message');
   }
 }

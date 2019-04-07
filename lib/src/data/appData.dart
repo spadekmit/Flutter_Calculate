@@ -5,22 +5,15 @@ import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-class UserData {
+class UserData with ChangeNotifier{
   static String language = 'en';
   static bool isUnload = true;
   static int nowPage = 0;
   static BuildContext pageContext;
-  static Map<String, num> dbs = new Map(); //存储浮点数变量
-
-  static Map<String, List<List<num>>> matrixs = new Map(); //存储矩阵变量
-
-  static List<UserFunction> userFunctions =
-      new List<UserFunction>(); //存储用户自定义函数
-
+  static Map<String, num> dbs; //存储浮点数变量
+  static Map<String, List<List<num>>> matrixs; //存储矩阵变量
+  static List<UserFunction> userFunctions; //存储用户自定义函数
   static Map ufTemp = new Map(); //存储调用用户自定义函数时传入的参数
-
-  static List<String> strs = <String>[];
-
   static List<CmdMethod> cmdMethods = [
     new CmdMethod(
         '矩阵求逆',
@@ -152,12 +145,10 @@ class UserData {
   static Future loadData() async {
     if (dbs.isEmpty &&
         matrixs.isEmpty &&
-        userFunctions.isEmpty &&
-        strs.isEmpty) {
+        userFunctions.isEmpty) {
       readNum();
       readMatrix();
       readUserFun();
-      await readText();
     }
   }
 
@@ -166,7 +157,7 @@ class UserData {
     Database db = await getDB();
     var list = await db.rawQuery('select * from Matrixs');
     list.forEach((m) {
-      matrixs[m['name']] = stringToList(m['value']);
+      matrixs[m['name']] = _stringToList(m['value']);
     });
   }
 
@@ -187,17 +178,8 @@ class UserData {
     });
   }
 
-  ///从文件中读取消息队列
-  static Future readText() async {
-    Database db = await getDB();
-    var list = await db.rawQuery('select * from Message');
-    list.forEach((m) {
-      strs.insert(0, m['msg']);
-    });
-  }
-
   ///从字符串中读取矩阵（矩阵自动写入的格式）
-  static List<List<num>> stringToList(String str) {
+  static List<List<num>> _stringToList(String str) {
     str = str.replaceAll(' ', '');
     List<String> list = str.split('],[');
     List<List<num>> result = [];
@@ -294,16 +276,6 @@ class UserData {
     db.rawDelete('delete from Matrixs');
   }
 
-  static Future<void> addMessage(String msg) async {
-    Database db = await getDB();
-    db.rawInsert('insert into Message(msg) values("$msg")');
-  }
-
-  static Future<void> deleteAllMessage() async {
-    Database db = await getDB();
-    db.rawDelete('delete from Message');
-  }
-
   static Future<void> addUF(
       String funName, List<String> paras, List<String> funCmds) async {
     Database db = await getDB();
@@ -342,9 +314,9 @@ class UserFunction {
   UserFunction(this.funName, this.paras, this.funCmds);
 
   ///自定义函数执行。
-  String invoke(String methodVals) {
+  Future<String> invoke(String methodVals) async {
     String result;
-    List<dynamic> vals = getMethodValue(methodVals);
+    List<dynamic> vals = await getMethodValue(methodVals);
     if (vals.length != this.paras.length) {
       throw FormatException('$funName 方法的参数数量传递错误');
     }
@@ -352,7 +324,7 @@ class UserFunction {
       UserData.ufTemp[paras[i]] = vals[i];
     }
     for (int j = 0; j < funCmds.length; j++) {
-      result = handleCommand(funCmds[j]);
+      result = await handleCommand(funCmds[j]);
     }
     for (var s in paras) {
       UserData.ufTemp.remove(s);

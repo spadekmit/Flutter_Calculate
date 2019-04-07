@@ -6,7 +6,7 @@ import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
 
 ///处理字符命令
-String handleCommand(String command) {
+Future<String> handleCommand(String command) async {
   String cmd = command.trim().replaceAll(new RegExp('\n'), '');
   String result;
   //矩阵赋值语法的正则表达式
@@ -21,7 +21,7 @@ String handleCommand(String command) {
   } else if (definFunction.hasMatch(cmd)) {
     result = _handleDefinFunction(cmd);
   } else if (matrixArithmetic.firstMatch(cmd) != null) {
-    result = _handleMatrixArithmetic(cmd.replaceAll(' ', ''));
+    result = await _handleMatrixArithmetic(cmd.replaceAll(' ', ''));
   } else {
     result = "$command  为未知命令";
   }
@@ -75,7 +75,7 @@ String _handleGetMatrix(String cmd) {
 }
 
 /// 处理矩阵与浮点数的四则运算
-String _handleMatrixArithmetic(String cmd) {
+Future<String> _handleMatrixArithmetic(String cmd) async{
   //存储结果的字符串
   String result;
   String newcmd;
@@ -90,7 +90,7 @@ String _handleMatrixArithmetic(String cmd) {
   }
   //处理运算语句，返回运算结果或异常信息
   try {
-    var re = handleCalcuStr(newcmd);
+    var re = await handleCalcuStr(newcmd);
     if (name != null) {
       if (re is List<List<num>>) {
         if(UserData.matrixs.containsKey(name)){
@@ -133,7 +133,7 @@ String _handleMatrixArithmetic(String cmd) {
 }
 
 /// 处理函数调用字符串,返回函数调用结果
-dynamic _invocationMethod(String cmd) {
+Future<dynamic> _invocationMethod(String cmd) async{
   int index = cmd.indexOf('(');
   String methodName = cmd.substring(0, index); //存储函数名
   String methodValue = cmd.substring(index + 1, cmd.length - 1); //存储函数参数
@@ -146,7 +146,7 @@ dynamic _invocationMethod(String cmd) {
   }
 
   //函数参数列
-  List<dynamic> vals = getMethodValue(methodValue);
+  List<dynamic> vals = await getMethodValue(methodValue);
   //根据函数名调用函数
   switch (methodName) {
     case 'inv':
@@ -254,7 +254,7 @@ dynamic _invocationMethod(String cmd) {
       if(vals[0] is! UserFunction || vals[1] is! num || vals[2] is! num){
         throw FormatException('积分函数参数类型传递错误');
       }
-      return CmdMethodUtil.calculus(vals[0], vals[1], vals[2]);
+      return await CmdMethodUtil.handleCalculate(vals[0], vals[1], vals[2]);
     case 'roots':
       if(vals.length != 1 || vals[0] is! List<List<num>>){
         throw FormatException('多项式求根函数参数传递错误');
@@ -314,7 +314,7 @@ bool isUserFun(String funName) {
 }
 
 ///获取函数参数列
-List<dynamic> getMethodValue(String methodValue) {
+Future<List<dynamic>> getMethodValue(String methodValue) async {
   List<String> values = methodValue.split(',');
   //将参数字符串转化为实际类型
   List<dynamic> vals = [];
@@ -322,14 +322,14 @@ List<dynamic> getMethodValue(String methodValue) {
     if(isUserFun(str)){
       vals.add(getUfByName(str));
     }else{
-      vals.add(handleCalcuStr(str));
+      vals.add(await handleCalcuStr(str));
     }
   }
   return vals;
 }
 
 /// 传入需要运算的语句，返回结果
-dynamic handleCalcuStr(String caculStr) {
+Future<dynamic> handleCalcuStr(String caculStr) async{
   var temp = new Map();
   if (UserData.matrixs.containsKey(caculStr)) {
     return UserData.matrixs[caculStr];
@@ -380,14 +380,14 @@ dynamic handleCalcuStr(String caculStr) {
             r'\)');
         if (inlayMethod.hasMatch(caculStr)) {
           temp['caculStrTemp$i'] =
-              _invocationMethod(inlayMethod.firstMatch(caculStr).group(0));
+              await _invocationMethod(inlayMethod.firstMatch(caculStr).group(0));
           caculStr = caculStr.replaceFirst(
               inlayMethod.firstMatch(caculStr).group(0), 'caculStrTemp$i');
           continue;
         }
         caculStr = caculStr.replaceFirst(
             '(' + caculStrs[i].toString() + ')', 'caculStrTemp$i');
-        temp['caculStrTemp$i'] = handleCalcuStr(caculStrs[i].toString());
+        temp['caculStrTemp$i'] = await handleCalcuStr(caculStrs[i].toString());
       }
     }
   }

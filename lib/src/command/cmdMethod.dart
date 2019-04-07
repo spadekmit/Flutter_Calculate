@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'dart:isolate';
 import 'dart:math';
-
 import 'package:xiaoming/src/command/matrix.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
@@ -133,8 +133,30 @@ class CmdMethodUtil {
     return rad;
   }
   
+  
+  static Future<dynamic> handleCalculate(UserFunction uf, num a, num b) async {
+    final response = ReceivePort();
+    await Isolate.spawn(_isolateCalculus, response.sendPort);
+    final sendPort = await response.first;
+    final answer = ReceivePort();
+    sendPort.send([answer.sendPort, uf, a, b]);
+    return answer.first;
+  }
+
+  static void _isolateCalculus(SendPort port) {
+    final rPort = ReceivePort();
+    port.send(rPort.sendPort);
+    rPort.listen((message) async {
+      final send = message[0] as SendPort;
+      final uf = message[1] as UserFunction;
+      final a = message[2] as num;
+      final b = message[3] as num;
+      send.send(await _calculus(uf, a, b));
+    });
+  }
+
   ///计算微积分（复合梯形公式）
-  static Future<num> calculus(UserFunction fx, num a, num b) async {
+  static Future<num> _calculus(UserFunction fx, num a, num b) async {
     num result = 0;
     if(fx.paras.length != 1){
       throw FormatException('被积分函数的参数只允许为一个');
@@ -149,12 +171,13 @@ class CmdMethodUtil {
     for (int i = 0; i < loops; i++) {
       num temp1 = a + i * h;
       num temp2 = a + (i + 1) * h;
-      String r1Str = fx.invoke(temp1.toString());
-      String r2Str = fx.invoke(temp2.toString());
+      String r1Str = await fx.invoke(temp1.toString());
+      String r2Str = await fx.invoke(temp2.toString());
       result += (_getValue(r1Str) + _getValue(r2Str)) / 2 * h;
     }
     return result;
   }
+  
   ///抽取字符串中等号后面的数值
   static num _getValue(String valStr){
     var index = valStr.indexOf('=');
