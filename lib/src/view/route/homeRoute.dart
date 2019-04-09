@@ -21,7 +21,7 @@ class HomeRoute extends StatefulWidget {
 class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
   TextEditingController _textController; // _textController用来获取输入文本和控制输入焦点
   FocusNode _textFocusNode; // _textFocusNode用来控制键盘弹出/收回
-  List<TextView> _texts = <TextView>[]; //存储消息的列表
+  static List<TextView> _texts = <TextView>[]; //存储消息的列表
   bool _isComposing = false; //判断是否有输入
   bool _buttonsIsVisible = false; //控制便捷输入栏显示与隐藏
   double tabHeight; //输入框底部高度（防止被底部导航栏遮挡）
@@ -147,14 +147,10 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
                       onTap: () {
                         _textFocusNode.unfocus();
                       },
-                      child: ListView.builder(
+                      child: ListView(
                         padding: new EdgeInsets.only(left: 5.0),
                         reverse: true,
-                        itemBuilder: (context, int index) {
-                          //_texts[index].context = context;
-                          return _texts[index];
-                        },
-                        itemCount: _texts.length,
+                        children: _texts,
                       ))),
               new Divider(
                 height: _buttonsIsVisible ? 1.0 : 0.0,
@@ -445,7 +441,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
         animationController: AnimationController(
             duration: new Duration(milliseconds: 200), vsync: this),
       );
-      _texts.add(textView);
+      _texts.insert(0, textView);
       textView.animationController.forward();
     });
     setState(() {
