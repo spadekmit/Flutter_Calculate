@@ -5,8 +5,7 @@ import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
 ///单个输出文本的视图
 class TextView extends StatelessWidget {
-  TextView({this.context, this.text, this.animationController});
-  final BuildContext context;
+  TextView({this.text, this.animationController});
   final AnimationController animationController;
   final String text;
 
@@ -31,14 +30,13 @@ class TextView extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               )),
         ),
-        onLongPress: _handleLongPress,
+        onLongPress: () => _handleLongPress(context),
       ),
     );
   }
 
-  void _handleLongPress() {
+  void _handleLongPress(context) {
     Clipboard.setData(new ClipboardData(text: text));
-    Navigator.of(context, rootNavigator: true);
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -47,4 +45,18 @@ class TextView extends StatelessWidget {
           );
         });
   }
+}
+
+Widget buildTextListView({Stream stream}) {
+  List<TextView> list = <TextView>[];
+  return StreamBuilder<List<TextView>>(
+    stream: stream,
+    builder: (context, snapshot) {
+      return ListView.builder(
+        padding: const EdgeInsets.only(left: 5.0),
+        reverse: true,
+        itemBuilder: (context, index) => snapshot.data[index],
+      );
+    },
+  );
 }
