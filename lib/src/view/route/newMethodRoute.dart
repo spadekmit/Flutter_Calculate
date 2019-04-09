@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provide/provide.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
-import 'package:xiaoming/src/command/handleCommand.dart';
 
 class NewMethodRoute extends StatefulWidget {
   @override
@@ -42,14 +42,7 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
                           isDestructiveAction: true,
                           onPressed: () {
                             isPop = true;
-                            UserFunction uf = new UserFunction(
-                                _funName.text, _parm.text.split(','), _cmds.text.split(';'));
-                            if(isUserFun(_funName.text)){
-                              UserData.userFunctions.remove(getUfByName(_funName.text));
-                              UserData.deleteUF(_funName.text);
-                            }
-                            UserData.userFunctions.add(uf);
-                            UserData.addUF(uf.funName, uf.paras, uf.funCmds);
+                            Provide.value<UserData>(context).addUF(_funName.text, _parm.text.split(','), _cmds.text.split(';'));
                             Navigator.pop(alertContext);
                           },
                         ),

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:provide/provide.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:xiaoming/src/command/handleCommand.dart';
 import 'package:xiaoming/src/data/appData.dart';
+import 'package:xiaoming/src/data/dbUtil.dart';
 import 'package:xiaoming/src/data/settingData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/widget/myButtons.dart';
@@ -19,20 +19,20 @@ class HomeRoute extends StatefulWidget {
 }
 
 class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
-  
-  TextEditingController _textController;  // _textController用来获取输入文本和控制输入焦点
-  FocusNode _textFocusNode;  // _textFocusNode用来控制键盘弹出/收回
+  TextEditingController _textController; // _textController用来获取输入文本和控制输入焦点
+  FocusNode _textFocusNode; // _textFocusNode用来控制键盘弹出/收回
   List<TextView> _texts = <TextView>[]; //存储消息的列表
   bool _isComposing = false; //判断是否有输入
   bool _buttonsIsVisible = false; //控制便捷输入栏显示与隐藏
   double tabHeight; //输入框底部高度（防止被底部导航栏遮挡）
-  bool isComplete = true;  //计算是否完成
-  static bool isUnload = true;  //历史消息是否加载
+  bool isComplete = true; //计算是否完成
+  static bool isUnload = true; //历史消息是否加载
+  UserData ud;
 
   ///初始化对象及加载数据
   @override
   void initState() {
-    if(!isUnload) readText();
+    if (isUnload) readText();
     UserData.nowPage = 0;
     SettingData.readSettingData(); //读取设置数据
     _textController = new TextEditingController();
@@ -61,6 +61,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
   ///home界面布局
   @override
   Widget build(BuildContext context) {
+    ud = Provide.value<UserData>(context);
     //记录当前语言
     UserData.language = Localizations.localeOf(context).languageCode;
     tabHeight = MediaQuery.of(context).padding.bottom; //初始化底部导航栏高度
@@ -72,9 +73,9 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
         _isComposing = false;
         isComplete = false;
       });
-      String handleText = await handleCommand(text);
-      addMessage(text);
-      addMessage(handleText);
+      String handleText = await ud.handleCommand(text);
+      DBUtil.addMessage(text);
+      DBUtil.addMessage(handleText);
       TextView textView1 = new TextView(
           text: text,
           context: context,
@@ -125,17 +126,19 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
         margin: new EdgeInsets.symmetric(horizontal: 4.0),
         child: new CupertinoButton(
           child: new Icon(CupertinoIcons.forward),
-          onPressed: _isComposing ? ()=>_handleSubmitted(_textController.text) : null,
+          onPressed: _isComposing
+              ? () => _handleSubmitted(_textController.text)
+              : null,
         ),
       ),
     ]);
 
     ///消息列表，未加载完成时显示加载中动画
     Widget _buildList() {
-      if(isUnload) {
+      if (isUnload) {
         return Center(child: CupertinoActivityIndicator());
-      }else {
-        if(isComplete) {
+      } else {
+        if (isComplete) {
           return Column(
             children: <Widget>[
               new Flexible(
@@ -178,8 +181,9 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
               ),
             ],
           );
-        }else {
-          return Center(child: Column(
+        } else {
+          return Center(
+              child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               CupertinoActivityIndicator(),
@@ -188,7 +192,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
           ));
         }
       }
-    }  
+    }
 
     ///删除所有交互命令
     void _deleteAllMessage() {
@@ -205,7 +209,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
                     setState(() {
                       _texts.clear();
                     });
-                    deleteAllMessage();
+                    DBUtil.deleteAllMessage();
                     Navigator.of(context, rootNavigator: true).pop();
                   },
                 ),
@@ -297,88 +301,92 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
   }
 
   ///构造方法按钮列表
-  ListView _buildMethodButtons() {
-    List<Widget> list = [];
-    if (UserData.userFunctions.isNotEmpty) {
-      int i = 0;
-      var blist = <Widget>[];
-      UserData.userFunctions.forEach((u) {
-        blist.add(_buildTextButton(u.funName + '(', width: double.infinity));
-        i++;
-        if (i == 4) {
-          list.add(Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: blist,
-          ));
-          blist.clear();
-          i = 0;
+  Widget _buildMethodButtons() {
+    return Provide<UserData>(
+      builder: (context, child, ud) {
+        List<Widget> list = [];
+        if (ud.userFunctions.isNotEmpty) {
+          int i = 0;
+          var blist = <Widget>[];
+          ud.userFunctions.forEach((u) {
+            blist
+                .add(_buildTextButton(u.funName + '(', width: double.infinity));
+            i++;
+            if (i == 4) {
+              list.add(Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: blist,
+              ));
+              blist.clear();
+              i = 0;
+            }
+          });
+          if (i != 0) {
+            list.add(Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: blist,
+            ));
+          }
         }
-      });
-      if (i != 0) {
-        list.add(Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: blist,
-        ));
-      }
-    }
-    list
-      ..add(Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          _buildTextButton('Fun', width: double.infinity),
-          _buildTextButton('inv(', width: double.infinity),
-          _buildTextButton('tran(', width: double.infinity),
-          _buildTextButton('value(', width: double.infinity),
-        ],
-      ))
-      ..add(Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          _buildTextButton('upmat(', width: double.infinity),
-          _buildTextButton('cofa(', width: double.infinity),
-          _buildTextButton('calculus(', width: double.infinity),
-          _buildTextButton('roots(', width: double.infinity),
-        ],
-      ))
-      ..add(Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          _buildTextButton('sum(', width: double.infinity),
-          _buildTextButton('average(', width: double.infinity),
-          _buildTextButton('factorial(', width: double.infinity),
-          _buildTextButton('sin(', width: double.infinity),
-        ],
-      ))
-      ..add(Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          _buildTextButton('cos(', width: double.infinity),
-          _buildTextButton('tan(', width: double.infinity),
-          _buildTextButton('asin(', width: double.infinity),
-          _buildTextButton('acos(', width: double.infinity),
-        ],
-      ))
-      ..add(Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          _buildTextButton('atan(', width: double.infinity),
-          _buildTextButton('formatDeg(', width: double.infinity),
-          _buildTextButton('reForDeg(', width: double.infinity),
-          _buildTextButton('absSum(', width: double.infinity),
-        ],
-      ))
-      ..add(Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          _buildTextButton('absAverage(', width: double.infinity),
-          _buildTextButton('radToDeg(', width: double.infinity),
-          _buildTextButton('lagrange(', width: double.infinity),
-        ],
-      ));
-
-    return ListView(
-      reverse: true,
-      children: list,
+        list
+          ..add(Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              _buildTextButton('Fun', width: double.infinity),
+              _buildTextButton('inv(', width: double.infinity),
+              _buildTextButton('tran(', width: double.infinity),
+              _buildTextButton('value(', width: double.infinity),
+            ],
+          ))
+          ..add(Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              _buildTextButton('upmat(', width: double.infinity),
+              _buildTextButton('cofa(', width: double.infinity),
+              _buildTextButton('calculus(', width: double.infinity),
+              _buildTextButton('roots(', width: double.infinity),
+            ],
+          ))
+          ..add(Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              _buildTextButton('sum(', width: double.infinity),
+              _buildTextButton('average(', width: double.infinity),
+              _buildTextButton('factorial(', width: double.infinity),
+              _buildTextButton('sin(', width: double.infinity),
+            ],
+          ))
+          ..add(Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              _buildTextButton('cos(', width: double.infinity),
+              _buildTextButton('tan(', width: double.infinity),
+              _buildTextButton('asin(', width: double.infinity),
+              _buildTextButton('acos(', width: double.infinity),
+            ],
+          ))
+          ..add(Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              _buildTextButton('atan(', width: double.infinity),
+              _buildTextButton('formatDeg(', width: double.infinity),
+              _buildTextButton('reForDeg(', width: double.infinity),
+              _buildTextButton('absSum(', width: double.infinity),
+            ],
+          ))
+          ..add(Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              _buildTextButton('absAverage(', width: double.infinity),
+              _buildTextButton('radToDeg(', width: double.infinity),
+              _buildTextButton('lagrange(', width: double.infinity),
+            ],
+          ));
+        return ListView(
+          reverse: true,
+          children: list,
+        );
+      },
     );
   }
 
@@ -428,31 +436,20 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
 
   ///加载数据库中的历史数据
   Future readText() async {
-    Database db = await UserData.getDB();
+    Database db = await DBUtil.getDB();
     var list = await db.rawQuery('select * from Message');
     list.forEach((m) {
       var textView = TextView(
-          context: context,
-          text: m['msg'],
-          animationController: AnimationController(
-              duration: new Duration(milliseconds: 200), vsync: this),
-        );
+        context: context,
+        text: m['msg'],
+        animationController: AnimationController(
+            duration: new Duration(milliseconds: 200), vsync: this),
+      );
       _texts.add(textView);
       textView.animationController.forward();
     });
     setState(() {
-     isUnload = false; 
+      isUnload = false;
     });
-  }
-
-  
-  Future<void> addMessage(String msg) async {
-    Database db = await UserData.getDB();
-    db.rawInsert('insert into Message(msg) values("$msg")');
-  }
-  
-  Future<void> deleteAllMessage() async {
-    Database db = await UserData.getDB();
-    db.rawDelete('delete from Message');
   }
 }

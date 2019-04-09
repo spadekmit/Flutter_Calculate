@@ -1,25 +1,25 @@
 import 'package:xiaoming/src/command/cmdMethod.dart';
-import 'package:xiaoming/src/command/handleCommand.dart';
 import 'package:xiaoming/src/command/handleEquations.dart';
 import 'package:xiaoming/src/command/handleNonlinearEquation.dart';
 import 'package:xiaoming/src/command/matrix.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:xiaoming/src/data/appData.dart';
 
 void main() {
-
+  final ud = new UserData();
   test('userFunction', () {
     String cmd = 'Fun test(x,y):x*y';
-    print(handleCommand(cmd));
-    print(handleCommand('test(3,4)'));
+    print(ud.handleCommand(cmd));
+    print(ud.handleCommand('test(3,4)'));
   });
 
   test('_formatCmdStr', (){
     String cmd = '-3x^2+2x/-1';
-    print(formatCmdStr(cmd));
+    print(ud.formatCmdStr(cmd));
   });
 
   test('handleCommand', (){
-    print(handleCommand('sin(-30)-20'));
+    print(ud.handleCommand('sin(-30)-20'));
   });
 
   test('Polyomial', (){
@@ -27,8 +27,8 @@ void main() {
   });
 
   test('calculus', (){
-    handleCommand('Fun test(x): r = 3*x ^ 2');
-    expect(handleCommand('calculus(test,0,4)'), '64.000000');
+    ud.handleCommand('Fun test(x): r = 3*x ^ 2');
+    expect(ud.handleCommand('calculus(test,0,4)'), '64.000000');
   });
   
   test('test _nonlinearEquation', (){
@@ -63,7 +63,7 @@ void main() {
     expect(result, 2);
   });
   test('test handleCaculStr', () {
-    var result = handleCalcuStr('-2+4*(-3+4)');
+    var result = ud.handleCalcuStr('-2+4*(-3+4)');
     expect(result, 2);
   });
 
