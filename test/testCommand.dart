@@ -1,12 +1,17 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:xiaoming/src/command/cmdMethod.dart';
 import 'package:xiaoming/src/command/handleEquations.dart';
-import 'package:xiaoming/src/command/handleNonlinearEquation.dart';
 import 'package:xiaoming/src/command/matrix.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:xiaoming/src/data/appData.dart';
 
 void main() {
   final ud = new UserData();
+
+  test('testEquation', () {
+    var instance = EquationsUtil.getInstance();
+    print(instance.handleEquation('1,-2,1'));
+  });
+
   test('userFunction', () {
     String cmd = 'Fun test(x,y):x*y';
     print(ud.handleCommand(cmd));
@@ -30,12 +35,6 @@ void main() {
     ud.handleCommand('Fun test(x): r = 3*x ^ 2');
     expect(ud.handleCommand('calculus(test,0,4)'), '64.000000');
   });
-  
-  test('test _nonlinearEquation', (){
-    String cmd = 'x^2-2x+1';
-    var instance = EquationsUtil.getInstance();
-    expect(instance.handleEquation(cmd, 'x'), '第1个解为： 1.000000\n第2个解为： 1.000000\n');
-  });
 
   test('test getHessenberg', (){
     List<List<num>> matrix = [[4,1,0],[1,0,-1],[1,1,-4]];
@@ -51,17 +50,6 @@ void main() {
         [1.9999999616497233, 0.00006904586138525003]]);
   });
 
-  test('test handleNonlinearEquation', () {
-    NonlinearEquationUtil instance = NonlinearEquationUtil.getInstance();
-    var result = instance.handleNonlinearEquation('-3x^3+5x-10', 'x');
-    expect(result, '-3*x^3+5*x-10');
-  });
-
-  test('test NonlinearEquationUtil.handleCaculStr', () {
-    NonlinearEquationUtil instance = NonlinearEquationUtil.getInstance();
-    var result = instance.handleCalcuStr('-2+4*(-3+4)');
-    expect(result, 2);
-  });
   test('test handleCaculStr', () {
     var result = ud.handleCalcuStr('-2+4*(-3+4)');
     expect(result, 2);

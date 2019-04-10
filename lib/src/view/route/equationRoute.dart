@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:xiaoming/src/command/handleEquations.dart';
@@ -34,15 +35,15 @@ class _EquationRouteState extends State<EquationRoute>
   Widget build(BuildContext context) {
     UserData.nowPage = 1;
     UserData.pageContext = context;
-    Widget _page1() {
-      return ListView(
+
+    Widget _buildListView() {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          SizedBox(
-            height: 80.0,
-          ),
+          Text(XiaomingLocalizations.of(context).equationTip),
+          SizedBox(height: 50.0,),
           Container(
-            //方程输入窗口
-            padding: EdgeInsets.only(left: 12.0, bottom: 50.0),
+            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
             child: CupertinoTextField(
               clearButtonMode: OverlayVisibilityMode.editing,
               focusNode: _lineQuasFocusNode,
@@ -57,10 +58,7 @@ class _EquationRouteState extends State<EquationRoute>
             ),
           ),
           Container(
-            padding: EdgeInsets.only(
-              left: 12.0,
-              bottom: 50.0,
-            ),
+            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
             child: CupertinoTextField(
               clearButtonMode: OverlayVisibilityMode.editing,
               focusNode: _varFocusNode,
@@ -76,8 +74,7 @@ class _EquationRouteState extends State<EquationRoute>
           ),
           Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: 50.0,
-              vertical: 20.0,
+              vertical: 40.0,
             ),
             child: CupertinoButton(
               color: Colors.blue,
@@ -86,7 +83,7 @@ class _EquationRouteState extends State<EquationRoute>
             ),
           ),
           Container(
-            padding: const EdgeInsets.only(top: 40.0),
+            padding: const EdgeInsets.only(top: 20.0),
             child: Center(
               child: GestureDetector(
                 onLongPress: () {
@@ -137,7 +134,7 @@ class _EquationRouteState extends State<EquationRoute>
           trailing: buildTrailingBar(<Widget>[
             CupertinoButton(
               padding: EdgeInsets.zero,
-              child: Icon(CupertinoIcons.info),
+              child: Text(XiaomingLocalizations.of(context).sample),
               onPressed: () {
                 showDialog(
                     context: context,
@@ -167,11 +164,11 @@ class _EquationRouteState extends State<EquationRoute>
             _lineQuasFocusNode.unfocus();
             _varFocusNode.unfocus();
           },
-          child: Center(
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height * 5 / 6,
-              width: MediaQuery.of(context).size.width * 5 / 6,
-              child: _page1(),
+          child: SingleChildScrollView(
+            child: Container(
+              height: MediaQuery.of(context).size.height -
+                  MediaQueryData.fromWindow(window).padding.top,
+              child: _buildListView(),
             ),
           ),
         ),
@@ -186,7 +183,7 @@ class _EquationRouteState extends State<EquationRoute>
       if (_varController.text.length != 0) {
         EquationsUtil handle = EquationsUtil.getInstance();
         var re = handle.handleEquation(
-            _lineQuasController.text, _varController.text);
+            _lineQuasController.text);
         setState(() {
           result = re;
         });

@@ -35,12 +35,12 @@ final Widget myTabScaffold = WillPopScope(
           title: Text("Home"),
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.save),
-          title: Text("Saved"),
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.apps),
           title: Text("Functions"),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.save),
+          title: Text("Saved"),
         ),
       ]),
       tabBuilder: (BuildContext context, int index) {
@@ -52,11 +52,11 @@ final Widget myTabScaffold = WillPopScope(
             break;
           case 1:
             return CupertinoTabView(builder: (BuildContext context) {
-              return DataRoute();
+              return FunctionsRoute();
             });
           case 2:
             return CupertinoTabView(builder: (BuildContext context) {
-              return FunctionsRoute();
+              return DataRoute();
             });
         }
       }),

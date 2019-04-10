@@ -24,10 +24,11 @@ class XiaomingLocalizations {
       'empty': 'empty',
       'equations' : 'Equations',
       'equationNotEmpty' : 'Equations cannot be empty',
+      'equationTip' : 'Tip: this page can be used to solve linear equations and higher-order unary equations',
       'equaHint1':
           'A linear equation is one or more equations whose highest power is one',
-      'equaHint2': 'Example a00x + + a02z a01y = b0, a10x + + a12z a11y = b1,',
-      'equaHint3': 'a20x +a21y+a22z=b2 ',
+      'equaHint2': 'Example 3x-2y+z=2,3y+5z=8,',
+      'equaHint3': 'Multiple equation are separated by commas， Parameter is x,y,z',
       'equaHint4':
           'Polynomials refer to equations of one variable multiple times',
       'equaHint5': "Example: x^2-2x+1",
@@ -63,6 +64,7 @@ class XiaomingLocalizations {
       'parameter' : 'parameter',
       'removeUF' : 'UserFuntion has been removed',
       'removeData' : 'Data has been removed',
+      'sample' : 'Sample',
       'Setting': 'Setting',
       'save' : 'save',
       'Saved function': 'Saved function',
@@ -90,9 +92,10 @@ class XiaomingLocalizations {
       'empty': '清空',
       'equations' : '方程',
       'equationNotEmpty' : '方程组不能为空',
+      'equationTip' : '提示：本页面可求解线性方程组和一元高次方程',
       'equaHint1': '线性方程指最高次幂为1次的一元或多元方程',
-      'equaHint2': '例a00x+a01y+a02z=b0,a10x+a11y+a12z=b1,',
-      'equaHint3': 'a20x+a21y+a22z=b2      变量栏输入x,y,z',
+      'equaHint2': '例: 3x-2y+z=2,3y+5z=8,',
+      'equaHint3': '多个方程用逗号分隔，变量栏输入x,y,z',
       'equaHint4': '多项式指一元多次方程',
       'equaHint5': "例：'x^2-2x+1' ,变量栏输入x",
       'funName' : '函数名',
@@ -133,6 +136,7 @@ class XiaomingLocalizations {
       'parameter' : '参数',
       'removeUF' : '自定义方法被移除',
       'removeData' : '数据被移除',
+      'sample' : '示例',
       'Setting': '设置',
       'save' : '保存',
       'Saved function': '保存的函数',
@@ -203,6 +207,10 @@ class XiaomingLocalizations {
 
   get equations {
     return _localizedValues[locale.languageCode]['equations'];
+  }
+
+  get equationTip {
+    return _localizedValues[locale.languageCode]['equationTip'];
   }
 
   get equaHint1 {
@@ -331,6 +339,10 @@ class XiaomingLocalizations {
 
   get removeData {
     return _localizedValues[locale.languageCode]['removeData'];
+  }
+
+  get sample {
+    return _localizedValues[locale.languageCode]['sample'];
   }
 
   get savedFunction {
