@@ -90,10 +90,10 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
                 height: _buttonsIsVisible ? 1.0 : 0.0,
                 color: _buttonsIsVisible ? Colors.black : null,
               ),
-              new Container(
-                decoration: new BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                ),
+              AnimatedSize(
+                vsync: this,
+                curve: Curves.ease,
+                duration: Duration(milliseconds: 500),
                 child: Container(
                   height: _buttonsIsVisible ? 200.0 : 0.0,
                   child: buildButtons(_handleTextButton),

@@ -16,9 +16,7 @@ class EquationRoute extends StatefulWidget {
 class _EquationRouteState extends State<EquationRoute>
     with TickerProviderStateMixin {
   final TextEditingController _lineQuasController = TextEditingController();
-  final TextEditingController _varController = TextEditingController();
   final FocusNode _lineQuasFocusNode = new FocusNode();
-  final FocusNode _varFocusNode = new FocusNode();
   AnimationController controller;
   Animation<double> animation;
   String result = '';
@@ -41,35 +39,29 @@ class _EquationRouteState extends State<EquationRoute>
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(XiaomingLocalizations.of(context).equationTip),
-          SizedBox(height: 50.0,),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
-            child: CupertinoTextField(
-              clearButtonMode: OverlayVisibilityMode.editing,
-              focusNode: _lineQuasFocusNode,
-              controller: _lineQuasController,
-              textCapitalization: TextCapitalization.words,
-              decoration: BoxDecoration(
-                border: Border(
-                    bottom:
-                        BorderSide(width: 0.0, color: CupertinoColors.black)),
-              ),
-              placeholder: 'Equation',
-            ),
+          SizedBox(
+            height: 50.0,
           ),
           Container(
-            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
-            child: CupertinoTextField(
-              clearButtonMode: OverlayVisibilityMode.editing,
-              focusNode: _varFocusNode,
-              controller: _varController,
-              textCapitalization: TextCapitalization.words,
-              decoration: BoxDecoration(
-                border: Border(
-                    bottom:
-                        BorderSide(width: 0.0, color: CupertinoColors.black)),
+            padding:
+                const EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
+            child: Card(
+              elevation: 0.0,
+              child: Container(
+                padding: const EdgeInsets.all(10.0),
+                child: CupertinoTextField(
+                  clearButtonMode: OverlayVisibilityMode.editing,
+                  focusNode: _lineQuasFocusNode,
+                  controller: _lineQuasController,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom:
+                            BorderSide(width: 0.0, color: CupertinoColors.black)),
+                  ),
+                  placeholder: 'Equation',
+                ),
               ),
-              placeholder: 'Parameter',
             ),
           ),
           Container(
@@ -130,6 +122,7 @@ class _EquationRouteState extends State<EquationRoute>
         color: CupertinoColors.black,
       ),
       child: CupertinoPageScaffold(
+        backgroundColor: CupertinoColors.lightBackgroundGray,
         navigationBar: CupertinoNavigationBar(
           trailing: buildTrailingBar(<Widget>[
             CupertinoButton(
@@ -162,7 +155,6 @@ class _EquationRouteState extends State<EquationRoute>
           behavior: HitTestBehavior.translucent,
           onTap: () {
             _lineQuasFocusNode.unfocus();
-            _varFocusNode.unfocus();
           },
           child: SingleChildScrollView(
             child: Container(
@@ -178,20 +170,12 @@ class _EquationRouteState extends State<EquationRoute>
 
   void _handleLineEquation() {
     _lineQuasFocusNode.unfocus();
-    _varFocusNode.unfocus();
     if (_lineQuasController.text.length != 0) {
-      if (_varController.text.length != 0) {
-        EquationsUtil handle = EquationsUtil.getInstance();
-        var re = handle.handleEquation(
-            _lineQuasController.text);
-        setState(() {
-          result = re;
-        });
-      } else {
-        setState(() {
-          result = XiaomingLocalizations.of(context).variableNotEmpty;
-        });
-      }
+      EquationsUtil handle = EquationsUtil.getInstance();
+      var re = handle.handleEquation(_lineQuasController.text);
+      setState(() {
+        result = re;
+      });
     } else {
       setState(() {
         result = XiaomingLocalizations.of(context).equationNotEmpty;

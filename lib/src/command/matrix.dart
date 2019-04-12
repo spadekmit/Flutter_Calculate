@@ -15,9 +15,11 @@ class MatrixUtil {
         buffer.write('   ');
         buffer.write(d.toStringAsFixed(SettingData.fixedNum.round()) + '  ');
       }
-      buffer.write("\n");
+      buffer.write("\n\n");
     }
-    return buffer.toString();
+    var result = buffer.toString();
+    result = result.substring(0,result.length - 2);
+    return result;
   }
 
   ///矩阵复制
@@ -248,7 +250,7 @@ class MatrixUtil {
   static List<List<num>> upperTriangular(List<List<num>> list) {
     //(n-1)!*2n  (n-1)!n
     var newlist = copyMatrix(list); //拷贝出一个新矩阵
-    var divisor = new List(list.length); //记录对角线下的每一行的倍数
+    var divisor = new List(list.length); //用于记录对角线下的每一行的倍数
     for (int i = 0; i < newlist.length; i++) {
       if (newlist[i][i] == 0) {
         //如果该对角线上的元素为零，将最近的不为零的一行换上来

@@ -83,6 +83,10 @@ class _SettingSheetState extends State<SettingSheet> {
             onPressed();
           },
           child: const Text("Delete All Message"),
+        ),
+        CupertinoActionSheetAction(
+          onPressed: () {},
+          child: Text('Language:  ${Localizations.localeOf(context).languageCode == 'zh' ? 'Chinese' : 'English'}'),
         )
       ],
       cancelButton: CupertinoActionSheetAction(

@@ -6,7 +6,7 @@ import 'package:xiaoming/src/data/appData.dart';
 
 void main() {
   final ud = new UserData();
-
+  
   test('testEquation', () {
     var instance = EquationsUtil.getInstance();
     print(instance.handleEquation('1,-2,1'));

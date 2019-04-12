@@ -10,5 +10,11 @@
             "request": "launch",
             "program": "lib/main.dart"
         },
+        {
+            "name": "Flutter: Run all Tests",
+            "type": "dart",
+            "request": "launch",
+            "program": "./test/testCommand.dart"
+        }
     ]
 }
