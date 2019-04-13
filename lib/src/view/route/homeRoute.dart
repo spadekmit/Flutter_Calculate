@@ -93,7 +93,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
               AnimatedSize(
                 vsync: this,
                 curve: Curves.ease,
-                duration: Duration(milliseconds: 500),
+                duration: Duration(milliseconds: 200),
                 child: Container(
                   height: _buttonsIsVisible ? 200.0 : 0.0,
                   child: buildButtons(_handleTextButton),
