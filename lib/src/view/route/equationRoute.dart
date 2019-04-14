@@ -38,9 +38,32 @@ class _EquationRouteState extends State<EquationRoute>
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text(XiaomingLocalizations.of(context).equationTip),
+          Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              child: Text(XiaomingLocalizations.of(context).equationTip)),
+          Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                child: Text('输入方程系数求结果'),
+          ),
+          Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                child: Text('如： x^2-2x+1=0 则输入 1,-2,1'),
+          ),
+          Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                child: Text("3x1+4x2-x3=6   x2-4x3=-3   2x1-3x2+x3=0"),
+          ),
+          Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                child: Text("则输入 3,4,-1,6;0,1,-4,-3;2,-3,1,0"),
+          ),
           SizedBox(
-            height: 50.0,
+            height: 20.0,
           ),
           Container(
             padding:
@@ -56,23 +79,18 @@ class _EquationRouteState extends State<EquationRoute>
                   textCapitalization: TextCapitalization.words,
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom:
-                            BorderSide(width: 0.0, color: CupertinoColors.black)),
+                        bottom: BorderSide(
+                            width: 0.0, color: CupertinoColors.black)),
                   ),
                   placeholder: 'Equation',
                 ),
               ),
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: 40.0,
-            ),
-            child: CupertinoButton(
-              color: Colors.blue,
-              onPressed: () => _handleLineEquation(),
-              child: Text(XiaomingLocalizations.of(context).calculate),
-            ),
+          CupertinoButton(
+            color: Colors.blue,
+            onPressed: () => _handleLineEquation(),
+            child: Text(XiaomingLocalizations.of(context).calculate),
           ),
           Container(
             padding: const EdgeInsets.only(top: 20.0),

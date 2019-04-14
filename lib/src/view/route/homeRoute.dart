@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:provide/provide.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/dbUtil.dart';
@@ -38,22 +37,20 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
     _textController = new TextEditingController();
     _textFocusNode = new FocusNode();
 
-    ///添加虚拟键盘事件监听器
-    KeyboardVisibilityNotification().addNewListener(
-      onChange: (bool visible) {
-        if (visible) {
-          setState(() {
+    _textFocusNode.addListener(() {
+      if(_textFocusNode.hasFocus){
+        setState(() {
             tabHeight = 0.0;
             _buttonsIsVisible = true;
           });
-        } else {
-          setState(() {
+      }else {
+        setState(() {
             tabHeight = MediaQuery.of(context).padding.bottom;
             _buttonsIsVisible = false;
           });
-        }
-      },
-    );
+      }
+    });
+
   }
 
   ///home界面布局

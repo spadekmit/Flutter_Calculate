@@ -272,6 +272,7 @@ class _DataRouteState extends State<DataRoute> {
 
     ///保存的数据界面布局
     return CupertinoPageScaffold(
+      backgroundColor: CupertinoColors.lightBackgroundGray,
       navigationBar: CupertinoNavigationBar(
         trailing: buildTrailingBar(<Widget>[
           CupertinoButton(

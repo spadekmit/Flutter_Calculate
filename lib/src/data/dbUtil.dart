@@ -1,9 +1,7 @@
 import 'dart:io';
-import 'package:flutter/animation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:xiaoming/src/data/appData.dart';
-import 'package:xiaoming/src/view/widget/myTextView.dart';
 
 class DBUtil {
   ///从字符串中读取矩阵（矩阵自动写入的格式）
