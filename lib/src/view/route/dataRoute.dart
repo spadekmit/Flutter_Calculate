@@ -7,6 +7,254 @@ import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/route/newMethodRoute.dart';
 import 'package:xiaoming/src/view/widget/myButtons.dart';
 
+class NewDataRoute extends StatefulWidget {
+  @override
+  _NewDataRouteState createState() => _NewDataRouteState();
+}
+
+class _NewDataRouteState extends State<NewDataRoute> {
+  List<Widget> choices = [];
+
+  Widget _buildDataView() {
+    return Provide<UserData>(
+      builder: (context, child, ud) {
+        ///保存的浮点数和矩阵组成的卡片列表
+        List<Dismissible> datas = <Dismissible>[];
+
+        ///加载矩阵列表
+        if (ud.matrixs.isNotEmpty) {
+          ud.matrixs.forEach((name, list) => datas.add(Dismissible(
+                key: Key(name),
+                onDismissed: (item) {
+                  ud.deleteMatrix(name);
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CupertinoAlertDialog(
+                          title: Text(
+                              XiaomingLocalizations.of(context).removeData),
+                          actions: <Widget>[
+                            CupertinoDialogAction(
+                              isDestructiveAction: true,
+                              child: Text(
+                                  XiaomingLocalizations.of(context).delete),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            CupertinoDialogAction(
+                              child: Text(
+                                  XiaomingLocalizations.of(context).cancel),
+                              onPressed: () {
+                                ud.addMatrix(name, list);
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      });
+                },
+                background: Container(
+                  color: Colors.red,
+                ),
+                child: Card(
+                  color: Colors.cyan,
+                  child: new ListTile(
+                    title: new Text(name),
+                    subtitle: new Text(MatrixUtil.mtoString(list: list)),
+                  ),
+                ),
+              )));
+        }
+
+        ///加载浮点数列表
+        if (ud.dbs.isNotEmpty) {
+          ud.dbs.forEach((name, value) => datas.add(Dismissible(
+                key: Key(name),
+                onDismissed: (item) {
+                  ud.deleteNum(name);
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CupertinoAlertDialog(
+                          title: Text(
+                              XiaomingLocalizations.of(context).removeData),
+                          actions: <Widget>[
+                            CupertinoDialogAction(
+                              isDestructiveAction: true,
+                              child: Text(
+                                  XiaomingLocalizations.of(context).delete),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            CupertinoDialogAction(
+                              child: Text(
+                                  XiaomingLocalizations.of(context).cancel),
+                              onPressed: () {
+                                ud.addNum(name, value);
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      });
+                },
+                background: Container(
+                  color: Colors.red,
+                ),
+                child: Card(
+                  color: Colors.green,
+                  child: new ListTile(
+                    title: new Text(name),
+                    subtitle: new Text(value.toString()),
+                  ),
+                ),
+              )));
+        }
+
+        ///添加完分割线的数据列表
+        final List<Widget> divided1 = ListTile.divideTiles(
+          context: context,
+          tiles: datas.reversed, //将后存入的数据显示在上方
+        ).toList();
+
+        return ListView(
+          children: divided1,
+        );
+      },
+    );
+  }
+
+  Widget _buildMethodView() {
+    return Provide<UserData>(
+      builder: (context, child, ud) {
+        ///保存的方法列表
+        final List<Widget> methods = <Widget>[];
+        Locale myLocale = Localizations.localeOf(context);
+        String funName;
+        String funDescrip;
+
+        ///将内置方法及已保存的方法加载进methods
+        for (int index = 0; index < ud.userFunctions.length; index++) {
+          var u = ud.userFunctions[index];
+          methods.add(Dismissible(
+            onDismissed: (item) {
+              ud.deleteUF(u.funName);
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return CupertinoAlertDialog(
+                      title: Text(XiaomingLocalizations.of(context).removeUF),
+                      actions: <Widget>[
+                        CupertinoDialogAction(
+                          isDestructiveAction: true,
+                          child: Text(XiaomingLocalizations.of(context).delete),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        CupertinoDialogAction(
+                          child: Text(XiaomingLocalizations.of(context).cancel),
+                          onPressed: () {
+                            ud.addUF(u.funName, u.paras, u.funCmds);
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  });
+            },
+            background: Container(
+              color: Colors.red,
+            ),
+            key: Key(u.funName),
+            child: Card(
+              color: Colors.purple,
+              child: new ListTile(
+                leading: new Text(
+                  u.funName,
+                ),
+                title: new Text(
+                    '${u.funName}(${u.paras.toString().substring(1, u.paras.toString().length - 1)})'),
+                subtitle: new Text(u.funCmds.toString()),
+              ),
+            ),
+          ));
+        }
+        for (CmdMethod method in UserData.cmdMethods) {
+          if (myLocale.countryCode == 'CH') {
+            funName = method.name;
+            funDescrip = method.methodDescription;
+          } else {
+            funName = method.ename;
+            funDescrip = method.emethodDescription;
+          }
+          methods.add(Card(
+            color: Colors.yellow,
+            child: ListTile(
+              title: Text(
+                funName,
+              ),
+              subtitle: Text(funDescrip),
+            ),
+          ));
+        }
+
+        ///添加完分隔线的方法列表
+        final List<Widget> divided2 = ListTile.divideTiles(
+          context: context,
+          tiles: methods,
+        ).toList();
+        return ListView(
+          children: divided2,
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0.0,
+          title: Center(
+            child: Text(
+              "Saved",
+              style: TextStyle(color: CupertinoColors.black),
+            ),
+          ),
+          backgroundColor: CupertinoColors.lightBackgroundGray,
+          bottom: TabBar(
+            tabs: <Widget>[
+              Tab(
+                child: Text(
+                  "Data",
+                  style: TextStyle(color: CupertinoColors.black),
+                ),
+              ),
+              Tab(
+                child: Text(
+                  "Method",
+                  style: TextStyle(color: CupertinoColors.black),
+                ),
+              ),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: <Widget>[
+            _buildDataView(),
+            _buildMethodView(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 ///保存的数据与方法界面
 class DataRoute extends StatefulWidget {
   @override

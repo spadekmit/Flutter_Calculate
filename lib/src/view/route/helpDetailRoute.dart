@@ -66,6 +66,16 @@ class _HelpDetailRouteState extends State<HelpDetailRoute> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Card(
+                    margin: const EdgeInsets.all(20.0),
+                    elevation: 0.0,
+                    child: Container(
+                      padding: const EdgeInsets.all(20.0),
+                      child: text),
+                  ),
+                ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -85,14 +95,6 @@ class _HelpDetailRouteState extends State<HelpDetailRoute> {
                         fit: BoxFit.fitWidth,
                       )
                     ]),
-                Container(
-                  margin: const EdgeInsets.all(12.0),
-                  child: Card(
-                    color: CupertinoColors.lightBackgroundGray,
-                    elevation: 0.0,
-                    child: text,
-                  ),
-                ),
               ]),
         ));
   }
