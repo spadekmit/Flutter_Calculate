@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         const Locale('en', 'US'),
         const Locale('zh', 'CH'),
       ],
-      home: myTabScaffold,  
+      home: MyTabScaffold(),  
     );
   }
 }
