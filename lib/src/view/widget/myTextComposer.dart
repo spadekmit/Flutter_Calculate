@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 typedef OnChanged = void Function(String text);
 
@@ -50,5 +51,31 @@ class TextComposer extends StatelessWidget {
         ),
       ),
     ]);
+  }
+}
+
+class MyTextField extends StatelessWidget {
+  MyTextField(this._controller, this.tip);
+
+  final TextEditingController _controller;
+  final String tip;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
+      child: Card(
+        elevation: 0.0,
+        child: TextField(
+          decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: tip,
+                  suffixStyle: TextStyle(color: Colors.green),
+                ),
+          controller: _controller,
+          textCapitalization: TextCapitalization.words,
+        ),
+      ),
+    );
   }
 }

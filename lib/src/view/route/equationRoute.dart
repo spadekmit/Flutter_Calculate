@@ -5,7 +5,7 @@ import 'package:xiaoming/src/command/handleEquations.dart';
 import 'package:flutter/services.dart';
 import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
-import 'package:xiaoming/src/view/widget/myButtons.dart';
+import 'package:xiaoming/src/view/widget/myTextComposer.dart';
 
 class EquationRoute extends StatefulWidget {
   EquationRoute({Key key}) : super(key: key);
@@ -16,7 +16,6 @@ class EquationRoute extends StatefulWidget {
 class _EquationRouteState extends State<EquationRoute>
     with TickerProviderStateMixin {
   final TextEditingController _lineQuasController = TextEditingController();
-  final FocusNode _lineQuasFocusNode = new FocusNode();
   AnimationController controller;
   Animation<double> animation;
   String result = '';
@@ -43,48 +42,27 @@ class _EquationRouteState extends State<EquationRoute>
           Container(
             padding:
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: Text('输入方程系数求结果'),
+            child: Text(XiaomingLocalizations.of(context).equaHint1),
           ),
           Container(
             padding:
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: Text('如： x^2-2x+1=0 则输入 1,-2,1'),
+            child: Text(XiaomingLocalizations.of(context).equaHint2),
           ),
           Container(
             padding:
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: Text("3x1+4x2-x3=6   x2-4x3=-3   2x1-3x2+x3=0"),
+            child: Text(XiaomingLocalizations.of(context).equaHint3),
           ),
           Container(
             padding:
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: Text("则输入 3,4,-1,6;0,1,-4,-3;2,-3,1,0"),
+            child: Text(XiaomingLocalizations.of(context).equaHint4),
           ),
           SizedBox(
             height: 20.0,
           ),
-          Container(
-            padding:
-                const EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
-            child: Card(
-              elevation: 0.0,
-              child: Container(
-                padding: const EdgeInsets.all(10.0),
-                child: CupertinoTextField(
-                  clearButtonMode: OverlayVisibilityMode.editing,
-                  focusNode: _lineQuasFocusNode,
-                  controller: _lineQuasController,
-                  textCapitalization: TextCapitalization.words,
-                  decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            width: 0.0, color: CupertinoColors.black)),
-                  ),
-                  placeholder: 'Equation',
-                ),
-              ),
-            ),
-          ),
+          MyTextField(_lineQuasController, XiaomingLocalizations.of(context).equations),
           CupertinoButton(
             color: Colors.blue,
             onPressed: () => _handleLineEquation(),
@@ -139,38 +117,11 @@ class _EquationRouteState extends State<EquationRoute>
       ),
       child: CupertinoPageScaffold(
         backgroundColor: CupertinoColors.lightBackgroundGray,
-        // navigationBar: CupertinoNavigationBar(
-        //   trailing: buildTrailingBar(<Widget>[
-        //     CupertinoButton(
-        //       padding: EdgeInsets.zero,
-        //       child: Text(XiaomingLocalizations.of(context).sample),
-        //       onPressed: () {
-        //         showDialog(
-        //             context: context,
-        //             builder: (BuildContext context) {
-        //               return CupertinoAlertDialog(
-        //                 title: Column(
-        //                   children: <Widget>[
-        //                     Text(XiaomingLocalizations.of(context).equaHint1),
-        //                     Text(XiaomingLocalizations.of(context).equaHint2),
-        //                     Text(XiaomingLocalizations.of(context).equaHint3),
-        //                     Text(XiaomingLocalizations.of(context).equaHint4),
-        //                     Text(XiaomingLocalizations.of(context).equaHint5),
-        //                   ],
-        //                 ),
-        //               );
-        //             });
-        //       },
-        //     ),
-        //   ]),
-        //   middle: Text(XiaomingLocalizations.of(context).equations),
-        //   previousPageTitle: "Functions",
-        // ),
         child: GestureDetector(
           //点击空白区域收起键盘
           behavior: HitTestBehavior.translucent,
           onTap: () {
-            _lineQuasFocusNode.unfocus();
+            FocusScope.of(context).requestFocus(FocusNode());
           },
           child: SingleChildScrollView(
             child: Container(
@@ -185,7 +136,6 @@ class _EquationRouteState extends State<EquationRoute>
   }
 
   void _handleLineEquation() {
-    _lineQuasFocusNode.unfocus();
     if (_lineQuasController.text.length != 0) {
       EquationsUtil handle = EquationsUtil.getInstance();
       var re = handle.handleEquation(_lineQuasController.text);
