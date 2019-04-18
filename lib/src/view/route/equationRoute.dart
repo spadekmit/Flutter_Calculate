@@ -31,9 +31,7 @@ class _EquationRouteState extends State<EquationRoute>
 
   @override
   Widget build(BuildContext context) {
-    UserData.nowPage = 1;
-    UserData.pageContext = context;
-
+    UserData.nowPage = 0;
     Widget _buildListView() {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -141,33 +139,33 @@ class _EquationRouteState extends State<EquationRoute>
       ),
       child: CupertinoPageScaffold(
         backgroundColor: CupertinoColors.lightBackgroundGray,
-        navigationBar: CupertinoNavigationBar(
-          trailing: buildTrailingBar(<Widget>[
-            CupertinoButton(
-              padding: EdgeInsets.zero,
-              child: Text(XiaomingLocalizations.of(context).sample),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return CupertinoAlertDialog(
-                        title: Column(
-                          children: <Widget>[
-                            Text(XiaomingLocalizations.of(context).equaHint1),
-                            Text(XiaomingLocalizations.of(context).equaHint2),
-                            Text(XiaomingLocalizations.of(context).equaHint3),
-                            Text(XiaomingLocalizations.of(context).equaHint4),
-                            Text(XiaomingLocalizations.of(context).equaHint5),
-                          ],
-                        ),
-                      );
-                    });
-              },
-            ),
-          ]),
-          middle: Text(XiaomingLocalizations.of(context).equations),
-          previousPageTitle: "Functions",
-        ),
+        // navigationBar: CupertinoNavigationBar(
+        //   trailing: buildTrailingBar(<Widget>[
+        //     CupertinoButton(
+        //       padding: EdgeInsets.zero,
+        //       child: Text(XiaomingLocalizations.of(context).sample),
+        //       onPressed: () {
+        //         showDialog(
+        //             context: context,
+        //             builder: (BuildContext context) {
+        //               return CupertinoAlertDialog(
+        //                 title: Column(
+        //                   children: <Widget>[
+        //                     Text(XiaomingLocalizations.of(context).equaHint1),
+        //                     Text(XiaomingLocalizations.of(context).equaHint2),
+        //                     Text(XiaomingLocalizations.of(context).equaHint3),
+        //                     Text(XiaomingLocalizations.of(context).equaHint4),
+        //                     Text(XiaomingLocalizations.of(context).equaHint5),
+        //                   ],
+        //                 ),
+        //               );
+        //             });
+        //       },
+        //     ),
+        //   ]),
+        //   middle: Text(XiaomingLocalizations.of(context).equations),
+        //   previousPageTitle: "Functions",
+        // ),
         child: GestureDetector(
           //点击空白区域收起键盘
           behavior: HitTestBehavior.translucent,

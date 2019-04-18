@@ -4,6 +4,31 @@ import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/route/equationRoute.dart';
 import 'package:xiaoming/src/view/route/integralRoute.dart';
 
+class NewFunctionsRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      initialIndex: 0,
+          child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: CupertinoColors.activeGreen,
+          title: TabBar(tabs: <Widget>[
+            Tab(child: Text(XiaomingLocalizations.of(context).equations),),
+            Tab(child: Text(XiaomingLocalizations.of(context).definiteIntegral))
+          ],),
+        ),
+        body: TabBarView(
+          children: <Widget>[
+            EquationRoute(),
+            IntegralRoute(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class FunctionsRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

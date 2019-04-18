@@ -31,8 +31,7 @@ class _IntegralRouteState extends State<IntegralRoute> {
 
   @override
   Widget build(BuildContext context) {
-    UserData.nowPage = 1;
-    UserData.pageContext = context;
+    UserData.nowPage = 0;
 
     Future<String> getResult() async {
       if (_dController.text.length == 0 ||
@@ -62,15 +61,15 @@ class _IntegralRouteState extends State<IntegralRoute> {
         color: CupertinoColors.black,
       ),
       child: CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
-          middle: Text(XiaomingLocalizations.of(context).definiteIntegral),
-          previousPageTitle: "Functions",
-          trailing: CupertinoButton(
-            padding: EdgeInsets.zero,
-            onPressed: () {},
-            child: Icon(CupertinoIcons.info),
-          ),
-        ),
+        // navigationBar: CupertinoNavigationBar(
+        //   middle: Text(XiaomingLocalizations.of(context).definiteIntegral),
+        //   previousPageTitle: "Functions",
+        //   trailing: CupertinoButton(
+        //     padding: EdgeInsets.zero,
+        //     onPressed: () {},
+        //     child: Icon(CupertinoIcons.info),
+        //   ),
+        // ),
         child: SingleChildScrollView(
           child: Container(
             height: MediaQuery.of(context).size.height -

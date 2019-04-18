@@ -7,14 +7,7 @@ import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/route/newMethodRoute.dart';
 import 'package:xiaoming/src/view/widget/myButtons.dart';
 
-class NewDataRoute extends StatefulWidget {
-  @override
-  _NewDataRouteState createState() => _NewDataRouteState();
-}
-
-class _NewDataRouteState extends State<NewDataRoute> {
-  List<Widget> choices = [];
-
+class NewDataRoute extends StatelessWidget {
   Widget _buildDataView() {
     return Provide<UserData>(
       builder: (context, child, ud) {
@@ -215,19 +208,41 @@ class _NewDataRouteState extends State<NewDataRoute> {
 
   @override
   Widget build(BuildContext context) {
+    ///处理清空按钮调用函数
+    void _handleEmpty() {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CupertinoAlertDialog(
+              title: Text(XiaomingLocalizations.of(context).deleteAllData),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  isDestructiveAction: true,
+                  child: Text(XiaomingLocalizations.of(context).delete),
+                  onPressed: () {
+                    Provide.value<UserData>(context)
+                      ..deleteAllNum()
+                      ..deleteAllMatrix()
+                      ..deleteAllUF();
+                    Navigator.of(context).pop();
+                  },
+                ),
+                CupertinoDialogAction(
+                  child: Text(XiaomingLocalizations.of(context).cancel),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+    }
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          elevation: 0.0,
-          title: Center(
-            child: Text(
-              "Saved",
-              style: TextStyle(color: CupertinoColors.black),
-            ),
-          ),
-          backgroundColor: CupertinoColors.lightBackgroundGray,
-          bottom: TabBar(
+          title: TabBar(
             tabs: <Widget>[
               Tab(
                 child: Text(
@@ -243,12 +258,42 @@ class _NewDataRouteState extends State<NewDataRoute> {
               ),
             ],
           ),
+          elevation: 0.0,
+          backgroundColor: CupertinoColors.activeOrange,
         ),
         body: TabBarView(
           children: <Widget>[
             _buildDataView(),
             _buildMethodView(),
           ],
+        ),
+        floatingActionButton: SizedBox(
+          height: 150.0,
+          width: 100.0,
+          child: Column(
+            children: <Widget>[
+              RaisedButton(
+                shape: const CircleBorder(),
+                color: Colors.blue,
+                padding: const EdgeInsets.all(0.0),
+                child: Icon(CupertinoIcons.add),
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(CupertinoPageRoute(builder: (BuildContext context) {
+                    return NewMethodRoute();
+                  }));
+                },
+              ),
+              SizedBox(
+                width: 8.0,
+              ),
+              RaisedButton(
+                  color: Colors.blue,
+                  shape: const CircleBorder(),
+                  child: Icon(CupertinoIcons.delete),
+                  onPressed: _handleEmpty),
+            ],
+          ),
         ),
       ),
     );

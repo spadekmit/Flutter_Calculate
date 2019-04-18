@@ -52,7 +52,7 @@ final Widget myTabScaffold = WillPopScope(
             break;
           case 1:
             return CupertinoTabView(builder: (BuildContext context) {
-              return FunctionsRoute();
+              return NewFunctionsRoute();
             });
           case 2:
             return CupertinoTabView(builder: (BuildContext context) {
