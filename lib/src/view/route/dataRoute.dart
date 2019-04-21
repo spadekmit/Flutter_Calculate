@@ -243,6 +243,7 @@ class NewDataRoute extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: TabBar(
+            indicatorColor: CupertinoColors.inactiveGray,
             tabs: <Widget>[
               Tab(
                 child: Text(

@@ -13,7 +13,9 @@ class NewFunctionsRoute extends StatelessWidget {
           child: Scaffold(
         appBar: AppBar(
           backgroundColor: CupertinoColors.activeGreen,
-          title: TabBar(tabs: <Widget>[
+          title: TabBar(
+            indicatorColor: CupertinoColors.inactiveGray,
+          tabs: <Widget>[
             Tab(child: Text(XiaomingLocalizations.of(context).equations),),
             Tab(child: Text(XiaomingLocalizations.of(context).definiteIntegral))
           ],),
