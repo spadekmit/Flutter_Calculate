@@ -61,7 +61,9 @@ class XiaomingLocalizations {
       'methodBody' : 'method body',
       'newFun' : 'New Funtion',
       'ok' : 'OK',
+      'outApp' : 'Whether to quit the app?',
       'parameter' : 'parameter',
+      'quit' : 'quit',
       'removeUF' : 'UserFuntion has been removed',
       'removeData' : 'Data has been removed',
       'sample' : 'Sample',
@@ -153,7 +155,9 @@ class XiaomingLocalizations {
       'maximum' : '历史记录条数',
       'newFun' : '新的函数',
       'ok' : '确认',
+      'outApp' : '是否退出应用？',
       'parameter' : '参数',
+      'quit' : '退出',
       'removeUF' : '自定义方法被移除',
       'removeData' : '数据被移除',
       'sample' : '示例',
@@ -349,8 +353,16 @@ class XiaomingLocalizations {
     return _localizedValues[locale.languageCode]['ok'];
   }
 
+  get outApp {
+    return _localizedValues[locale.languageCode]['outApp'];
+  }
+
   get parameter {
     return _localizedValues[locale.languageCode]['parameter'];
+  }
+
+  get quit {
+    return _localizedValues[locale.languageCode]['quit'];
   }
 
   get removeUF {
