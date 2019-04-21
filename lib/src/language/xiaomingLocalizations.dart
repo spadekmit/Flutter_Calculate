@@ -40,18 +40,47 @@ class XiaomingLocalizations {
       'HelpTab4': 'Precision',
       'HelpTab5': 'Equation',
       'HelpTabData1':
-          'The format of the matrix assignment statement is: a=[1,2,3;4,5,6;7,8,9], the name can consist of letters and numbers, but must start with a letter.'
-          'Multiple values for each line are separated by commas, separated by semicolons. Above the input box is a comma and semicolon button for easy entry. The matrix and real numbers are automatically saved to the file, and the data with the same name will be replaced (enter a=2 will also replace the original a=[1,2,3;4,5,6]',
+          'You can assign a value directly to a variable in the input box. '
+          'eg: a = 12 or r = [1,2,3;4,5,6;7,8,9]'
+          '(This statement creates a matrix of three rows and three columns). '
+          'The format of the matrix assignment statement is: '
+          'Variable name = [value, value. . . ; value, value. . . ]'
+          'Names can consist of letters and numbers, but must start with a letter. '
+          'Multiple values for each line are separated by commas, separated by semicolons. '
+          'Above the input box is a comma and semicolon button for easy entry. '
+          'Matrix and real numbers are automatically saved to the file, the same name data will be replaced'
+          '(Enter a=2 will also replace the original a=[1,2,3;4,5,6])',
       'HelpTabData2':
-          "The function can be called by entering the function name and its parameters. Example: b=inv(a). Functions can be nested,Example: c=tran(inv(a)). The built-in function can also be called in the custom function. There is a button column at the top of the input box to facilitate the input of the function nameClick the button in the upper left corner of the main interface to open the drawer. Click the saved function button in the drawer to open the function introduction interface, which has built-in functions.Details, as well as the user's custom function",
+          'This software supports addition, subtraction, multiplication and division between values, '
+          'Matrix and value addition, subtraction, multiplication and division, '
+          'Addition, subtraction, multiplication and division of matrices and matrices. '
+          '(It must comply with the matrix operation rules, '
+          'If you multiply two matrices,'
+          'The number of columns in the previous matrix needs to be the same as the number of rows in the latter matrix.'
+          'To calculate a matrix, you need to assign the matrix to a variable first,'
+          'Use this variable name to participate in the operation'
+          'eg: b = [1,2;3,1] c = b + 2',
       'HelpTabData3':
-          "Example: Fun test(a,b,c):d=a*b/(b+c);r=factorial(d) A custom function can consist of multiple command statements or a single command statement, multiple command statements Separated by semicolons, the last command is the result of the function. The custom function will be saved in the file for the next time, and the custom function with the same name will only retain the newly defined function. The custom function name cannot be the name of a built-in function. Pass in the argument when calling the custom function, for example: test(3,2,-1). Note: The factorial function used in the example automatically rounds the fractional part to an integer and then multiplies the factorial.",
+          'Enter the function name and its parameters to call the function. Example: b=inv(a). Functions can be nested, '
+          'Example: c=tran(inv(a). The built-in function can also be called in the custom function. There is a button column at the top of the input box to facilitate the input of the function name'
+          'Click the button in the upper left corner of the main interface to open the drawer. Click the saved function button in the drawer to open the function introduction interface, which has built-in functions.'
+          'Detailed introduction, as well as the user\'s custom function. The format of the custom function is: Fun function name (parameter list, separated by commas): function body,'
+          'Custom functions can consist of multiple command statements or a single command statement, multiple statements separated by semicolons'
+          'Example: Fun test(a,b,c):d=a*b/(b+c);r=factorial(d)'
+          'The last command is the result of the function. The custom function will be saved in the file for the next time, the custom function with the same name will only retain the latest definition'
+          'That function. The custom function name cannot be the name of a built-in function. Pass in parameter when calling custom function'
+          ', Example: test(3,2,-1). Note: The factorial function used in the example'
+          'The decimal part will be automatically rounded to an integer and then factored. ',
       'HelpTabData4':
-          'Click the Settings button in the drawer interface to jump to the settings interface, and slide the slider to select the number of decimals to the decimal point.',
+          'Click the Settings button on the main interface to open the settings interface, and slide the button to change the displayed decimal places.',
       'HelpTabData5':
-          'In the drawer interface, there is a button to solve equations, click to enter the interface to solve equations, input a single equation is regarded as polynomial solution to solve all roots, multiple equations are regarded as linear equations to solve.Since there is no convenient input bar in the interface of solving the equation, it is recommended to solve it in the main interface.Linear equations can be solved by using inva *b for inputting coefficient matrix a and constant sequence b, polynomials can be solved by using roots (p) for all roots.P is the coefficient column. See the saved function interface for detailed usage',
+          'There is a solution to the equations button on the drawer interface, click to enter the interface to solve the equations,'
+          'Entering a single equation is considered as a polynomial solution for all roots, and multiple equations are treated as linear equations. '
+          'There is no convenient input field for the solution of the equation. It is recommended to solve the problem on the main interface. '
+          'Linear equations can be input to the coefficient matrix a and the constant column b and then solved by inv(a)*b, '
+          'The polynomial can use roots(p) to solve all roots. p is the coefficient column. For detailed usage, see the saved function interface',
       'HelpTabData6':
-          'First with a Fun t (x) : r = 2 * x ^ 3 to 7 * x defined integrand, then use the calculus dissuade (t, 0, 8) function to solve, t for the integrand, 0 to 8 for the integral interval',
+          'First define the integrand with Fun t(x):r = 2*x^3-7*x, then solve it with calculus(t,0,8) function, t is the integrand, and 0 to 8 is the integration interval.',
       'Hint': 'Hint',
       'InputHint': 'Input command',
       'IntegralFunction' : 'Integral Function',
@@ -138,7 +167,7 @@ class XiaomingLocalizations {
           '那个函数。自定义函数名不能为内置函数的名称。在调用自定义函数时传入参数'
           '， 例：test(3,2,-1)。注：示例中使用到的阶乘函数'
           '会自动将小数部分四舍五入成整数再求阶乘。',
-      'HelpTabData4': '''在主界面点击设置按钮即可打开设置界面，滑动按钮即可改变显示的小数位数''',
+      'HelpTabData4': '在主界面点击设置按钮即可打开设置界面，滑动按钮即可改变显示的小数位数',
       'HelpTabData5':
           '在抽屉界面有解方程组按钮，点击可进入到解方程组的界面，'
           '输入单个方程则视为多项式解求所有根，多个方程则视为线性方程组求解。'

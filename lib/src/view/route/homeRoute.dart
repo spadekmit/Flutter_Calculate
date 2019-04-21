@@ -38,19 +38,18 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
     _textFocusNode = new FocusNode();
 
     _textFocusNode.addListener(() {
-      if(_textFocusNode.hasFocus){
+      if (_textFocusNode.hasFocus) {
         setState(() {
-            tabHeight = 0.0;
-            _buttonsIsVisible = true;
-          });
-      }else {
+          tabHeight = 0.0;
+          _buttonsIsVisible = true;
+        });
+      } else {
         setState(() {
-            tabHeight = MediaQuery.of(context).padding.bottom;
-            _buttonsIsVisible = false;
-          });
+          tabHeight = MediaQuery.of(context).padding.bottom;
+          _buttonsIsVisible = false;
+        });
       }
     });
-
   }
 
   ///home界面布局
@@ -71,18 +70,19 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
             children: <Widget>[
               Flexible(
                   child: GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        _textFocusNode.unfocus();
-                      },
-                      child: ListView.builder(
-                        reverse: true,
-                        padding: const EdgeInsets.only(left: 5.0),
-                        itemBuilder: (context, index) {
-                          return _texts[index];
-                        },
-                        itemCount: _texts.length,
-                      ))),
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  _textFocusNode.unfocus();
+                },
+                child: ListView.builder(
+                  reverse: true,
+                  padding: const EdgeInsets.only(left: 5.0),
+                  itemBuilder: (context, index) {
+                    return _texts[index];
+                  },
+                  itemCount: _texts.length,
+                ),
+              )),
               Divider(
                 height: _buttonsIsVisible ? 1.0 : 0.0,
                 color: _buttonsIsVisible ? Colors.black : null,

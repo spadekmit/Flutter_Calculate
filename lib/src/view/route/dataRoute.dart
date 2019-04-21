@@ -8,18 +8,19 @@ import 'package:xiaoming/src/view/route/newMethodRoute.dart';
 import 'package:xiaoming/src/view/widget/myButtons.dart';
 
 class NewDataRoute extends StatelessWidget {
+
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+
   Widget _buildDataView() {
     return Provide<UserData>(
       builder: (context, child, ud) {
         ///保存的浮点数和矩阵组成的卡片列表
-        List<Dismissible> datas = <Dismissible>[];
+        List<Widget> datas = <Widget>[];
 
         ///加载矩阵列表
         if (ud.matrixs.isNotEmpty) {
-          ud.matrixs.forEach((name, list) => datas.add(Dismissible(
-                key: Key(name),
-                onDismissed: (item) {
-                  ud.deleteMatrix(name);
+          ud.matrixs.forEach((name, list) => datas.add(GestureDetector(
+                onLongPress: () {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -32,6 +33,8 @@ class NewDataRoute extends StatelessWidget {
                               child: Text(
                                   XiaomingLocalizations.of(context).delete),
                               onPressed: () {
+                                ud.deleteMatrix(name);
+                                datas.remove(this);
                                 Navigator.of(context).pop();
                               },
                             ),
@@ -39,7 +42,6 @@ class NewDataRoute extends StatelessWidget {
                               child: Text(
                                   XiaomingLocalizations.of(context).cancel),
                               onPressed: () {
-                                ud.addMatrix(name, list);
                                 Navigator.of(context).pop();
                               },
                             ),
@@ -47,9 +49,6 @@ class NewDataRoute extends StatelessWidget {
                         );
                       });
                 },
-                background: Container(
-                  color: Colors.red,
-                ),
                 child: Card(
                   color: Colors.cyan,
                   child: new ListTile(
@@ -62,10 +61,9 @@ class NewDataRoute extends StatelessWidget {
 
         ///加载浮点数列表
         if (ud.dbs.isNotEmpty) {
-          ud.dbs.forEach((name, value) => datas.add(Dismissible(
+          ud.dbs.forEach((name, value) => datas.add(GestureDetector(
                 key: Key(name),
-                onDismissed: (item) {
-                  ud.deleteNum(name);
+                onLongPress: () {      
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -78,6 +76,8 @@ class NewDataRoute extends StatelessWidget {
                               child: Text(
                                   XiaomingLocalizations.of(context).delete),
                               onPressed: () {
+                                ud.deleteNum(name);
+                                datas.remove(this);
                                 Navigator.of(context).pop();
                               },
                             ),
@@ -85,7 +85,6 @@ class NewDataRoute extends StatelessWidget {
                               child: Text(
                                   XiaomingLocalizations.of(context).cancel),
                               onPressed: () {
-                                ud.addNum(name, value);
                                 Navigator.of(context).pop();
                               },
                             ),
@@ -93,9 +92,6 @@ class NewDataRoute extends StatelessWidget {
                         );
                       });
                 },
-                background: Container(
-                  color: Colors.red,
-                ),
                 child: Card(
                   color: Colors.green,
                   child: new ListTile(
@@ -106,14 +102,10 @@ class NewDataRoute extends StatelessWidget {
               )));
         }
 
-        ///添加完分割线的数据列表
-        final List<Widget> divided1 = ListTile.divideTiles(
-          context: context,
-          tiles: datas.reversed, //将后存入的数据显示在上方
-        ).toList();
-
-        return ListView(
-          children: divided1,
+        return ListView.builder(
+          key: _listKey,
+          itemBuilder: (context, index) => datas[index],
+          itemCount: datas.length,
         );
       },
     );
@@ -243,19 +235,13 @@ class NewDataRoute extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: TabBar(
-            indicatorColor: CupertinoColors.inactiveGray,
+            indicatorColor: CupertinoColors.white,
             tabs: <Widget>[
               Tab(
-                child: Text(
-                  "Data",
-                  style: TextStyle(color: CupertinoColors.black),
-                ),
+                text: "Data",
               ),
               Tab(
-                child: Text(
-                  "Method",
-                  style: TextStyle(color: CupertinoColors.black),
-                ),
+                text: "Method",
               ),
             ],
           ),
@@ -263,11 +249,11 @@ class NewDataRoute extends StatelessWidget {
           backgroundColor: CupertinoColors.activeOrange,
         ),
         body: TabBarView(
-          children: <Widget>[
-            _buildDataView(),
-            _buildMethodView(),
-          ],
-        ),
+            children: <Widget>[
+              _buildDataView(),
+              _buildMethodView(),
+            ],
+          ),
         floatingActionButton: SizedBox(
           height: 150.0,
           width: 100.0,

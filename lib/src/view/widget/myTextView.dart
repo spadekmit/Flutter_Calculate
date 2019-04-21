@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +8,7 @@ import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 ///单个输出文本的视图
 class TextView extends StatelessWidget {
   TextView({this.text, this.animationController});
+
   final AnimationController animationController;
   final String text;
 
@@ -44,6 +47,45 @@ class TextView extends StatelessWidget {
             title: Text(XiaomingLocalizations.of(context).copyHint),
           );
         });
+  }
+}
+
+class TextListView extends StatefulWidget {
+  TextListView(this.controller);
+
+  final StreamController<String> controller;
+  @override
+  _TextListViewState createState() => _TextListViewState(controller);
+}
+
+class _TextListViewState extends State<TextListView> with TickerProviderStateMixin {
+  _TextListViewState(this.controller);
+  static List<TextView> list = <TextView>[];
+  final StreamController<String> controller;
+
+  @override
+  Widget build(BuildContext context) {
+    if (list.length == 0) {
+      return CupertinoActivityIndicator();
+    }
+    return StreamBuilder<String>(
+      stream: controller.stream,
+      builder: (context, snapshot) {
+        TextView textView = TextView(text: snapshot.data, animationController: AnimationController(
+            duration: new Duration(milliseconds: 200), vsync: this),);
+        textView.animationController.forward();
+        list.insert(0, textView);
+
+        return ListView.builder(
+          reverse: true,
+          padding: const EdgeInsets.only(left: 5.0),
+          itemBuilder: (context, index) {
+            return list[index];
+          },
+          itemCount: list.length,
+        );
+      }
+    );
   }
 }
 

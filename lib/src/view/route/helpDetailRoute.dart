@@ -63,8 +63,7 @@ class _HelpDetailRouteState extends State<HelpDetailRoute> {
             middle: Text("HelpDetail"),
             previousPageTitle: 'Help',
           ),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
               children: <Widget>[
                 Container(
                   padding: const EdgeInsets.all(20.0),
