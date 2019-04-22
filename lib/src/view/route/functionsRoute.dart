@@ -4,7 +4,7 @@ import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/route/equationRoute.dart';
 import 'package:xiaoming/src/view/route/integralRoute.dart';
 
-class NewFunctionsRoute extends StatelessWidget {
+class AndFunctionsRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -31,7 +31,7 @@ class NewFunctionsRoute extends StatelessWidget {
   }
 }
 
-class FunctionsRoute extends StatelessWidget {
+class IOSFunctionsRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget _buildCard(String text, VoidCallback onPressed) {

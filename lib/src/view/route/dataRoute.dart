@@ -7,8 +7,7 @@ import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/route/newMethodRoute.dart';
 import 'package:xiaoming/src/view/widget/myButtons.dart';
 
-class NewDataRoute extends StatelessWidget {
-
+class AndDataRoute extends StatelessWidget {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
 
   Widget _buildDataView() {
@@ -63,7 +62,7 @@ class NewDataRoute extends StatelessWidget {
         if (ud.dbs.isNotEmpty) {
           ud.dbs.forEach((name, value) => datas.add(GestureDetector(
                 key: Key(name),
-                onLongPress: () {      
+                onLongPress: () {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -245,15 +244,14 @@ class NewDataRoute extends StatelessWidget {
               ),
             ],
           ),
-          elevation: 0.0,
           backgroundColor: CupertinoColors.activeOrange,
         ),
         body: TabBarView(
-            children: <Widget>[
-              _buildDataView(),
-              _buildMethodView(),
-            ],
-          ),
+          children: <Widget>[
+            _buildDataView(),
+            _buildMethodView(),
+          ],
+        ),
         floatingActionButton: SizedBox(
           height: 150.0,
           width: 100.0,
@@ -288,12 +286,12 @@ class NewDataRoute extends StatelessWidget {
 }
 
 ///保存的数据与方法界面
-class DataRoute extends StatefulWidget {
+class IOSDataRoute extends StatefulWidget {
   @override
-  _DataRouteState createState() => _DataRouteState();
+  _IOSDataRouteState createState() => _IOSDataRouteState();
 }
 
-class _DataRouteState extends State<DataRoute> {
+class _IOSDataRouteState extends State<IOSDataRoute> {
   int _sharedValue = 0; //当前卡片序号
 
   @override
