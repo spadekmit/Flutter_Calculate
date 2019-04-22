@@ -1,16 +1,26 @@
-# xiaoming
+Flutter_Calculate
+======
 
-A Flutter matrix calculate application.
+A Flutter matrix calculate application.<br>
 
-Function:
-    Matrix conventional operation
-    Trigonometric operation
-    self-defining function
-    Definite integral calculation
-    Polynomial calculation
-    linear equations calculation
-    Radian Angle conversion
-    Matrix inverse, upper triangle, eigenvalues
+Function:<br>
+###
+Matrix conventional operation<br>
+####
+Trigonometric operation<br>
+####
+self-defining function<br>
+####
+Definite integral calculation<br>
+####
+Polynomial calculation<br>
+####
+linear equations calculation<br>
+####
+Radian Angle conversion<br>
+####
+Matrix inverse, upper triangle, eigenvalues<br>
+####
 
 ![image](https://github.com/spadekmit/Flutter_Calculate/raw/master/image/home_page.jpg)
 
