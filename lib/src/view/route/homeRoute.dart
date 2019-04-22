@@ -56,8 +56,6 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     ud = Provide.value<UserData>(context);
-    //记录当前语言
-    UserData.language = Localizations.localeOf(context).languageCode;
     tabHeight = MediaQuery.of(context).padding.bottom; //初始化底部导航栏高度
 
     ///消息列表，未加载完成时显示加载中动画

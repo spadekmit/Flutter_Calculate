@@ -260,7 +260,8 @@ class UserData with ChangeNotifier {
     } else if (matrixArithmetic.firstMatch(cmd) != null) {
       result = await _handleMatrixArithmetic(cmd.replaceAll(' ', ''));
     } else {
-      result = "$command  为未知命令";
+      if (language == 'zh') result = "$command  为未知命令";
+      else result = "$command  is unknown command";
     }
     return result;
   }
@@ -292,11 +293,13 @@ class UserData with ChangeNotifier {
           if (dnum != null) {
             list[index].add(dnum);
           } else {
-            return '非法字符： $numraw';
+            if (language == 'zh') return '非法字符： $numraw';
+            else return "illegal character:  $numraw";
           }
         }
       } else {
-        return '矩阵行数不一致';
+        if (language == 'zh') return '矩阵行数不一致';
+        else return "The number of rows in the matrix is inconsistent";
       }
       index++;
     }
@@ -330,7 +333,8 @@ class UserData with ChangeNotifier {
           result =
               '$name = ' + re.toStringAsFixed(SettingData.fixedNum.round());
         } else {
-          result = '该类型不能存储  $re';
+          if(language == 'zh') result = '该类型不能存储  $re';
+          else result = "This type cannot be stored";
         }
       } else {
         if (re is List<List<num>>) {
@@ -365,39 +369,56 @@ class UserData with ChangeNotifier {
     //根据函数名调用函数
     switch (methodName) {
       case 'inv':
-        if (vals.length != 1 || vals[0] is! List<List<num>>)
-          throw FormatException('inv函数参数传递错误');
+        if (vals.length != 1 || vals[0] is! List<List<num>>){
+          if(language == 'zh') throw FormatException('inv函数参数传递错误');
+          else throw FormatException('Function parameter transfer error: inv');
+        }
+          
         return MatrixUtil.getAdjoint(vals[0]);
       case 'tran':
-        if (vals.length != 1 || vals[0] is! List<List<num>>)
-          throw FormatException('tran函数参数传递错误');
+        if (vals.length != 1 || vals[0] is! List<List<num>>){
+          if(language == 'zh') throw FormatException('tran函数参数传递错误');
+          else throw FormatException('Function parameter transfer error: tran');
+        }
         return MatrixUtil.transList(vals[0]);
       case 'value':
-        if (vals.length != 1 || vals[0] is! List<List<num>>)
-          throw FormatException('value函数参数传递错误');
+        if (vals.length != 1 || vals[0] is! List<List<num>>){
+          if(language == 'zh') throw FormatException('value函数参数传递错误');
+          else throw FormatException('Function parameter transfer error: value');
+        }
         return MatrixUtil.getDetValue(vals[0]);
       case 'lagrange':
         if (vals.length != 3 ||
             !(vals[0] is List<List<num>>) ||
             !(vals[1] is List<List<num>>) ||
-            !(vals[2] is List<List<num>>))
-          throw FormatException('lagrange函数参数传递错误');
+            !(vals[2] is List<List<num>>)){
+          if(language == 'zh') throw FormatException('lagrange函数参数传递错误');
+          else throw FormatException('Function parameter transfer error: lagrange');
+        }
         return CmdMethodUtil.lagrange(vals[0], vals[1], vals[2]);
       case 'sum':
-        if (vals.length != 1 || vals[0] is! List<List<num>>)
-          throw FormatException('sum函数参数传递错误');
+        if (vals.length != 1 || vals[0] is! List<List<num>>){
+          if(language == 'zh') throw FormatException('sum函数参数传递错误');
+          else throw FormatException('Function parameter transfer error: sum');
+        }
         return CmdMethodUtil.sum(vals[0]);
       case 'absSum':
-        if (vals.length != 1 || vals[0] is! List<List<num>>)
-          throw FormatException('absSum函数参数传递错误');
+        if (vals.length != 1 || vals[0] is! List<List<num>>){
+          if(language == 'zh') throw FormatException('absSum函数参数传递错误');
+          else throw FormatException('Function parameter transfer error: absSum');
+        }
         return CmdMethodUtil.absSum(vals[0]);
       case 'average':
-        if (vals.length != 1 || vals[0] is! List<List<num>>)
-          throw FormatException('average函数参数传递错误');
+        if (vals.length != 1 || vals[0] is! List<List<num>>){
+          if(language == 'zh') throw FormatException('average函数参数传递错误');
+          else throw FormatException('Function parameter transfer error: average');
+        }
         return CmdMethodUtil.average(vals[0]);
       case 'absAverage':
-        if (vals.length != 1 || vals[0] is! List<List<num>>)
-          throw FormatException('absAverage函数参数传递错误');
+        if (vals.length != 1 || vals[0] is! List<List<num>>){
+          if(language == 'zh') throw FormatException('absAverage函数参数传递错误');
+          else throw FormatException('Function parameter transfer error: absAverage');
+        }
         return CmdMethodUtil.absAverage(vals[0]);
       case 'factorial':
         if (vals.length != 1 || vals[0] is! num)

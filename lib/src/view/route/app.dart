@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:xiaoming/src/language/ChineseCupertinoLocalizations.dart';
+import 'package:xiaoming/src/language/chineseCupertinoLocalizations.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/widget/myTabScaffold.dart';
 
@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return CupertinoApp(
       color: Colors.white,
       debugShowCheckedModeBanner: false,

@@ -9,6 +9,9 @@ import 'package:xiaoming/src/view/route/homeRoute.dart';
 class MyTabScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    UserData.language = Localizations.localeOf(context).languageCode;
+
     return WillPopScope(
       onWillPop: () async {
         switch (UserData.nowPage) {
