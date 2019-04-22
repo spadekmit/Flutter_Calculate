@@ -25,7 +25,7 @@ Matrix inverse, upper triangle, eigenvalues<br>
 ![image](https://github.com/spadekmit/Flutter_Calculate/raw/master/image/home_page.jpg)
 
 
-![image](https://github.com/spadekmit/Flutter_Calculate/raw/master/image/equation_view.jpg)
+![image](https://github.com/spadekmit/Flutter_Calculate/raw/master/image/definite_integral_view.jpg)
 
 
 ![image](https://github.com/spadekmit/Flutter_Calculate/raw/master/image/method_view.jpg)
