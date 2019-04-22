@@ -1,5 +1,6 @@
 import 'package:xiaoming/src/command/matrix.dart';
 import 'package:xiaoming/src/data/settingData.dart';
+import 'package:xiaoming/src/data/appData.dart';
 
 class EquationsUtil {
 
@@ -34,7 +35,10 @@ class EquationsUtil {
         postMatrix.add(<num>[]);
         constant.add([]);
         var ns = equations[i].split(',');
-        if(length != ns.length) return '第 ${i+1} 行参数数量与第一行不一致';
+        if(length != ns.length) {
+          if (UserData.language == 'zh') return '第 ${i+1} 行参数数量与第一行不一致';
+          else return 'The number of arguments in line ${i + 1} is inconsistent with that in line 1';
+        } 
         for (int j = 0; j < ns.length; j++) {
           if (j != ns.length - 1){
             postMatrix[i].add(num.parse(ns[j]));
@@ -44,66 +48,20 @@ class EquationsUtil {
         }
       }
     }catch (e){
-      return '系数阵输入有误';
+      if (UserData.language == 'zh') return '系数阵输入有误';
+          else return 'Coefficient matrix input error';
     }
 
     var resultList = MatrixUtil.m2mRide(MatrixUtil.getAdjoint(postMatrix), constant);
     var sb = new StringBuffer();
     for(int i=0;i<resultList.length;i++){
-      sb.write('第 ${i + 1} 个解为:   ' + resultList[i][0].toStringAsFixed(SettingData.fixedNum.round()));
+      sb.write(UserData.language == 'zh' ? '第 ${i + 1} 个解为:   ' : 'The ${i + 1} solution is:  ' + resultList[i][0].toStringAsFixed(SettingData.fixedNum.round()));
       sb.write('\n');
     }
     result = sb.toString();
     postMatrix = [];
     constant = [];
     return result;
-  }
-  ///传入方程字符串，将系数添加到系数阵，常数添加到常数阵
-  ///@param  equation   方程字符串
-  ///@param  map        存储变量与其对应序号的map
-  ///@param  isLeft     传入方程是否是等式左边
-  ///@param  index      处理的是哪一行的方程
-  _simplifiedEquation(String equation, Map map, bool isLeft, int index) {  //a+b
-    RegExp reg = new RegExp(r'(\+|-)\w+');
-    if(RegExp(r'^[A-Za-z0-9]').hasMatch(equation)){
-      equation = '+' + equation;
-    }   //+a+b
-    var mas = reg.allMatches(equation);
-    for (var m in mas) {
-      var indexNum = m.group(0).indexOf(RegExp('[A-Za-z]'));
-      if (indexNum > 0) {
-        var postStr = m.group(0).substring(0, indexNum);
-        if (postStr == '-' || postStr == '+') {
-          postStr = postStr + '1';
-        }
-        var postNum;
-        try {
-          postNum = num.parse(postStr);
-        } catch (e) {
-          throw FormatException('系数输入有误');
-        }
-        if (!isLeft) {
-          postNum = postNum * (-1);
-        }
-        String varStr = m.group(0).substring(indexNum);
-        if (!map.containsKey(varStr)) {
-          throw FormatException('符号$varStr 未记录在变量列表中');
-        }
-        var mapindex = map[varStr];
-        postMatrix[index][mapindex] = postNum;
-      }else {
-        var postNum;
-        try {
-          postNum = num.parse(m.group(0));
-        } catch (e) {
-          throw FormatException('${m.group(0)} 输入有误');
-        }
-        if (isLeft) {
-          postNum *= -1;
-        }
-        constant[index][0] = constant[index][0] + postNum;
-      }
-    }
   }
 
   ///传入非线性方程，返回结果
@@ -117,7 +75,7 @@ class EquationsUtil {
       if(temp != null) {
         list.add(temp);
       } else {
-        return "$n 不能被识别为数字";
+        return UserData.language == 'zh' ? "$n 不能被识别为数字" : '$n cannot be identified as a number';
       }
     }
     var maxPower = list.length - 1;
@@ -141,7 +99,7 @@ class EquationsUtil {
     int index = 1;
     StringBuffer sb = new StringBuffer();
     for(var l in resultMatrix){
-      sb.write('第$index 个解为： ${l[0].toStringAsFixed(SettingData.fixedNum.round())}');
+      sb.write(UserData.language == 'zh' ? '第$index 个解为： ' : 'The $index solution is:  ' + '${l[0].toStringAsFixed(SettingData.fixedNum.round())}');
       sb.write('\n');
       index++;
     }

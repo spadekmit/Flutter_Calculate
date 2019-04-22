@@ -1,3 +1,4 @@
+import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
 import 'dart:math';
 
@@ -39,7 +40,8 @@ class MatrixUtil {
   /// 矩阵相乘
   static List<List<num>> m2mRide(List<List<num>> list1, List<List<num>> list2) {
     if (list1[0].length != list2.length) {
-      throw FormatException("相乘矩阵的行列数不符合要求");
+      throw FormatException(UserData.language == 'zh' ? "相乘矩阵的行列数不符合要求" :
+       "The rows and columns of the multiplication matrix do not meet the requirements");
     }
     List<List<num>> newl = [];
     num sum = 0.0;
@@ -60,7 +62,7 @@ class MatrixUtil {
   static List<List<num>> m2mMinus(
       List<List<num>> list1, List<List<num>> list2) {
     if (list1.length != list2.length || list1[0].length != list2[0].length) {
-      throw FormatException("相减矩阵的行列数不符合要求");
+      throw FormatException(UserData.language == 'zh' ? "相减矩阵的行列数不符合要求" : "The number of rows and columns in the subtraction matrix does not meet the requirements");
     }
     List<List<num>> newl = [];
     for (int i = 0; i < list1.length; i++) {
@@ -75,7 +77,7 @@ class MatrixUtil {
   /// 矩阵相加
   static List<List<num>> m2mPlus(List<List<num>> list1, List<List<num>> list2) {
     if (list1.length != list2.length || list1[0].length != list2[0].length) {
-      throw FormatException("相加矩阵的行列数不符合要求");
+      throw FormatException(UserData.language == 'zh' ? "相加矩阵的行列数不符合要求" : "The number of rows and columns in the additive matrix does not meet the requirement");
     }
     List<List<num>> newl = [];
     for (int i = 0; i < list1.length; i++) {
@@ -108,7 +110,7 @@ class MatrixUtil {
   /// 矩阵除以一个浮点数
   static List<List<num>> m2dDivide(List<List<num>> list1, num d) {
     if (d == 0.0) {
-      throw FormatException("除数不能为零");
+      throw FormatException(UserData.language == 'zh' ? "除数不能为零" : "The divisor cannot be zero");
     }
     List<List<num>> newl = [];
     for (int i = 0; i < list1.length; i++) {
@@ -154,7 +156,7 @@ class MatrixUtil {
 
   /// 获取给定行列式的值
   static num getDetValue(List<List<num>> list) {
-    if (!isSquare(list)) throw FormatException('只有方阵才能求行列式的值');
+    if (!isSquare(list)) throw FormatException(UserData.language == 'zh' ? '只有方阵才能求行列式的值' : "Only a square matrix can evaluate a determinant");
     if (list.length == 2) {
       return list[0][0] * list[1][1] - list[0][1] * list[1][0];
     }
@@ -176,7 +178,7 @@ class MatrixUtil {
 
   /// 获取矩阵的逆阵
   static List<List<num>> getAdjoint(List<List<num>> list) {
-    if (!isSquare(list)) throw FormatException('只有方阵才可逆');
+    if (!isSquare(list)) throw FormatException(UserData.language == 'zh' ? '只有方阵才可逆' : "Only the square matrix is invertible");
     List<List<num>> newdata = [];
     //1阶方阵返回倒数
     if (list.length == 1) {
@@ -185,7 +187,7 @@ class MatrixUtil {
       return newdata;
     }
     num A = getDetValue(list);
-    if (A == 0.0) throw FormatException('行列式的值为零的矩阵不能求逆');
+    if (A == 0.0) throw FormatException(UserData.language == 'zh' ? '行列式的值为零的矩阵不能求逆' : "A matrix whose determinant is zero cannot be inversed");
 
     //2阶方阵直接求逆
     if (list.length == 2) {
@@ -216,9 +218,9 @@ class MatrixUtil {
   /// 获取给定方阵中 （h,v）位置的代数余子式
   static List<List<num>> getConfactor(List<List<num>> list, int h, int v) {
     if (!(h < list.length)) {
-      throw FormatException('h: $h 标签值越界  H: ${list.length}');
+      throw FormatException(UserData.language == 'zh' ? 'h: $h 索引值越界  H: ${list.length}' : "h: $h The index value is out of bounds  H: ${list.length}");
     } else if (!(v < list[0].length)) {
-      throw FormatException('v: $v 标签值越界  V: ${list[0].length}');
+      throw FormatException(UserData.language == 'zh' ? 'v: $v 索引值越界  V: ${list[0].length}' : "v: $v The index value is out of bounds  V: ${list[0].length}");
     }
     List<List<num>> newlist = [];
     for (int i = 0; i < list.length; i++) {
@@ -291,7 +293,7 @@ class MatrixUtil {
   static List<num> _listMinus(List<num> list1, List<num> list2) {
     List<num> newlist = [];
     if (list1.length != list2.length) {
-      throw FormatException('相减数组的长度不相等');
+      throw FormatException(UserData.language == 'zh' ? '相减数组的长度不相等' : "The length of the subtraction array is not equal");
     }
     for (int i = 0; i < list1.length; i++) {
       newlist.add(list1[i] - list2[i]);
@@ -332,7 +334,7 @@ class MatrixUtil {
   ///将一般矩阵转化为上海森柏格矩阵
   static List<List<num>> getHessenberg(List<List<num>> matrix) {
     if(!isSquare(matrix)){
-      throw FormatException('只有方阵才能转化为上海森柏格矩阵');
+      throw FormatException(UserData.language == 'zh' ? '只有方阵才能转化为上海森柏格矩阵' : "Only the square matrix can be transformed into Shanghai senberg matrix");
     }
     int n = matrix.length;
     var result = initMatrix(n, n);
@@ -388,7 +390,7 @@ class MatrixUtil {
 
   static List<List<num>> eigenValue(List<List<num>> matrix, int loopNu, int erro) {
     if(!isSquare(matrix)) {
-      throw FormatException('方阵才能求特征值');
+      throw FormatException(UserData.language == 'zh' ? '方阵才能求特征值' : "Square matrix to find the eigenvalues");
     }
     int n = matrix.length;
     List<List<num>> result = initMatrix(n, 2);

@@ -16,8 +16,12 @@ class CmdMethodUtil {
         ys.length != 1 ||
         rs.length != 1 ||
         xs[0].length != ys[0].length) {
-      throw FormatException(
+      if (UserData.language == 'zh') throw FormatException(
           'lagrange函数参数行列数不符合要求，节点x值和y值，所求值必须为单行。节点x值个数必须与y值个数相等');
+      else throw FormatException(
+          'Lagrange function parameter row number does not meet the requirements,'
+          'the node x value and y value, the value must be a single row.'
+          'The number of nodes with x values must be equal to the number of nodes with y values');
     }
     for (int k = 0; k < rs[0].length; k++) {
       for (int i = 0; i < xs[0].length; i++) {
@@ -85,7 +89,8 @@ class CmdMethodUtil {
     int i = d.round();
     num result = 1.0;
     if (d < 0) {
-      throw FormatException('负数没有阶乘');
+      if(UserData.language == 'zh') throw FormatException('负数没有阶乘');
+      else throw FormatException('Negative Numbers have no factorial');
     }
     if (d == 0) {
       return 1.0;
@@ -159,7 +164,8 @@ class CmdMethodUtil {
   static Future<num> _calculus(UserFunction fx, num a, num b) async {
     num result = 0;
     if(fx.paras.length != 1){
-      throw FormatException('被积分函数的参数只允许为一个');
+      if (UserData.language == 'zh') throw FormatException('被积分函数的参数只允许为一个');
+      else throw FormatException('The parameter of the integrated function is only allowed to be one');
     }
     if (a > b) {
       var temp = b;
@@ -185,14 +191,16 @@ class CmdMethodUtil {
     try{
       result = num.parse(valStr.substring(index + 1));
     }catch(e){
-      throw FormatException('积分函数返回值只能为实数');
+      if (UserData.language == 'zh') throw FormatException('积分函数返回值只能为实数');
+      else throw FormatException('Integral functions can only return real Numbers');
     }
     return result;
   }
 
   static List<List<num>> polyomial(List<List<num>> list){
     if(list.length != 1){
-      throw FormatException('多项式求解函数参数应为单行矩阵');
+      if (UserData.language == 'zh') throw FormatException('多项式求解函数参数应为单行矩阵');
+      else throw FormatException('Polynomial solution function parameters should be a single row matrix');
     }
     int n = list[0].length - 1;
     List<List<num>> matrix = MatrixUtil.initMatrix(n, n);
