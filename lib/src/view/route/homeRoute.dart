@@ -302,7 +302,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
     super.dispose();
     _textController.dispose();
     for (TextView textView in _texts) {
-      textView.animationController.dispose();
+      textView.animationController?.dispose();
     }
   }
 
