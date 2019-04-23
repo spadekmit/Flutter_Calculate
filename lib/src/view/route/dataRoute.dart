@@ -8,8 +8,6 @@ import 'package:xiaoming/src/view/route/newMethodRoute.dart';
 import 'package:xiaoming/src/view/widget/myButtons.dart';
 
 class AndDataRoute extends StatelessWidget {
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-
   Widget _buildDataView() {
     return Provide<UserData>(
       builder: (context, child, ud) {
@@ -102,7 +100,6 @@ class AndDataRoute extends StatelessWidget {
         }
 
         return ListView.builder(
-          key: _listKey,
           itemBuilder: (context, index) => datas[index],
           itemCount: datas.length,
         );
@@ -122,9 +119,8 @@ class AndDataRoute extends StatelessWidget {
         ///将内置方法及已保存的方法加载进methods
         for (int index = 0; index < ud.userFunctions.length; index++) {
           var u = ud.userFunctions[index];
-          methods.add(Dismissible(
-            onDismissed: (item) {
-              ud.deleteUF(u.funName);
+          methods.add(GestureDetector(
+            onLongPress: () {
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -135,13 +131,13 @@ class AndDataRoute extends StatelessWidget {
                           isDestructiveAction: true,
                           child: Text(XiaomingLocalizations.of(context).delete),
                           onPressed: () {
+                            ud.deleteUF(u.funName);
                             Navigator.of(context).pop();
                           },
                         ),
                         CupertinoDialogAction(
                           child: Text(XiaomingLocalizations.of(context).cancel),
                           onPressed: () {
-                            ud.addUF(u.funName, u.paras, u.funCmds);
                             Navigator.of(context).pop();
                           },
                         ),
@@ -149,9 +145,6 @@ class AndDataRoute extends StatelessWidget {
                     );
                   });
             },
-            background: Container(
-              color: Colors.red,
-            ),
             key: Key(u.funName),
             child: Card(
               color: Colors.purple,
@@ -185,13 +178,8 @@ class AndDataRoute extends StatelessWidget {
           ));
         }
 
-        ///添加完分隔线的方法列表
-        final List<Widget> divided2 = ListTile.divideTiles(
-          context: context,
-          tiles: methods,
-        ).toList();
-        return ListView(
-          children: divided2,
+        return ListView.builder(
+          itemBuilder: (context, index) => methods[index],
         );
       },
     );
@@ -336,14 +324,13 @@ class _IOSDataRouteState extends State<IOSDataRoute> {
       return Provide<UserData>(
         builder: (context, child, ud) {
           ///保存的浮点数和矩阵组成的卡片列表
-          List<Dismissible> datas = <Dismissible>[];
+          List<Widget> datas = <Widget>[];
 
           ///加载矩阵列表
           if (ud.matrixs.isNotEmpty) {
-            ud.matrixs.forEach((name, list) => datas.add(Dismissible(
+            ud.matrixs.forEach((name, list) => datas.add(GestureDetector(
                   key: Key(name),
-                  onDismissed: (item) {
-                    ud.deleteMatrix(name);
+                  onLongPress: () {
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -356,6 +343,7 @@ class _IOSDataRouteState extends State<IOSDataRoute> {
                                 child: Text(
                                     XiaomingLocalizations.of(context).delete),
                                 onPressed: () {
+                                  ud.deleteMatrix(name);
                                   Navigator.of(context).pop();
                                 },
                               ),
@@ -363,7 +351,6 @@ class _IOSDataRouteState extends State<IOSDataRoute> {
                                 child: Text(
                                     XiaomingLocalizations.of(context).cancel),
                                 onPressed: () {
-                                  ud.addMatrix(name, list);
                                   Navigator.of(context).pop();
                                 },
                               ),
@@ -371,9 +358,6 @@ class _IOSDataRouteState extends State<IOSDataRoute> {
                           );
                         });
                   },
-                  background: Container(
-                    color: Colors.red,
-                  ),
                   child: Card(
                     color: Colors.cyan,
                     child: new ListTile(
@@ -386,10 +370,9 @@ class _IOSDataRouteState extends State<IOSDataRoute> {
 
           ///加载浮点数列表
           if (ud.dbs.isNotEmpty) {
-            ud.dbs.forEach((name, value) => datas.add(Dismissible(
+            ud.dbs.forEach((name, value) => datas.add(GestureDetector(
                   key: Key(name),
-                  onDismissed: (item) {
-                    ud.deleteNum(name);
+                  onLongPress: () {
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -402,6 +385,7 @@ class _IOSDataRouteState extends State<IOSDataRoute> {
                                 child: Text(
                                     XiaomingLocalizations.of(context).delete),
                                 onPressed: () {
+                                  ud.deleteNum(name);
                                   Navigator.of(context).pop();
                                 },
                               ),
@@ -409,7 +393,6 @@ class _IOSDataRouteState extends State<IOSDataRoute> {
                                 child: Text(
                                     XiaomingLocalizations.of(context).cancel),
                                 onPressed: () {
-                                  ud.addNum(name, value);
                                   Navigator.of(context).pop();
                                 },
                               ),
@@ -417,9 +400,6 @@ class _IOSDataRouteState extends State<IOSDataRoute> {
                           );
                         });
                   },
-                  background: Container(
-                    color: Colors.red,
-                  ),
                   child: Card(
                     color: Colors.green,
                     child: new ListTile(

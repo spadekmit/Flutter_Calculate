@@ -162,81 +162,84 @@ class _SettingSheetState extends State<SettingSheet> {
       ),
     );
   }
+  
+  Widget _buildIOSSheet(UserData ud) {
+    return CupertinoActionSheet(
+      title: Column(
+        children: <Widget>[
+          Text(XiaomingLocalizations.of(context).decimalDigits,
+              style: TextStyle(
+                fontFamily: '.SF UI Text',
+                inherit: false,
+                fontSize: 17.0,
+                color: CupertinoColors.black,
+              )),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CupertinoSlider(
+                divisions: 8,
+                max: 9.0,
+                min: 1.0,
+                value: SettingData.fixedNum,
+                onChanged: (double d) {
+                  setState(() {
+                    SettingData.fixedNum = d;
+                  });
+                  SettingData.writeSettingData();
+                },
+              ),
+              Text(SettingData.fixedNum.toString()),
+            ],
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        CupertinoActionSheetAction(
+          onPressed: () {
+            Navigator.pop(context);
+            onPressed();
+          },
+          child: const Text("Delete All Message"),
+        ),
+        CupertinoActionSheetAction(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Text(
+                "Theme:  isIOS Theme",
+                style: TextStyle(
+                  fontSize: 17.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              CupertinoSwitch(
+                value: ud.theme == "IOS",
+                onChanged: (isIOS) {
+                  if (isIOS)
+                    ud.changeTheme("IOS");
+                  else
+                    ud.changeTheme("Android");
+                },
+              ),
+            ],
+          ),
+          onPressed: () {},
+        ),
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        child: const Text('Cancel'),
+        isDefaultAction: true,
+        onPressed: () => Navigator.pop(context),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Provide<UserData>(builder: (context, child, ud) {
       return ud.theme == "IOS"
-          ? CupertinoActionSheet(
-              title: Column(
-                children: <Widget>[
-                  Text(XiaomingLocalizations.of(context).decimalDigits,
-                      style: TextStyle(
-                        fontFamily: '.SF UI Text',
-                        inherit: false,
-                        fontSize: 17.0,
-                        color: CupertinoColors.black,
-                      )),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      CupertinoSlider(
-                        divisions: 8,
-                        max: 9.0,
-                        min: 1.0,
-                        value: SettingData.fixedNum,
-                        onChanged: (double d) {
-                          setState(() {
-                            SettingData.fixedNum = d;
-                          });
-                          SettingData.writeSettingData();
-                        },
-                      ),
-                      Text(SettingData.fixedNum.toString()),
-                    ],
-                  ),
-                ],
-              ),
-              actions: <Widget>[
-                CupertinoActionSheetAction(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    onPressed();
-                  },
-                  child: const Text("Delete All Message"),
-                ),
-                CupertinoActionSheetAction(
-                  child: Text("Theme:  ${ud.theme}"),
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) => CupertinoAlertDialog(
-                              actions: <Widget>[
-                                CupertinoActionSheetAction(
-                                  child: Text("Android Theme"),
-                                  onPressed: () {
-                                    ud.changeTheme("Android");
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                CupertinoActionSheetAction(
-                                  child: Text("IOS Theme"),
-                                  onPressed: () {
-                                    ud.changeTheme("IOS");
-                                    Navigator.of(context).pop();
-                                  },
-                                )
-                              ],
-                            ));
-                  },
-                ),
-              ],
-              cancelButton: CupertinoActionSheetAction(
-                child: const Text('Cancel'),
-                isDefaultAction: true,
-                onPressed: () => Navigator.pop(context),
-              ),
-            )
+          ? _buildIOSSheet(ud)
           : _buildAndSheet(ud);
     });
   }
