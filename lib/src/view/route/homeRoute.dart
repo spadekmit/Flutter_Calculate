@@ -36,22 +36,38 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
     UserData.nowPage = 0;
     SettingData.readSettingData(); //读取设置数据
     _textController = new TextEditingController();
-
     KeyboardVisibilityNotification().addNewListener(
       onChange: (bool visible) {
         if (visible) {
-          setState(() {
-            tabHeight = 0.0;
-            _buttonsIsVisible = true;
-          });
+          if (this.mounted) {
+            setState(() {
+              tabHeight = 0.0;
+              _buttonsIsVisible = true;
+            });
+          }
         } else {
-          setState(() {
-            tabHeight = MediaQuery.of(context).padding.bottom;
-            _buttonsIsVisible = false;
-          });
+          if (this.mounted) {
+            setState(() {
+              tabHeight = MediaQuery.of(context).padding.bottom;
+              _buttonsIsVisible = false;
+            });
+          }
         }
       },
     );
+  }
+
+  ///退出该路由时释放动画资源
+  @override
+  void dispose() {
+    super.dispose();
+    _textController.dispose();
+    ///当切换主题时，主动调用animationController.dispose() 会触发多次dispose的异常
+    // for (TextView textView in _texts) {
+    //   if (textView.animationController != null) {
+    //     textView.animationController?.dispose();
+    //   }
+    // }
   }
 
   ///home界面布局
@@ -101,7 +117,6 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
             ),
             AnimatedSize(
               vsync: this,
-              curve: Curves.ease,
               duration: Duration(milliseconds: 200),
               child: Container(
                 height: _buttonsIsVisible ? 200.0 : 0.0,
@@ -294,16 +309,6 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
       textView1.animationController.forward();
       textView2.animationController.forward();
     });
-  }
-
-  ///退出该路由时释放动画资源
-  @override
-  void dispose() {
-    super.dispose();
-    _textController.dispose();
-    for (TextView textView in _texts) {
-      textView.animationController?.dispose();
-    }
   }
 
   ///加载数据库中的历史数据

@@ -58,7 +58,12 @@ class _EquationRouteState extends State<EquationRoute>
 
   @override
   Widget build(BuildContext context) {
-    UserData.nowPage = 0;
+    if (Provide.value<UserData>(context).theme == "IOS") {
+      UserData.nowPage = 1;
+      UserData.pageContext = context;
+    }else {
+      UserData.nowPage = 0;
+    }
 
     List<Widget> widgets = <Widget>[
       MyTextField(
