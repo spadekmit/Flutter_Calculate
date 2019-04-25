@@ -44,20 +44,21 @@ class _IntegralRouteState extends State<IntegralRoute> {
       if (_dController.text.length == 0 ||
           _pController.text.length == 0 ||
           _iController.text.length == 0) {
-        return "积分函数，积分变量，积分区间都不能为空！";
+        return SettingData.language == "zh" ? "积分函数，积分变量，积分区间都不能为空！" : 
+        "Integral function, integral variable, integral interval cannot be empty!";
       }
       if (!_iController.text.contains(',')) {
-        return "请用逗号分隔积分区间";
+        return SettingData.language == "zh" ? "请用逗号分隔积分区间" : "Please separate the interval by comma";
       }
       UserFunction uf = UserFunction("__temp__", _pController.text.split(','),
           _dController.text.split(";"));
       int a = int.tryParse(_iController.text.split(',')[0]);
       int b = int.tryParse(_iController.text.split(',')[1]);
       if (a == null || b == null) {
-        return "积分区间必须为整数";
+        return SettingData.language == "zh" ? "积分区间必须为整数" : "The integral interval must be an integer";
       }
       num r = await CmdMethodUtil.handleCalculate(uf, a, b);
-      return "积分结果为：  " + r.toStringAsFixed(SettingData.fixedNum.round());
+      return (SettingData.language == "zh" ? "积分结果为：  " : "The integral result is:    ") + r.toStringAsFixed(SettingData.fixedNum.round());
     }
 
     Widget mainView = SingleChildScrollView(
@@ -121,7 +122,7 @@ class _IntegralRouteState extends State<IntegralRoute> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           CupertinoActivityIndicator(),
-                          Text("正在计算中"),
+                          Text(SettingData.language == "zh" ? "正在计算中" : "Under calculation"),
                         ],
                       ),
               ),

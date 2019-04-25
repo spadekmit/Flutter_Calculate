@@ -219,10 +219,25 @@ class AndDataRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     SettingData.nowPage = 0;
     return DefaultTabController(
-      length: 2,
+      length: 2, //tabBar的数量
       child: Scaffold(
-        appBar: AppBar(
-          bottom: TabBar(
+        body: NestedScrollView(
+            headerSliverBuilder: (context, isShow) => <Widget>[
+        SliverAppBar(
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () => _handleEmpty(context),
+            ),
+          ],
+          title: Text("Saved"),
+          centerTitle: true,
+          pinned: false,
+          expandedHeight: 100.0,
+        ),
+        SliverPersistentHeader(
+          delegate: _SliverAppBarDelegate(TabBar(
+            labelColor: Colors.black,
             indicatorColor: CupertinoColors.white,
             tabs: <Widget>[
               Tab(
@@ -232,21 +247,17 @@ class AndDataRoute extends StatelessWidget {
                 text: "Method",
               ),
             ],
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(CupertinoIcons.delete),
-              onPressed: () => _handleEmpty(context),
+          )),
+          pinned: true,
+        )
+                ],
+            body: TabBarView(
+              children: <Widget>[
+                _buildDataView(),
+                _buildMethodView(),
+              ],
             ),
-          ],
-          backgroundColor: CupertinoColors.activeOrange,
-        ),
-        body: TabBarView(
-          children: <Widget>[
-            _buildDataView(),
-            _buildMethodView(),
-          ],
-        ),
+          ),
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () {
@@ -344,5 +355,31 @@ class _IOSDataRouteState extends State<IOSDataRoute> {
         ],
       ),
     );
+  }
+}
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate(this._tabBar);
+
+  final TabBar _tabBar;
+
+  @override
+  double get minExtent => _tabBar.preferredSize.height;
+
+  @override
+  double get maxExtent => _tabBar.preferredSize.height;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return new Container(
+        color: Colors.blue,
+        child: _tabBar,
+      );
+  }
+
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return false;
   }
 }
