@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provide/provide.dart';
@@ -27,6 +29,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
   bool isComplete = true; //计算是否完成
   static bool _isInit = false;
   UserData ud;
+  final StreamController _streamController = StreamController();
 
   ///初始化对象及加载数据
   @override
@@ -39,19 +42,9 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
     KeyboardVisibilityNotification().addNewListener(
       onChange: (bool visible) {
         if (visible) {
-          if (this.mounted) {
-            setState(() {
-              tabHeight = 0.0;
-              _buttonsIsVisible = true;
-            });
-          }
+          _streamController.sink.add(200.0);
         } else {
-          if (this.mounted) {
-            setState(() {
-              tabHeight = MediaQuery.of(context).padding.bottom;
-              _buttonsIsVisible = false;
-            });
-          }
+          _streamController.sink.add(0.0);
         }
       },
     );
@@ -62,6 +55,8 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
   void dispose() {
     super.dispose();
     _textController.dispose();
+    _streamController.close();
+
     ///当切换主题时，主动调用animationController.dispose() 会触发多次dispose的异常
     // for (TextView textView in _texts) {
     //   if (textView.animationController != null) {
@@ -111,18 +106,19 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
                 itemCount: _texts.length,
               ),
             )),
-            Divider(
-              height: _buttonsIsVisible ? 1.0 : 0.0,
-              color: _buttonsIsVisible ? Colors.black : null,
-            ),
-            AnimatedSize(
-              vsync: this,
-              duration: Duration(milliseconds: 200),
-              child: Container(
-                height: _buttonsIsVisible ? 200.0 : 0.0,
-                child: buildButtons(_handleTextButton),
-              ),
-            ),
+            StreamBuilder<double>(
+                stream: _streamController.stream,
+                initialData: 0.0,
+                builder: (context, snapshot) {
+                  return AnimatedSize(
+                    vsync: this,
+                    duration: Duration(milliseconds: 200),
+                    child: Container(
+                      height: snapshot.data,
+                      child: buildButtons(_handleTextButton),
+                    ),
+                  );
+                }),
             new Divider(height: 1.0),
             new Container(
               decoration: new BoxDecoration(
@@ -139,9 +135,16 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
                 onSubmitted: _handleSubmitted,
               ),
             ),
-            new SizedBox(
-              height: tabHeight,
-            ),
+            StreamBuilder<double>(
+                stream: _streamController.stream,
+                initialData: MediaQuery.of(context).padding.bottom,
+                builder: (context, snapshot) {
+                  return SizedBox(
+                    height: snapshot.data == 200.0
+                        ? 0.0
+                        : MediaQuery.of(context).padding.bottom,
+                  );
+                }),
           ],
         );
       } else {

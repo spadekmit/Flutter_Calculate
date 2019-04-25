@@ -33,7 +33,12 @@ class _IntegralRouteState extends State<IntegralRoute> {
 
   @override
   Widget build(BuildContext context) {
-    UserData.nowPage = 0;
+    if (Provide.value<UserData>(context).theme == "IOS") {
+      UserData.nowPage = 1;
+      UserData.pageContext = context;
+    }else {
+      UserData.nowPage = 0;
+    }
 
     Future<String> getResult() async {
       if (_dController.text.length == 0 ||
