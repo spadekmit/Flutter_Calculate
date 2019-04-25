@@ -1,9 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provide/provide.dart';
-import 'package:xiaoming/src/data/appData.dart';
+import 'package:xiaoming/src/data/settingData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/route/dataRoute.dart';
 import 'package:xiaoming/src/view/route/functionsRoute.dart';
@@ -48,20 +46,20 @@ class MyTabScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserData.language = Localizations.localeOf(context).languageCode; //记录当前语言代码
+    SettingData.language = Localizations.localeOf(context).languageCode; //记录当前语言代码
 
-    return Provide<UserData>(
+    return Provide<SettingData>(
       //跟随主题切换界面
-      builder: (context, child, userData) {
+      builder: (context, child, sd) {
         return WillPopScope(
           onWillPop: () async {
-            switch (UserData.nowPage) {
+            switch (SettingData.nowPage) {
               case 0:
                 bool isPop = false;
                 await showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return userData.theme == "IOS"
+                      return sd.theme == "IOS"
                           ? CupertinoAlertDialog(
                               title: Text(
                                   XiaomingLocalizations.of(context).outApp),
@@ -110,22 +108,22 @@ class MyTabScaffold extends StatelessWidget {
                 return isPop;
                 break;
               case 1:
-                UserData.nowPage = 0;
-                Navigator.pop(UserData.pageContext);
+                SettingData.nowPage = 0;
+                Navigator.pop(SettingData.pageContext);
                 return false;
                 break;
               case 2:
-                Navigator.pop(UserData.pageContext);
+                Navigator.pop(SettingData.pageContext);
                 return false;
                 break;
               case 3:
-                UserData.nowPage = 0;
-                Navigator.pop(UserData.pageContext);
+                SettingData.nowPage = 0;
+                Navigator.pop(SettingData.pageContext);
                 return false;
                 break;
             }
           },
-          child: userData.theme == "IOS"
+          child: sd.theme == "IOS"
               ? _buildIOSTabScaffold()
               : AndTabScaffold(),
         );

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provide/provide.dart';
 import 'package:xiaoming/src/command/handleEquations.dart';
 import 'package:flutter/services.dart';
-import 'package:xiaoming/src/data/appData.dart';
+import 'package:xiaoming/src/data/settingData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/widget/myTextComposer.dart';
 
@@ -58,11 +58,11 @@ class _EquationRouteState extends State<EquationRoute>
 
   @override
   Widget build(BuildContext context) {
-    if (Provide.value<UserData>(context).theme == "IOS") {
-      UserData.nowPage = 1;
-      UserData.pageContext = context;
+    if (Provide.value<SettingData>(context).theme == "IOS") {
+      SettingData.nowPage = 1;
+      SettingData.pageContext = context;
     }else {
-      UserData.nowPage = 0;
+      SettingData.nowPage = 0;
     }
 
     List<Widget> widgets = <Widget>[
@@ -119,10 +119,10 @@ class _EquationRouteState extends State<EquationRoute>
         fontSize: 17.0,
         color: CupertinoColors.black,
       ),
-      child: Provide<UserData>(
-        builder: (context, child, ud) {
+      child: Provide<SettingData>(  ///根据主题切换布局风格
+        builder: (context, child, sd) {
           return CupertinoPageScaffold(
-            navigationBar: ud.theme == "IOS"
+            navigationBar: sd.theme == "IOS"
                 ? CupertinoNavigationBar(
                     middle: Text("Equations"),
                     previousPageTitle: "Functions",

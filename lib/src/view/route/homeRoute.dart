@@ -1,11 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provide/provide.dart';
-import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/dbUtil.dart';
 import 'package:xiaoming/src/data/settingData.dart';
+import 'package:xiaoming/src/data/userData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/widget/myButtons.dart';
 import 'package:xiaoming/src/view/widget/myTextComposer.dart';
@@ -24,27 +23,27 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
       _textController; // _textController用来获取输入文本和控制输入焦点// _textFocusNode用来控制键盘弹出/收回
   static List<TextView> _texts; //存储消息的列表
   bool _isComposing = false; //判断是否有输入
-  bool _buttonsIsVisible = false; //控制便捷输入栏显示与隐藏
-  double tabHeight; //输入框底部高度（防止被底部导航栏遮挡）
   bool isComplete = true; //计算是否完成
   static bool _isInit = false;
-  UserData ud;
-  final StreamController _streamController = StreamController();
+  final StreamController<double> _streamController = StreamController<double>.broadcast();
 
   ///初始化对象及加载数据
   @override
   void initState() {
     super.initState();
     if (!_isInit) readText();
-    UserData.nowPage = 0;
-    SettingData.readSettingData(); //读取设置数据
+    SettingData.nowPage = 0;
     _textController = new TextEditingController();
     KeyboardVisibilityNotification().addNewListener(
       onChange: (bool visible) {
         if (visible) {
-          _streamController.sink.add(200.0);
+          if(this.mounted) {
+            _streamController.sink.add(200.0);
+          }
         } else {
-          _streamController.sink.add(0.0);
+          if(this.mounted) {
+            _streamController.sink.add(0.0);
+          }
         }
       },
     );
@@ -68,8 +67,6 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
   ///home界面布局
   @override
   Widget build(BuildContext context) {
-    ud = Provide.value<UserData>(context);
-    tabHeight = MediaQuery.of(context).padding.bottom; //初始化底部导航栏高度
 
     ///主界面布局
     return DefaultTextStyle(
@@ -132,7 +129,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
                     _isComposing = text.length > 0;
                   });
                 },
-                onSubmitted: _handleSubmitted,
+                onSubmitted: (text) => _handleSubmitted(text, context),
               ),
             ),
             StreamBuilder<double>(
@@ -161,9 +158,9 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
   }
 
   Widget _buildScaffold() {
-    return Provide<UserData>(
-      builder: (context, child, ud) {
-        return ud.theme == "IOS"
+    return Provide<SettingData>(
+      builder: (context, child, sd) {
+        return sd.theme == "IOS"
             ? CupertinoPageScaffold(
                 navigationBar: CupertinoNavigationBar(
                   key: Key("IOSAppBar"),
@@ -204,8 +201,8 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return Provide<UserData>(builder: (context, child, ud) {
-          return ud.theme == "IOS"
+        return Provide<SettingData>(builder: (context, child, sd) {
+          return sd.theme == "IOS"
               ? CupertinoAlertDialog(
                   title:
                       Text(XiaomingLocalizations.of(context).deleteAllMessage),
@@ -287,13 +284,13 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
   }
 
   ///处理发送按钮的点击事件
-  void _handleSubmitted(String text) {
+  void _handleSubmitted(String text, BuildContext context) {
     _textController.clear();
     setState(() {
       _isComposing = false;
       isComplete = false;
     });
-    ud.handleCommand(text).then((handleText) {
+    Provide.value<UserData>(context).handleCommand(text).then((handleText) {
       DBUtil.addMessage(text);
       DBUtil.addMessage(handleText);
       TextView textView1 = new TextView(

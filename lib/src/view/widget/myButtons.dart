@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provide/provide.dart';
-import 'package:xiaoming/src/data/appData.dart';
+import 'package:xiaoming/src/data/userData.dart';
 import 'package:xiaoming/src/view/route/helpRoute.dart';
 import 'package:xiaoming/src/view/widget/setttingSheet.dart';
 
@@ -66,6 +66,7 @@ Widget buildTrailingBar(List<Widget> buttons) {
   );
 }
 
+//顶部帮助按钮
 Widget buildHelpButton(BuildContext context, bool isIOS) {
   return isIOS
       ? CupertinoButton(
@@ -109,12 +110,13 @@ Widget _buildTextButton(String label, OnCommit onPressed,
 ///创建方便输入的按钮栏
 Widget buildButtons(OnCommit onPressed) {
   return Column(children: <Widget>[
+    Divider(color: CupertinoColors.black,height: 1.0,),
     Flexible(
       child: CupertinoScrollbar(
         child: _buildMethodButtons(onPressed),
       ),
     ),
-    Divider(height: 1.0),
+    Divider(color: CupertinoColors.black,height: 1.0,),
     LimitedBox(
       maxHeight: 40,
       child: new Row(
@@ -129,7 +131,7 @@ Widget buildButtons(OnCommit onPressed) {
         ],
       ),
     ),
-    Divider(height: 1.0),
+    Divider(color: CupertinoColors.black,height: 1.0,),
     LimitedBox(
       maxHeight: 40,
       child: new Row(
@@ -143,6 +145,7 @@ Widget buildButtons(OnCommit onPressed) {
         ],
       ),
     ),
+    Divider(color: CupertinoColors.black,height: 1.0,),
   ]);
 }
 

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:isolate';
 import 'dart:math';
 import 'package:xiaoming/src/command/matrix.dart';
-import 'package:xiaoming/src/data/appData.dart';
+import 'package:xiaoming/src/data/userData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
 
 class CmdMethodUtil {
@@ -16,7 +16,7 @@ class CmdMethodUtil {
         ys.length != 1 ||
         rs.length != 1 ||
         xs[0].length != ys[0].length) {
-      if (UserData.language == 'zh') throw FormatException(
+      if (SettingData.language == 'zh') throw FormatException(
           'lagrange函数参数行列数不符合要求，节点x值和y值，所求值必须为单行。节点x值个数必须与y值个数相等');
       else throw FormatException(
           'Lagrange function parameter row number does not meet the requirements,'
@@ -89,7 +89,7 @@ class CmdMethodUtil {
     int i = d.round();
     num result = 1.0;
     if (d < 0) {
-      if(UserData.language == 'zh') throw FormatException('负数没有阶乘');
+      if(SettingData.language == 'zh') throw FormatException('负数没有阶乘');
       else throw FormatException('Negative Numbers have no factorial');
     }
     if (d == 0) {
@@ -164,7 +164,7 @@ class CmdMethodUtil {
   static Future<num> _calculus(UserFunction fx, num a, num b) async {
     num result = 0;
     if(fx.paras.length != 1){
-      if (UserData.language == 'zh') throw FormatException('被积分函数的参数只允许为一个');
+      if (SettingData.language == 'zh') throw FormatException('被积分函数的参数只允许为一个');
       else throw FormatException('The parameter of the integrated function is only allowed to be one');
     }
     if (a > b) {
@@ -191,7 +191,7 @@ class CmdMethodUtil {
     try{
       result = num.parse(valStr.substring(index + 1));
     }catch(e){
-      if (UserData.language == 'zh') throw FormatException('积分函数返回值只能为实数');
+      if (SettingData.language == 'zh') throw FormatException('积分函数返回值只能为实数');
       else throw FormatException('Integral functions can only return real Numbers');
     }
     return result;
@@ -199,7 +199,7 @@ class CmdMethodUtil {
 
   static List<List<num>> polyomial(List<List<num>> list){
     if(list.length != 1){
-      if (UserData.language == 'zh') throw FormatException('多项式求解函数参数应为单行矩阵');
+      if (SettingData.language == 'zh') throw FormatException('多项式求解函数参数应为单行矩阵');
       else throw FormatException('Polynomial solution function parameters should be a single row matrix');
     }
     int n = list[0].length - 1;
@@ -216,6 +216,6 @@ class CmdMethodUtil {
         }
       }
     }
-    return MatrixUtil.eigenValue(matrix, 400, SettingData.fixedNum.round());
+    return MatrixUtil.eigenValue(matrix, 400, 9);
   }
 }

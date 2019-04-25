@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:xiaoming/src/data/appData.dart';
+import 'package:provide/provide.dart';
+import 'package:xiaoming/src/data/settingData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
 class HelpDetailRoute extends StatefulWidget {
@@ -20,14 +21,13 @@ class _HelpDetailRouteState extends State<HelpDetailRoute> {
 
   @override
   void initState() {
-    UserData.nowPage = 2;
+    SettingData.nowPage = 2;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
-    UserData.pageContext = context;
+    SettingData.pageContext = context;
 
     switch (index) {
       case 1:
@@ -57,44 +57,54 @@ class _HelpDetailRouteState extends State<HelpDetailRoute> {
           fontSize: 17.0,
           color: CupertinoColors.black,
         ),
-        child: new CupertinoPageScaffold(
-          backgroundColor: CupertinoColors.lightBackgroundGray,
-          navigationBar: const CupertinoNavigationBar(
-            middle: Text("HelpDetail"),
-            previousPageTitle: 'Help',
-          ),
-          child: ListView(
-              children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Card(
-                    margin: const EdgeInsets.all(20.0),
-                    elevation: 0.0,
-                    child: Container(
-                      padding: const EdgeInsets.all(20.0),
-                      child: text),
-                  ),
-                ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Image.asset(
-                        'assets/image/help1.png',
-                        width: MediaQuery.of(context).size.width / 3,
-                        height: 200.0,
-                        fit: BoxFit.fitWidth,
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width / 12,
-                      ),
-                      Image.asset(
-                        'assets/image/help2.png',
-                        width: MediaQuery.of(context).size.width / 3,
-                        height: 200.0,
-                        fit: BoxFit.fitWidth,
-                      )
-                    ]),
-              ]),
+        child: Provide<SettingData>(
+          builder: (context, child, sd) {
+            return sd.theme == "IOS"
+                ? CupertinoPageScaffold(
+                    backgroundColor: CupertinoColors.lightBackgroundGray,
+                    navigationBar: const CupertinoNavigationBar(
+                      middle: Text("HelpDetail"),
+                      previousPageTitle: 'Help',
+                    ),
+                    child: child,
+                  )
+                : Scaffold(
+                    appBar: AppBar(
+                      backgroundColor: Colors.blueGrey,
+                      title: Text("HelpDetail"),
+                      centerTitle: true,
+                    ),
+                    body: child,
+                  );
+          },
+          child: ListView(children: <Widget>[
+            Container(
+              padding: const EdgeInsets.all(20.0),
+              child: Card(
+                margin: const EdgeInsets.all(20.0),
+                elevation: 0.0,
+                child:
+                    Container(padding: const EdgeInsets.all(20.0), child: text),
+              ),
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              Image.asset(
+                'assets/image/help1.png',
+                width: MediaQuery.of(context).size.width / 3,
+                height: 200.0,
+                fit: BoxFit.fitWidth,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 12,
+              ),
+              Image.asset(
+                'assets/image/help2.png',
+                width: MediaQuery.of(context).size.width / 3,
+                height: 200.0,
+                fit: BoxFit.fitWidth,
+              )
+            ]),
+          ]),
         ));
   }
 }

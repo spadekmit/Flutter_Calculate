@@ -1,6 +1,5 @@
 import 'package:xiaoming/src/command/matrix.dart';
 import 'package:xiaoming/src/data/settingData.dart';
-import 'package:xiaoming/src/data/appData.dart';
 
 class EquationsUtil {
 
@@ -36,7 +35,7 @@ class EquationsUtil {
         constant.add([]);
         var ns = equations[i].split(',');
         if(length != ns.length) {
-          if (UserData.language == 'zh') return '第 ${i+1} 行参数数量与第一行不一致';
+          if (SettingData.language == 'zh') return '第 ${i+1} 行参数数量与第一行不一致';
           else return 'The number of arguments in line ${i + 1} is inconsistent with that in line 1';
         } 
         for (int j = 0; j < ns.length; j++) {
@@ -48,14 +47,14 @@ class EquationsUtil {
         }
       }
     }catch (e){
-      if (UserData.language == 'zh') return '系数阵输入有误';
+      if (SettingData.language == 'zh') return '系数阵输入有误';
           else return 'Coefficient matrix input error';
     }
 
     var resultList = MatrixUtil.m2mRide(MatrixUtil.getAdjoint(postMatrix), constant);
     var sb = new StringBuffer();
     for(int i=0;i<resultList.length;i++){
-      sb.write(UserData.language == 'zh' ? '第 ${i + 1} 个解为:   ' : 'The ${i + 1} solution is:  ' + resultList[i][0].toStringAsFixed(SettingData.fixedNum.round()));
+      sb.write(SettingData.language == 'zh' ? '第 ${i + 1} 个解为:   ' : 'The ${i + 1} solution is:  ' + resultList[i][0].toStringAsFixed(SettingData.fixedNum.round()));
       sb.write('\n');
     }
     result = sb.toString();
@@ -75,7 +74,7 @@ class EquationsUtil {
       if(temp != null) {
         list.add(temp);
       } else {
-        return UserData.language == 'zh' ? "$n 不能被识别为数字" : '$n cannot be identified as a number';
+        return SettingData.language == 'zh' ? "$n 不能被识别为数字" : '$n cannot be identified as a number';
       }
     }
     var maxPower = list.length - 1;
@@ -95,11 +94,11 @@ class EquationsUtil {
         }
       }
     }
-    var resultMatrix = MatrixUtil.eigenValue(matrix, 400, SettingData.fixedNum.round());
+    var resultMatrix = MatrixUtil.eigenValue(matrix, 400, 9);
     int index = 1;
     StringBuffer sb = new StringBuffer();
     for(var l in resultMatrix){
-      sb.write(UserData.language == 'zh' ? '第$index 个解为： ' : 'The $index solution is:  ' + '${l[0].toStringAsFixed(SettingData.fixedNum.round())}');
+      sb.write(SettingData.language == 'zh' ? '第$index 个解为： ' : 'The $index solution is:  ' + '${l[0].toStringAsFixed(SettingData.fixedNum.round())}');
       sb.write('\n');
       index++;
     }

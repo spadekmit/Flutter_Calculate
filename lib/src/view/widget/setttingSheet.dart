@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provide/provide.dart';
-import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
@@ -25,7 +24,7 @@ class _SettingSheetState extends State<SettingSheet> {
     );
   }
 
-  Widget _buildAndSheet(UserData ud) {
+  Widget _buildAndSheet(SettingData sd) {
     return SizedBox(
       height: 300.0,
       width: MediaQuery.of(context).size.width,
@@ -47,17 +46,19 @@ class _SettingSheetState extends State<SettingSheet> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Slider(
-                        activeColor: Colors.yellow,
-                        divisions: 8,
-                        max: 9.0,
-                        min: 1.0,
-                        value: SettingData.fixedNum,
-                        onChanged: (double d) {
-                          setState(() {
-                            SettingData.fixedNum = d;
-                          });
-                          SettingData.writeSettingData();
+                      Provide<SettingData>(
+                        builder: (context, child, sd) {
+                          return Slider(
+                            activeColor: Colors.yellow,
+                            divisions: 8,
+                            max: 9.0,
+                            min: 1.0,
+                            value: SettingData.fixedNum.toDouble(),
+                            onChanged: (double d) {
+                              Provide.value<SettingData>(context)
+                                  .setFixedNum(d.toInt());
+                            },
+                          );
                         },
                       ),
                       Text(SettingData.fixedNum.toString()),
@@ -93,13 +94,12 @@ class _SettingSheetState extends State<SettingSheet> {
                     ),
                   ),
                   Switch(
-                    value: ud.theme == "IOS",
+                    value: sd.theme == "IOS",
                     onChanged: (isIOS) {
                       if (isIOS)
-                        ud.changeTheme("IOS");
+                        sd.changeTheme("IOS");
                       else
-                        ud.changeTheme("Android");
-                      Navigator.of(context).pop();
+                        sd.changeTheme("Android");
                     },
                   ),
                 ],
@@ -112,7 +112,7 @@ class _SettingSheetState extends State<SettingSheet> {
   }
 
   //构造ios主题的设置界面
-  Widget _buildIOSSheet(UserData ud) {
+  Widget _buildIOSSheet(SettingData ud) {
     return CupertinoActionSheet(
       title: Column(
         children: <Widget>[
@@ -130,12 +130,9 @@ class _SettingSheetState extends State<SettingSheet> {
                 divisions: 8,
                 max: 9.0,
                 min: 1.0,
-                value: SettingData.fixedNum,
+                value: SettingData.fixedNum.roundToDouble(),
                 onChanged: (double d) {
-                  setState(() {
-                    SettingData.fixedNum = d;
-                  });
-                  SettingData.writeSettingData();
+                  Provide.value<SettingData>(context).setFixedNum(d.toInt());
                 },
               ),
               Text(SettingData.fixedNum.toString()),
@@ -186,8 +183,8 @@ class _SettingSheetState extends State<SettingSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Provide<UserData>(builder: (context, child, ud) {
-      return ud.theme == "IOS" ? _buildIOSSheet(ud) : _buildAndSheet(ud);
+    return Provide<SettingData>(builder: (context, child, sd) {
+      return sd.theme == "IOS" ? _buildIOSSheet(sd) : _buildAndSheet(sd);
     });
   }
 }

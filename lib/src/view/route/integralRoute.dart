@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provide/provide.dart';
 import 'package:xiaoming/src/command/cmdMethod.dart';
-import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/settingData.dart';
+import 'package:xiaoming/src/data/userData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'dart:async';
 
@@ -33,11 +33,11 @@ class _IntegralRouteState extends State<IntegralRoute> {
 
   @override
   Widget build(BuildContext context) {
-    if (Provide.value<UserData>(context).theme == "IOS") {
-      UserData.nowPage = 1;
-      UserData.pageContext = context;
+    if (Provide.value<SettingData>(context).theme == "IOS") {
+      SettingData.nowPage = 1;
+      SettingData.pageContext = context;
     }else {
-      UserData.nowPage = 0;
+      SettingData.nowPage = 0;
     }
 
     Future<String> getResult() async {
@@ -144,11 +144,11 @@ class _IntegralRouteState extends State<IntegralRoute> {
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
         },
-        child: Provide<UserData>(
+        child: Provide<SettingData>(
           child: mainView,
-          builder: (context, child, ud) {
+          builder: (context, child, sd) {
             return CupertinoPageScaffold(
-              navigationBar: ud.theme == "IOS" ? CupertinoNavigationBar(
+              navigationBar: sd.theme == "IOS" ? CupertinoNavigationBar(
                 middle: Text("Integral"),
                 previousPageTitle: "Functions",
               ) : null,

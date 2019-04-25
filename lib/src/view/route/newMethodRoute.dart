@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provide/provide.dart';
-import 'package:xiaoming/src/data/appData.dart';
+import 'package:xiaoming/src/data/settingData.dart';
+import 'package:xiaoming/src/data/userData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/widget/myTextComposer.dart';
 
@@ -20,14 +21,14 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
     _funName = new TextEditingController();
     _parm = new TextEditingController();
     _cmds = new TextEditingController();
-    UserData.nowPage = 3;
+    SettingData.nowPage = 3;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     bool isPop = false;
-    UserData.pageContext = context;
+    SettingData.pageContext = context;
     void _saveMethod() {
       if (_funName.text.length != 0 ||
           _parm.text.length != 0 ||
