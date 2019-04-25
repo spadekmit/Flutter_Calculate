@@ -8,6 +8,8 @@ import 'package:xiaoming/src/view/route/functionsRoute.dart';
 import 'package:xiaoming/src/view/route/homeRoute.dart';
 
 class MyTabScaffold extends StatelessWidget {
+
+  //创建IOS主题的底部导航栏
   Widget _buildIOSTabScaffold() {
     return CupertinoTabScaffold(
         key: Key("IOS"),
@@ -51,7 +53,7 @@ class MyTabScaffold extends StatelessWidget {
     return Provide<SettingData>(
       //跟随主题切换界面
       builder: (context, child, sd) {
-        return WillPopScope(
+        return WillPopScope(  //拦截系统导航栏返回键事件
           onWillPop: () async {
             switch (SettingData.nowPage) {
               case 0:
@@ -132,6 +134,7 @@ class MyTabScaffold extends StatelessWidget {
   }
 }
 
+//安卓主题底部导航栏
 class AndTabScaffold extends StatefulWidget {
   @override
   _AndTabScaffoldState createState() => _AndTabScaffoldState();
@@ -149,7 +152,7 @@ class _AndTabScaffoldState extends State<AndTabScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: Key("And"),
+        key: Key("Android"),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedIndex,
             onTap: (index) {

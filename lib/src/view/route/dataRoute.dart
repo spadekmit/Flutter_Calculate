@@ -178,6 +178,7 @@ Widget _buildMethodView() {
 
       return ListView.builder(
         itemBuilder: (context, index) => methods[index],
+        itemCount: methods.length,
       );
     },
   );

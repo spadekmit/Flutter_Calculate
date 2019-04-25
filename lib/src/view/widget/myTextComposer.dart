@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 typedef OnChanged = void Function(String text);
 
-///输入框和发送按钮
+///主界面输入框和发送按钮
 class TextComposer extends StatelessWidget {
   TextComposer(
       {this.textFocusNode,
@@ -54,6 +54,7 @@ class TextComposer extends StatelessWidget {
   }
 }
 
+//定制边框样式的输入框
 class MyTextField extends StatelessWidget {
   MyTextField(this._controller, this.tip);
 

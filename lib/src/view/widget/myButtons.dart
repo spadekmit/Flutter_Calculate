@@ -107,7 +107,7 @@ Widget _buildTextButton(String label, OnCommit onPressed,
   );
 }
 
-///创建方便输入的按钮栏
+///创建跟随键盘弹出的便捷输入按钮栏
 Widget buildButtons(OnCommit onPressed) {
   return Column(children: <Widget>[
     Divider(color: CupertinoColors.black,height: 1.0,),
@@ -149,7 +149,7 @@ Widget buildButtons(OnCommit onPressed) {
   ]);
 }
 
-///构造方法按钮列表
+///构造内置方法及用户自定义方法的按钮列表
 Widget _buildMethodButtons(OnCommit onPressed) {
   return Provide<UserData>(
     builder: (context, child, ud) {

@@ -6,10 +6,12 @@ import 'package:path_provider/path_provider.dart';
 class SettingData with ChangeNotifier{
 
   static int _fixedNum; //存储小数位值
-  static String language;
-  static int nowPage;
-  static BuildContext pageContext;
-  String theme;  //应用主题
+  static String language;  //当前设备语言
+  static int nowPage;  //当前页面级数
+
+  //非一级页面时存储用于pop的context （阻止ios主题时系统导航栏返回键直接退出应用
+  static BuildContext pageContext;  
+  String theme;  //应用主题  
 
   static int get fixedNum => _fixedNum;
 
@@ -20,7 +22,7 @@ class SettingData with ChangeNotifier{
     language = "en";
   }
 
-  void changeTheme(String newTheme) {
+  void changeTheme(String newTheme) {  //改变主题并提醒widget rebuild
     if('Android' == newTheme || 'IOS' == newTheme) {
       theme = newTheme;
       writeSettingData();
@@ -28,7 +30,7 @@ class SettingData with ChangeNotifier{
     }
   }
 
-  void setFixedNum(int newValue) {
+  void setFixedNum(int newValue) {  //改变精度并提醒widget rebuild
     _fixedNum = newValue;
     writeSettingData();
     notifyListeners();
