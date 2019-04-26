@@ -35,29 +35,64 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
           _cmds.text.length > 1) {
         if (!_funName.text.contains(RegExp(r'[^A-Za-z0-9]'))) {
           if (!_parm.text.contains(RegExp(r'[^A-Za-z,]'))) {
-            showCupertinoDialog(
+            showDialog(
                 context: context,
                 builder: (alertContext) {
-                  return CupertinoAlertDialog(
-                    title: Text(XiaomingLocalizations.of(context).sucSave),
-                    actions: <Widget>[
-                      CupertinoActionSheetAction(
-                        child: Text(XiaomingLocalizations.of(context).ok),
-                        isDestructiveAction: true,
-                        onPressed: () {
-                          isPop = true;
-                          Provide.value<UserData>(context).addUF(_funName.text,
-                              _parm.text.split(','), _cmds.text.split(';'));
-                          Navigator.pop(alertContext);
-                        },
-                      ),
-                      CupertinoActionSheetAction(
-                        child: Text(XiaomingLocalizations.of(context).cancel),
-                        onPressed: () {
-                          Navigator.pop(alertContext);
-                        },
-                      ),
-                    ],
+                  return Provide<SettingData>(
+                    builder: (context, child, sd) {
+                      return sd.theme == "IOS"
+                          ? CupertinoAlertDialog(
+                              title: Text(
+                                  XiaomingLocalizations.of(context).sucSave),
+                              actions: <Widget>[
+                                CupertinoActionSheetAction(
+                                  child: Text(
+                                      XiaomingLocalizations.of(context).ok),
+                                  isDestructiveAction: true,
+                                  onPressed: () {
+                                    isPop = true;
+                                    Provide.value<UserData>(context).addUF(
+                                        _funName.text,
+                                        _parm.text.split(','),
+                                        _cmds.text.split(';'));
+                                    Navigator.pop(alertContext);
+                                  },
+                                ),
+                                CupertinoActionSheetAction(
+                                  child: Text(
+                                      XiaomingLocalizations.of(context).cancel),
+                                  onPressed: () {
+                                    Navigator.pop(alertContext);
+                                  },
+                                ),
+                              ],
+                            )
+                          : AlertDialog(
+                              title: Text(
+                                  XiaomingLocalizations.of(context).sucSave),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text(
+                                      XiaomingLocalizations.of(context).ok),
+                                  onPressed: () {
+                                    isPop = true;
+                                    Provide.value<UserData>(context).addUF(
+                                        _funName.text,
+                                        _parm.text.split(','),
+                                        _cmds.text.split(';'));
+                                    Navigator.pop(alertContext);
+                                  },
+                                ),
+                                FlatButton(
+                                  child: Text(
+                                      XiaomingLocalizations.of(context).cancel),
+                                  onPressed: () {
+                                    Navigator.pop(alertContext);
+                                  },
+                                ),
+                              ],
+                            );
+                    },
                   );
                 }).then((value) {
               if (isPop) {
@@ -78,6 +113,13 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
       }
     }
 
+    Widget floatButton = FloatingActionButton(
+      child: Text(
+        XiaomingLocalizations.of(context).save,
+      ),
+      onPressed: _saveMethod,
+    );
+
     return DefaultTextStyle(
       style: const TextStyle(
         fontFamily: '.SF UI Text',
@@ -85,13 +127,8 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
         fontSize: 17.0,
         color: CupertinoColors.black,
       ),
-      child: Scaffold(
-        backgroundColor: CupertinoColors.lightBackgroundGray,
-        appBar: CupertinoNavigationBar(
-          middle: Text(XiaomingLocalizations.of(context).newFun),
-          previousPageTitle: 'Saved',
-        ),
-        body: GestureDetector(
+      child: Provide<SettingData>(
+        child: GestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
             FocusScope.of(context).requestFocus(new FocusNode());
@@ -105,17 +142,27 @@ class _NewMethodRouteState extends State<NewMethodRoute> {
             ],
           ),
         ),
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-          FloatingActionButton(
-            child: Text(
-              XiaomingLocalizations.of(context).save,
-            ),
-            onPressed: _saveMethod,
-          ),
-          SizedBox(height: 80.0),
-        ]),
+        builder: (context, child, sd) {
+          return sd.theme == "IOS"
+              ? Scaffold(
+                  backgroundColor: CupertinoColors.lightBackgroundGray,
+                  appBar: CupertinoNavigationBar(
+                    middle: Text(XiaomingLocalizations.of(context).newFun),
+                    previousPageTitle: 'Saved',
+                  ),
+                  body: child,
+                  floatingActionButton: floatButton,
+                )
+              : Scaffold(
+                  backgroundColor: CupertinoColors.lightBackgroundGray,
+                  appBar: AppBar(
+                    title: Text(XiaomingLocalizations.of(context).newFun),
+                    centerTitle: true,
+                  ),
+                  body: child,
+                  floatingActionButton: floatButton,
+                );
+        },
       ),
     );
   }

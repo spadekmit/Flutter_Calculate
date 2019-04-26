@@ -189,7 +189,8 @@ void _handleEmpty(BuildContext context) {
   showDialog(
       context: context,
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
+        return Provide<SettingData>(builder: (context, child, sd) {
+          return sd.theme == "IOS" ? CupertinoAlertDialog(
           title: Text(XiaomingLocalizations.of(context).deleteAllData),
           actions: <Widget>[
             CupertinoDialogAction(
@@ -210,7 +211,29 @@ void _handleEmpty(BuildContext context) {
               },
             ),
           ],
+        ) : AlertDialog(
+          title: Text(XiaomingLocalizations.of(context).deleteAllData),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(XiaomingLocalizations.of(context).delete),
+              onPressed: () {
+                Provide.value<UserData>(context)
+                  ..deleteAllNum()
+                  ..deleteAllMatrix()
+                  ..deleteAllUF();
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text(XiaomingLocalizations.of(context).cancel),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
         );
+        },);
+        
       });
 }
 
