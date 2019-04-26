@@ -222,42 +222,42 @@ class AndDataRoute extends StatelessWidget {
       length: 2, //tabBar的数量
       child: Scaffold(
         body: NestedScrollView(
-            headerSliverBuilder: (context, isShow) => <Widget>[
-        SliverAppBar(
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () => _handleEmpty(context),
-            ),
-          ],
-          title: Text("Saved"),
-          centerTitle: true,
-          pinned: false,
-          expandedHeight: 100.0,
-        ),
-        SliverPersistentHeader(
-          delegate: _SliverAppBarDelegate(TabBar(
-            labelColor: Colors.black,
-            indicatorColor: CupertinoColors.white,
-            tabs: <Widget>[
-              Tab(
-                text: "Data",
-              ),
-              Tab(
-                text: "Method",
-              ),
-            ],
-          )),
-          pinned: true,
-        )
-                ],
-            body: TabBarView(
-              children: <Widget>[
-                _buildDataView(),
-                _buildMethodView(),
+          headerSliverBuilder: (context, isShow) => <Widget>[
+                SliverAppBar(
+                  actions: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () => _handleEmpty(context),
+                    ),
+                  ],
+                  title: Text("Saved"),
+                  centerTitle: true,
+                  pinned: false,
+                  expandedHeight: 100.0,
+                ),
+                SliverPersistentHeader(
+                  delegate: _SliverAppBarDelegate(TabBar(
+                    labelColor: Colors.black,
+                    indicatorColor: CupertinoColors.white,
+                    tabs: <Widget>[
+                      Tab(
+                        text: "Data",
+                      ),
+                      Tab(
+                        text: "Method",
+                      ),
+                    ],
+                  )),
+                  pinned: true,
+                )
               ],
-            ),
+          body: TabBarView(
+            children: <Widget>[
+              _buildDataView(),
+              _buildMethodView(),
+            ],
           ),
+        ),
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () {
@@ -373,9 +373,9 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return new Container(
-        color: Colors.blue,
-        child: _tabBar,
-      );
+      color: Colors.blue,
+      child: _tabBar,
+    );
   }
 
   @override

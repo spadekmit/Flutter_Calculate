@@ -148,6 +148,7 @@ class CmdMethodUtil {
     return answer.first;
   }
 
+  ///创建一个线程用于计算微积分
   static void _isolateCalculus(SendPort port) {
     final rPort = ReceivePort();
     port.send(rPort.sendPort);
