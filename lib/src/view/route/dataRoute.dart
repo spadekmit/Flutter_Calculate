@@ -21,27 +21,57 @@ Widget _buildDataView() {
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return CupertinoAlertDialog(
-                        title:
-                            Text(XiaomingLocalizations.of(context).removeData),
-                        actions: <Widget>[
-                          CupertinoDialogAction(
-                            isDestructiveAction: true,
-                            child:
-                                Text(XiaomingLocalizations.of(context).delete),
-                            onPressed: () {
-                              ud.deleteMatrix(name);
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                          CupertinoDialogAction(
-                            child:
-                                Text(XiaomingLocalizations.of(context).cancel),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
+                      return Provide<SettingData>(
+                        builder: (context, child, sd) {
+                          return sd.theme == "IOS"
+                              ? CupertinoAlertDialog(
+                                  title: Text(XiaomingLocalizations.of(context)
+                                      .removeData),
+                                  actions: <Widget>[
+                                    CupertinoDialogAction(
+                                      isDestructiveAction: true,
+                                      child: Text(
+                                          XiaomingLocalizations.of(context)
+                                              .delete),
+                                      onPressed: () {
+                                        ud.deleteMatrix(name);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    CupertinoDialogAction(
+                                      child: Text(
+                                          XiaomingLocalizations.of(context)
+                                              .cancel),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                )
+                              : AlertDialog(
+                                  title: Text(XiaomingLocalizations.of(context)
+                                      .removeData),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text(
+                                          XiaomingLocalizations.of(context)
+                                              .delete),
+                                      onPressed: () {
+                                        ud.deleteMatrix(name);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    FlatButton(
+                                      child: Text(
+                                          XiaomingLocalizations.of(context)
+                                              .cancel),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                        },
                       );
                     });
               },
@@ -63,27 +93,57 @@ Widget _buildDataView() {
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return CupertinoAlertDialog(
-                        title:
-                            Text(XiaomingLocalizations.of(context).removeData),
-                        actions: <Widget>[
-                          CupertinoDialogAction(
-                            isDestructiveAction: true,
-                            child:
-                                Text(XiaomingLocalizations.of(context).delete),
-                            onPressed: () {
-                              ud.deleteNum(name);
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                          CupertinoDialogAction(
-                            child:
-                                Text(XiaomingLocalizations.of(context).cancel),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
+                      return Provide<SettingData>(
+                        builder: (context, child, sd) {
+                          return sd.theme == "IOS"
+                              ? CupertinoAlertDialog(
+                                  title: Text(XiaomingLocalizations.of(context)
+                                      .removeData),
+                                  actions: <Widget>[
+                                    CupertinoDialogAction(
+                                      isDestructiveAction: true,
+                                      child: Text(
+                                          XiaomingLocalizations.of(context)
+                                              .delete),
+                                      onPressed: () {
+                                        ud.deleteNum(name);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    CupertinoDialogAction(
+                                      child: Text(
+                                          XiaomingLocalizations.of(context)
+                                              .cancel),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                )
+                              : AlertDialog(
+                                  title: Text(XiaomingLocalizations.of(context)
+                                      .removeData),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text(
+                                          XiaomingLocalizations.of(context)
+                                              .delete),
+                                      onPressed: () {
+                                        ud.deleteNum(name);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    FlatButton(
+                                      child: Text(
+                                          XiaomingLocalizations.of(context)
+                                              .cancel),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                        },
                       );
                     });
               },
@@ -122,24 +182,53 @@ Widget _buildMethodView() {
             showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return CupertinoAlertDialog(
-                    title: Text(XiaomingLocalizations.of(context).removeUF),
-                    actions: <Widget>[
-                      CupertinoDialogAction(
-                        isDestructiveAction: true,
-                        child: Text(XiaomingLocalizations.of(context).delete),
-                        onPressed: () {
-                          ud.deleteUF(u.funName);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      CupertinoDialogAction(
-                        child: Text(XiaomingLocalizations.of(context).cancel),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
+                  return Provide<SettingData>(
+                    builder: (context, child, sd) {
+                      return sd.theme == "IOS"
+                          ? CupertinoAlertDialog(
+                              title: Text(
+                                  XiaomingLocalizations.of(context).removeUF),
+                              actions: <Widget>[
+                                CupertinoDialogAction(
+                                  isDestructiveAction: true,
+                                  child: Text(
+                                      XiaomingLocalizations.of(context).delete),
+                                  onPressed: () {
+                                    ud.deleteUF(u.funName);
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                CupertinoDialogAction(
+                                  child: Text(
+                                      XiaomingLocalizations.of(context).cancel),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            )
+                          : AlertDialog(
+                              title: Text(
+                                  XiaomingLocalizations.of(context).removeUF),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text(
+                                      XiaomingLocalizations.of(context).delete),
+                                  onPressed: () {
+                                    ud.deleteUF(u.funName);
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                FlatButton(
+                                  child: Text(
+                                      XiaomingLocalizations.of(context).cancel),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                    },
                   );
                 });
           },
@@ -189,51 +278,56 @@ void _handleEmpty(BuildContext context) {
   showDialog(
       context: context,
       builder: (BuildContext context) {
-        return Provide<SettingData>(builder: (context, child, sd) {
-          return sd.theme == "IOS" ? CupertinoAlertDialog(
-          title: Text(XiaomingLocalizations.of(context).deleteAllData),
-          actions: <Widget>[
-            CupertinoDialogAction(
-              isDestructiveAction: true,
-              child: Text(XiaomingLocalizations.of(context).delete),
-              onPressed: () {
-                Provide.value<UserData>(context)
-                  ..deleteAllNum()
-                  ..deleteAllMatrix()
-                  ..deleteAllUF();
-                Navigator.of(context).pop();
-              },
-            ),
-            CupertinoDialogAction(
-              child: Text(XiaomingLocalizations.of(context).cancel),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        ) : AlertDialog(
-          title: Text(XiaomingLocalizations.of(context).deleteAllData),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(XiaomingLocalizations.of(context).delete),
-              onPressed: () {
-                Provide.value<UserData>(context)
-                  ..deleteAllNum()
-                  ..deleteAllMatrix()
-                  ..deleteAllUF();
-                Navigator.of(context).pop();
-              },
-            ),
-            FlatButton(
-              child: Text(XiaomingLocalizations.of(context).cancel),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+        return Provide<SettingData>(
+          builder: (context, child, sd) {
+            return sd.theme == "IOS"
+                ? CupertinoAlertDialog(
+                    title:
+                        Text(XiaomingLocalizations.of(context).deleteAllData),
+                    actions: <Widget>[
+                      CupertinoDialogAction(
+                        isDestructiveAction: true,
+                        child: Text(XiaomingLocalizations.of(context).delete),
+                        onPressed: () {
+                          Provide.value<UserData>(context)
+                            ..deleteAllNum()
+                            ..deleteAllMatrix()
+                            ..deleteAllUF();
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      CupertinoDialogAction(
+                        child: Text(XiaomingLocalizations.of(context).cancel),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  )
+                : AlertDialog(
+                    title:
+                        Text(XiaomingLocalizations.of(context).deleteAllData),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text(XiaomingLocalizations.of(context).delete),
+                        onPressed: () {
+                          Provide.value<UserData>(context)
+                            ..deleteAllNum()
+                            ..deleteAllMatrix()
+                            ..deleteAllUF();
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      FlatButton(
+                        child: Text(XiaomingLocalizations.of(context).cancel),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+          },
         );
-        },);
-        
       });
 }
 
