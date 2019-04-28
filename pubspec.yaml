@@ -54,8 +54,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/image/help1.png
-    - assets/image/help2.png
     - assets/image/inputData.png
     - assets/image/inputData2.png
     - assets/image/inputMethod.png
