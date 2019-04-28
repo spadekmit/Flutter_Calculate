@@ -8,7 +8,6 @@ import 'package:xiaoming/src/data/settingData.dart';
 import 'package:xiaoming/src/data/userData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'dart:async';
-
 import 'package:xiaoming/src/view/widget/myTextComposer.dart';
 
 class IntegralRoute extends StatefulWidget {
