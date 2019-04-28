@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:xiaoming/src/command/cmdMethod.dart';
 import 'package:xiaoming/src/command/handleEquations.dart';
 import 'package:xiaoming/src/command/matrix.dart';
-import 'package:xiaoming/src/data/appData.dart';
+import 'package:xiaoming/src/data/userData.dart';
 
 void main() {
   final ud = new UserData();

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:xiaoming/src/data/appData.dart';
+import 'package:provide/provide.dart';
+import 'package:xiaoming/src/data/settingData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/route/helpDetailRoute.dart';
 
@@ -25,42 +26,39 @@ class _HelpViewState extends State<HelpView> {
       child: Card(
         elevation: 0.0,
         margin: EdgeInsets.zero,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: SizedBox(
-                child: Text(
-                  text,
-                  overflow: TextOverflow.ellipsis,
+        child: ListTile(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: SizedBox(
+                  child: Text(
+                    text,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  width: 200.0,
                 ),
-                width: 200.0,
               ),
-            ),
-            CupertinoButton(
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(CupertinoPageRoute(builder: (BuildContext context) {
-                    return HelpDetailRoute(index);
-                  }));
-                },
-                child: Icon(CupertinoIcons.forward)),
-          ],
+              CupertinoButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        CupertinoPageRoute(builder: (BuildContext context) {
+                      return HelpDetailRoute(index);
+                    }));
+                  },
+                  child: Icon(CupertinoIcons.forward)),
+            ],
+          ),
         ),
       ),
     );
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    UserData.nowPage = 1;
-    UserData.pageContext = context;
+    SettingData.nowPage = 1;
+    SettingData.pageContext = context;
 
     final lists = ListView(
       children: <Widget>[
@@ -95,16 +93,30 @@ class _HelpViewState extends State<HelpView> {
         fontSize: 17.0,
         color: CupertinoColors.black,
       ),
-      child: new CupertinoPageScaffold(
-        backgroundColor: CupertinoColors.lightBackgroundGray,
-        navigationBar: const CupertinoNavigationBar(
-          middle: Text("Help"),
-          previousPageTitle: 'Home',
-        ),
+      child: Provide<SettingData>(  ///根据主题切换界面风格
         child: Container(
           margin: const EdgeInsets.all(12.0),
           child: lists,
         ),
+        builder: (context, child, sd) {
+          return sd.theme == "IOS"
+              ? CupertinoPageScaffold(
+                  backgroundColor: CupertinoColors.lightBackgroundGray,
+                  navigationBar: const CupertinoNavigationBar(
+                    middle: Text("Help"),
+                    previousPageTitle: 'Home',
+                  ),
+                  child: child,
+                )
+              : Scaffold(
+                  appBar: AppBar(
+                    backgroundColor: Colors.blueGrey,
+                    title: Text("Help"),
+                    centerTitle: true,
+                  ),
+                  body: child,
+                );
+        },
       ),
     );
   }
