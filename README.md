@@ -30,7 +30,7 @@ A Flutter matrix calculate application.<br>
 
 <img src="https://github.com/spadekmit/Flutter_Calculate/raw/master/screenshot/IosData.jpg" width="300"/><img src="https://github.com/spadekmit/Flutter_Calculate/raw/master/screenshot/IosFunction.jpg" width="300"/>
 
-<img src="https://github.com/spadekmit/Flutter_Calculate/raw/master/screenshot/integralRoute.jpg" width="300"/><img src="https://github.com/spadekmit/Flutter_Calculate/raw/master/screenshot/MethodRoute.jpg" width="300"/>
+<img src="https://github.com/spadekmit/Flutter_Calculate/raw/master/screenshot/IntegralRoute.jpg" width="300"/><img src="https://github.com/spadekmit/Flutter_Calculate/raw/master/screenshot/MethodRoute.jpg" width="300"/>
 
 <img src="https://github.com/spadekmit/Flutter_Calculate/raw/master/screenshot/MethodRoute2.jpg" width="300"/>
 
