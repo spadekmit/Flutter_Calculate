@@ -18,7 +18,7 @@ class MatrixUtil {
       buffer.write("\n\n");
     }
     var result = buffer.toString();
-    result = result.substring(0,result.length - 2);
+    result = result.substring(0, result.length - 2);
     return result;
   }
 
@@ -39,8 +39,9 @@ class MatrixUtil {
   /// 矩阵相乘
   static List<List<num>> m2mRide(List<List<num>> list1, List<List<num>> list2) {
     if (list1[0].length != list2.length) {
-      throw FormatException(SettingData.language == 'zh' ? "相乘矩阵的行列数不符合要求" :
-       "The rows and columns of the multiplication matrix do not meet the requirements");
+      throw FormatException(SettingData.language == 'zh'
+          ? "相乘矩阵的行列数不符合要求"
+          : "The rows and columns of the multiplication matrix do not meet the requirements");
     }
     List<List<num>> newl = [];
     num sum = 0.0;
@@ -61,7 +62,9 @@ class MatrixUtil {
   static List<List<num>> m2mMinus(
       List<List<num>> list1, List<List<num>> list2) {
     if (list1.length != list2.length || list1[0].length != list2[0].length) {
-      throw FormatException(SettingData.language == 'zh' ? "相减矩阵的行列数不符合要求" : "The number of rows and columns in the subtraction matrix does not meet the requirements");
+      throw FormatException(SettingData.language == 'zh'
+          ? "相减矩阵的行列数不符合要求"
+          : "The number of rows and columns in the subtraction matrix does not meet the requirements");
     }
     List<List<num>> newl = [];
     for (int i = 0; i < list1.length; i++) {
@@ -76,7 +79,9 @@ class MatrixUtil {
   /// 矩阵相加
   static List<List<num>> m2mPlus(List<List<num>> list1, List<List<num>> list2) {
     if (list1.length != list2.length || list1[0].length != list2[0].length) {
-      throw FormatException(SettingData.language == 'zh' ? "相加矩阵的行列数不符合要求" : "The number of rows and columns in the additive matrix does not meet the requirement");
+      throw FormatException(SettingData.language == 'zh'
+          ? "相加矩阵的行列数不符合要求"
+          : "The number of rows and columns in the additive matrix does not meet the requirement");
     }
     List<List<num>> newl = [];
     for (int i = 0; i < list1.length; i++) {
@@ -109,7 +114,9 @@ class MatrixUtil {
   /// 矩阵除以一个浮点数
   static List<List<num>> m2dDivide(List<List<num>> list1, num d) {
     if (d == 0.0) {
-      throw FormatException(SettingData.language == 'zh' ? "除数不能为零" : "The divisor cannot be zero");
+      throw FormatException(SettingData.language == 'zh'
+          ? "除数不能为零"
+          : "The divisor cannot be zero");
     }
     List<List<num>> newl = [];
     for (int i = 0; i < list1.length; i++) {
@@ -155,7 +162,10 @@ class MatrixUtil {
 
   /// 获取给定行列式的值
   static num getDetValue(List<List<num>> list) {
-    if (!isSquare(list)) throw FormatException(SettingData.language == 'zh' ? '只有方阵才能求行列式的值' : "Only a square matrix can evaluate a determinant");
+    if (!isSquare(list))
+      throw FormatException(SettingData.language == 'zh'
+          ? '只有方阵才能求行列式的值'
+          : "Only a square matrix can evaluate a determinant");
     if (list.length == 2) {
       return list[0][0] * list[1][1] - list[0][1] * list[1][0];
     }
@@ -177,7 +187,10 @@ class MatrixUtil {
 
   /// 获取矩阵的逆阵
   static List<List<num>> getAdjoint(List<List<num>> list) {
-    if (!isSquare(list)) throw FormatException(SettingData.language == 'zh' ? '只有方阵才可逆' : "Only the square matrix is invertible");
+    if (!isSquare(list))
+      throw FormatException(SettingData.language == 'zh'
+          ? '只有方阵才可逆'
+          : "Only the square matrix is invertible");
     List<List<num>> newdata = [];
     //1阶方阵返回倒数
     if (list.length == 1) {
@@ -186,7 +199,10 @@ class MatrixUtil {
       return newdata;
     }
     num A = getDetValue(list);
-    if (A == 0.0) throw FormatException(SettingData.language == 'zh' ? '行列式的值为零的矩阵不能求逆' : "A matrix whose determinant is zero cannot be inversed");
+    if (A == 0.0)
+      throw FormatException(SettingData.language == 'zh'
+          ? '行列式的值为零的矩阵不能求逆'
+          : "A matrix whose determinant is zero cannot be inversed");
 
     //2阶方阵直接求逆
     if (list.length == 2) {
@@ -217,9 +233,13 @@ class MatrixUtil {
   /// 获取给定方阵中 （h,v）位置的代数余子式
   static List<List<num>> getConfactor(List<List<num>> list, int h, int v) {
     if (!(h < list.length)) {
-      throw FormatException(SettingData.language == 'zh' ? 'h: $h 索引值越界  H: ${list.length}' : "h: $h The index value is out of bounds  H: ${list.length}");
+      throw FormatException(SettingData.language == 'zh'
+          ? 'h: $h 索引值越界  H: ${list.length}'
+          : "h: $h The index value is out of bounds  H: ${list.length}");
     } else if (!(v < list[0].length)) {
-      throw FormatException(SettingData.language == 'zh' ? 'v: $v 索引值越界  V: ${list[0].length}' : "v: $v The index value is out of bounds  V: ${list[0].length}");
+      throw FormatException(SettingData.language == 'zh'
+          ? 'v: $v 索引值越界  V: ${list[0].length}'
+          : "v: $v The index value is out of bounds  V: ${list[0].length}");
     }
     List<List<num>> newlist = [];
     for (int i = 0; i < list.length; i++) {
@@ -247,23 +267,23 @@ class MatrixUtil {
     return newlist;
   }
 
-  /// 获取传入矩阵的上三角矩阵
+  /// 获取传入矩阵的上三角矩阵(列选主元法)
   static List<List<num>> upperTriangular(List<List<num>> list) {
-    //(n-1)!*2n  (n-1)!n
-    var newlist = copyMatrix(list); //拷贝出一个新矩阵
+    var newlist = copyMatrix(list); //深拷贝出一个新矩阵
     var divisor = new List(list.length); //用于记录对角线下的每一行的倍数
     for (int i = 0; i < newlist.length; i++) {
-      if (newlist[i][i] == 0) {
-        //如果该对角线上的元素为零，将最近的不为零的一行换上来
-        var temp;
-        for (int k = i + 1; k < newlist.length; k++) {
-          if (newlist[k][i] != 0) {
-            temp = newlist[k];
-            newlist[k] = newlist[i];
-            newlist[i] = temp;
-          }
+      num max = newlist[i][i]; //记录第i列的最大值
+      var temp;
+      for (int k = i + 1; k < newlist.length; k++) {
+        if (newlist[k][i] > max) {
+          max = newlist[k][i];
+          temp = newlist[k];
+          newlist[k] = newlist[i];
+          newlist[i] = temp;
         }
       }
+      if(max == 0) throw FormatException(SettingData.language == "zh" ?
+       "第 $i 列全为零！" : "The $i column of the matrix is all zero");
       for (int k = i + 1; k < newlist.length; k++) {
         if (newlist[k][i] == 0) {
           continue;
@@ -292,7 +312,9 @@ class MatrixUtil {
   static List<num> _listMinus(List<num> list1, List<num> list2) {
     List<num> newlist = [];
     if (list1.length != list2.length) {
-      throw FormatException(SettingData.language == 'zh' ? '相减数组的长度不相等' : "The length of the subtraction array is not equal");
+      throw FormatException(SettingData.language == 'zh'
+          ? '相减数组的长度不相等'
+          : "The length of the subtraction array is not equal");
     }
     for (int i = 0; i < list1.length; i++) {
       newlist.add(list1[i] - list2[i]);
@@ -318,10 +340,12 @@ class MatrixUtil {
     }
     return newresult;
   }
+
   ///求绝对值
   static num _abs(num d) {
     return d > 0 ? d : -d;
   }
+
   ///初始化一个m行n列的矩阵
   static List<List<num>> initMatrix(int m, int n) {
     List<List<num>> matrix = [];
@@ -330,10 +354,13 @@ class MatrixUtil {
     }
     return matrix;
   }
+
   ///将一般矩阵转化为上海森柏格矩阵
   static List<List<num>> getHessenberg(List<List<num>> matrix) {
-    if(!isSquare(matrix)){
-      throw FormatException(SettingData.language == 'zh' ? '只有方阵才能转化为上海森柏格矩阵' : "Only the square matrix can be transformed into Shanghai senberg matrix");
+    if (!isSquare(matrix)) {
+      throw FormatException(SettingData.language == 'zh'
+          ? '只有方阵才能转化为上海森柏格矩阵'
+          : "Only the square matrix can be transformed into Shanghai senberg matrix");
     }
     int n = matrix.length;
     var result = initMatrix(n, n);
@@ -387,40 +414,27 @@ class MatrixUtil {
     return result;
   }
 
-  static List<List<num>> eigenValue(List<List<num>> matrix, int loopNu, int erro) {
-    if(!isSquare(matrix)) {
-      throw FormatException(SettingData.language == 'zh' ? '方阵才能求特征值' : "Square matrix to find the eigenvalues");
+  static List<List<num>> eigenValue(
+      List<List<num>> matrix, int loopNu, int erro) {
+    if (!isSquare(matrix)) {
+      throw FormatException(SettingData.language == 'zh'
+          ? '方阵才能求特征值'
+          : "Square matrix to find the eigenvalues");
     }
     int n = matrix.length;
     List<List<num>> result = initMatrix(n, 2);
-    int i;
-    int j;
-    int k;
-    int t;
-    int m;
+    int i, j, k, t, m;
     List<List<num>> A = initMatrix(n, n);
     num newerro = pow(0.1, erro);
-    num b;
-    num c;
-    num d;
-    num g;
-    num xy;
-    num p;
-    num q;
-    num r;
-    num x;
-    num s;
-    num e;
-    num f;
-    num z;
-    num y;
+    num b, c, d, g, p, q, x, y, z, s, e, f, r, xy;
     int loop1 = loopNu;
     A = getHessenberg(matrix); // 将方阵matrix转化成Hessenberg矩阵A
     m = n;
     while (m != 0) {
       t = m - 1;
       while (t > 0) {
-        if (_abs(A[t][t - 1]) > newerro * (_abs(A[t - 1][t - 1]) + _abs(A[t][t]))) {
+        if (_abs(A[t][t - 1]) >
+            newerro * (_abs(A[t - 1][t - 1]) + _abs(A[t][t]))) {
           t -= 1;
         } else {
           break;
@@ -433,7 +447,8 @@ class MatrixUtil {
         loop1 = loopNu;
       } else if (t == m - 2) {
         b = -(A[m - 1][m - 1] + A[m - 2][m - 2]);
-        c = A[m - 1][m - 1] * A[m - 2][m - 2] - A[m - 1][m - 2] * A[m - 2][m - 1];
+        c = A[m - 1][m - 1] * A[m - 2][m - 2] -
+            A[m - 1][m - 2] * A[m - 2][m - 1];
         d = b * b - 4 * c;
         y = pow(_abs(d), 0.5);
         if (d > 0) {
@@ -547,5 +562,3 @@ class MatrixUtil {
     return result;
   }
 }
-
-
