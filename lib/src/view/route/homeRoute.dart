@@ -1,13 +1,15 @@
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provide/provide.dart';
-import 'package:xiaoming/src/data/appData.dart';
 import 'package:xiaoming/src/data/dbUtil.dart';
 import 'package:xiaoming/src/data/settingData.dart';
+import 'package:xiaoming/src/data/userData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 import 'package:xiaoming/src/view/widget/myButtons.dart';
 import 'package:xiaoming/src/view/widget/myTextComposer.dart';
 import 'package:xiaoming/src/view/widget/myTextView.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 class HomeRoute extends StatefulWidget {
   HomeRoute({Key key}) : super(key: key);
@@ -17,146 +19,54 @@ class HomeRoute extends StatefulWidget {
 }
 
 class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
-  TextEditingController _textController; // _textController用来获取输入文本和控制输入焦点
-  FocusNode _textFocusNode; // _textFocusNode用来控制键盘弹出/收回
+  TextEditingController
+      _textController; // _textController用来获取输入文本和控制输入焦点// _textFocusNode用来控制键盘弹出/收回
   static List<TextView> _texts; //存储消息的列表
   bool _isComposing = false; //判断是否有输入
-  bool _buttonsIsVisible = false; //控制便捷输入栏显示与隐藏
-  double tabHeight; //输入框底部高度（防止被底部导航栏遮挡）
   bool isComplete = true; //计算是否完成
   static bool _isInit = false;
-  UserData ud;
+  final StreamController<double> _streamController = StreamController<double>.broadcast();
 
   ///初始化对象及加载数据
   @override
   void initState() {
     super.initState();
     if (!_isInit) readText();
-    UserData.nowPage = 0;
-    SettingData.readSettingData(); //读取设置数据
+    SettingData.nowPage = 0;
     _textController = new TextEditingController();
-    _textFocusNode = new FocusNode();
+    KeyboardVisibilityNotification().addNewListener(
+      onChange: (bool visible) {
+        if (visible) {
+          if(this.mounted) {
+            _streamController.sink.add(200.0);
+          }
+        } else {
+          if(this.mounted) {
+            _streamController.sink.add(0.0);
+          }
+        }
+      },
+    );
+  }
 
-    _textFocusNode.addListener(() {
-      if (_textFocusNode.hasFocus) {
-        setState(() {
-          tabHeight = 0.0;
-          _buttonsIsVisible = true;
-        });
-      } else {
-        setState(() {
-          tabHeight = MediaQuery.of(context).padding.bottom;
-          _buttonsIsVisible = false;
-        });
-      }
-    });
+  ///退出该路由时释放动画资源
+  @override
+  void dispose() {
+    super.dispose();
+    _textController.dispose();
+    _streamController.close();
+
+    ///当切换主题时，主动调用animationController.dispose() 会触发多次dispose的异常
+    // for (TextView textView in _texts) {
+    //   if (textView.animationController != null) {
+    //     textView.animationController?.dispose();
+    //   }
+    // }
   }
 
   ///home界面布局
   @override
   Widget build(BuildContext context) {
-    ud = Provide.value<UserData>(context);
-    tabHeight = MediaQuery.of(context).padding.bottom; //初始化底部导航栏高度
-
-    ///消息列表，未加载完成时显示加载中动画
-    Widget _buildList() {
-      if (!_isInit) {
-        return Center(child: CupertinoActivityIndicator());
-      } else {
-        if (isComplete) {
-          return Column(
-            children: <Widget>[
-              Flexible(
-                  child: GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onTap: () {
-                  _textFocusNode.unfocus();
-                },
-                child: ListView.builder(
-                  reverse: true,
-                  padding: const EdgeInsets.only(left: 5.0),
-                  itemBuilder: (context, index) {
-                    return _texts[index];
-                  },
-                  itemCount: _texts.length,
-                ),
-              )),
-              Divider(
-                height: _buttonsIsVisible ? 1.0 : 0.0,
-                color: _buttonsIsVisible ? Colors.black : null,
-              ),
-              AnimatedSize(
-                vsync: this,
-                curve: Curves.ease,
-                duration: Duration(milliseconds: 200),
-                child: Container(
-                  height: _buttonsIsVisible ? 200.0 : 0.0,
-                  child: buildButtons(_handleTextButton),
-                ),
-              ),
-              new Divider(height: 1.0),
-              new Container(
-                decoration: new BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                ),
-                child: TextComposer(
-                  textFocusNode: _textFocusNode,
-                  textController: _textController,
-                  isComposing: _isComposing,
-                  onChanged: (String text) {
-                    setState(() {
-                      _isComposing = text.length > 0;
-                    });
-                  },
-                  onSubmitted: _handleSubmitted,
-                ),
-              ),
-              new SizedBox(
-                height: tabHeight,
-              ),
-            ],
-          );
-        } else {
-          return Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              CupertinoActivityIndicator(),
-              Text("正在计算中"),
-            ],
-          ));
-        }
-      }
-    }
-
-    ///删除所有交互命令
-    void _deleteAllMessage() {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return CupertinoAlertDialog(
-              title: Text(XiaomingLocalizations.of(context).deleteAllMessage),
-              actions: <Widget>[
-                CupertinoDialogAction(
-                  isDestructiveAction: true,
-                  child: Text(XiaomingLocalizations.of(context).delete),
-                  onPressed: () {
-                    setState(() {
-                      _texts.clear();
-                    });
-                    DBUtil.deleteAllMessage();
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                ),
-                CupertinoDialogAction(
-                  child: Text(XiaomingLocalizations.of(context).cancel),
-                  onPressed: () =>
-                      Navigator.of(context, rootNavigator: true).pop(),
-                )
-              ],
-            );
-          });
-    }
 
     ///主界面布局
     return DefaultTextStyle(
@@ -166,20 +76,178 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
         fontSize: 17.0,
         color: CupertinoColors.black,
       ),
-      child: CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
-          trailing: buildTrailingBar(<Widget>[
-            buildHelpButton(context),
-            const SizedBox(
-              width: 8.0,
+      child: _buildScaffold(),
+    );
+  }
+
+  ///消息列表，未加载完成时显示加载中动画
+  Widget _buildList() {
+    if (!_isInit) {
+      return Center(child: CupertinoActivityIndicator());
+    } else {
+      if (isComplete) {
+        return Column(
+          children: <Widget>[
+            Flexible(
+                child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                FocusScope.of(context).requestFocus(new FocusNode());
+              },
+              child: ListView.builder(
+                reverse: true,
+                padding: const EdgeInsets.only(left: 5.0),
+                itemBuilder: (context, index) {
+                  return _texts[index];
+                },
+                itemCount: _texts.length,
+              ),
+            )),
+            StreamBuilder<double>(
+                stream: _streamController.stream,
+                initialData: 0.0,
+                builder: (context, snapshot) {
+                  return AnimatedSize(
+                    vsync: this,
+                    duration: Duration(milliseconds: 200),
+                    child: Container(
+                      height: snapshot.data,
+                      child: buildButtons(_handleTextButton),
+                    ),
+                  );
+                }),
+            new Divider(height: 1.0),
+            new Container(
+              decoration: new BoxDecoration(
+                color: Theme.of(context).cardColor,
+              ),
+              child: TextComposer(
+                textController: _textController,
+                isComposing: _isComposing,
+                onChanged: (String text) {
+                  setState(() {
+                    _isComposing = text.length > 0;
+                  });
+                },
+                onSubmitted: (text) => _handleSubmitted(text, context),
+              ),
             ),
-            SettingButton(_deleteAllMessage),
-          ]),
-          middle: Text("Home"),
-        ),
-        resizeToAvoidBottomInset: true,
-        child: _buildList(),
-      ),
+            StreamBuilder<double>(
+                stream: _streamController.stream,
+                initialData: MediaQuery.of(context).padding.bottom,
+                builder: (context, snapshot) {
+                  return SizedBox(
+                    height: snapshot.data == 200.0
+                        ? 0.0
+                        : MediaQuery.of(context).padding.bottom,
+                  );
+                }),
+          ],
+        );
+      } else {
+        return Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CupertinoActivityIndicator(),
+            Text("正在计算中"),
+          ],
+        ));
+      }
+    }
+  }
+
+  Widget _buildScaffold() {
+    return Provide<SettingData>(
+      builder: (context, child, sd) {
+        return sd.theme == "IOS"
+            ? CupertinoPageScaffold(
+                navigationBar: CupertinoNavigationBar(
+                  key: Key("IOSAppBar"),
+                  trailing: buildTrailingBar(<Widget>[
+                    buildHelpButton(context, true),
+                    const SizedBox(
+                      width: 8.0,
+                    ),
+                    SettingButton(_deleteAllMessage, true),
+                  ]),
+                  middle: Text("Home"),
+                ),
+                resizeToAvoidBottomInset: true,
+                child: _buildList(),
+              )
+            : Scaffold(
+                appBar: AppBar(
+                  backgroundColor: Colors.grey,
+                  centerTitle: true,
+                  key: Key("AndAppBar"),
+                  title: Text("Home"),
+                  actions: <Widget>[
+                    buildHelpButton(context, false),
+                    const SizedBox(
+                      width: 8.0,
+                    ),
+                    SettingButton(_deleteAllMessage, false),
+                  ],
+                ),
+                body: _buildList(),
+              );
+      },
+    );
+  }
+
+  ///删除所有交互命令
+  void _deleteAllMessage() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Provide<SettingData>(builder: (context, child, sd) {
+          return sd.theme == "IOS"
+              ? CupertinoAlertDialog(
+                  title:
+                      Text(XiaomingLocalizations.of(context).deleteAllMessage),
+                  actions: <Widget>[
+                    CupertinoDialogAction(
+                      isDestructiveAction: true,
+                      child: Text(XiaomingLocalizations.of(context).delete),
+                      onPressed: () {
+                        setState(() {
+                          _texts.clear();
+                        });
+                        DBUtil.deleteAllMessage();
+                        Navigator.of(context, rootNavigator: true).pop();
+                      },
+                    ),
+                    CupertinoDialogAction(
+                      child: Text(XiaomingLocalizations.of(context).cancel),
+                      onPressed: () =>
+                          Navigator.of(context, rootNavigator: true).pop(),
+                    )
+                  ],
+                )
+              : AlertDialog(
+                  title:
+                      Text(XiaomingLocalizations.of(context).deleteAllMessage),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text(XiaomingLocalizations.of(context).delete),
+                      onPressed: () {
+                        setState(() {
+                          _texts.clear();
+                        });
+                        DBUtil.deleteAllMessage();
+                        Navigator.of(context, rootNavigator: true).pop();
+                      },
+                    ),
+                    FlatButton(
+                      child: Text(XiaomingLocalizations.of(context).cancel),
+                      onPressed: () =>
+                          Navigator.of(context, rootNavigator: true).pop(),
+                    )
+                  ],
+                );
+        });
+      },
     );
   }
 
@@ -216,13 +284,13 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
   }
 
   ///处理发送按钮的点击事件
-  void _handleSubmitted(String text) {
+  void _handleSubmitted(String text, BuildContext context) {
     _textController.clear();
     setState(() {
       _isComposing = false;
       isComplete = false;
     });
-    ud.handleCommand(text).then((handleText) {
+    Provide.value<UserData>(context).handleCommand(text).then((handleText) {
       DBUtil.addMessage(text);
       DBUtil.addMessage(handleText);
       TextView textView1 = new TextView(
@@ -241,18 +309,6 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
       textView1.animationController.forward();
       textView2.animationController.forward();
     });
-  }
-
-  ///退出该路由时释放动画资源
-  @override
-  void dispose() {
-    super.dispose();
-    _textController.dispose();
-    _textFocusNode.dispose();
-    for (TextView textView in _texts) {
-      textView.animationController.dispose();
-    }
-    _textFocusNode.dispose();
   }
 
   ///加载数据库中的历史数据

@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provide/provide.dart';
-import 'package:xiaoming/src/data/appData.dart';
-import 'package:xiaoming/src/data/settingData.dart';
-import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
+import 'package:xiaoming/src/data/userData.dart';
 import 'package:xiaoming/src/view/route/helpRoute.dart';
+import 'package:xiaoming/src/view/widget/setttingSheet.dart';
 
 typedef OnCommit = void Function(String text);
 
+//顶部删除按钮
 class DeleteButton extends StatelessWidget {
   DeleteButton(this.onPressed, {Key key}) : super(key: key);
   final VoidCallback onPressed;
@@ -25,79 +25,40 @@ class DeleteButton extends StatelessWidget {
   }
 }
 
+//顶部设置按钮
 class SettingButton extends StatelessWidget {
-  SettingButton(this.onPressed);
-  final VoidCallback onPressed;
+  SettingButton(this._onPressed, this._isIOS);
+  final VoidCallback _onPressed;
+  final bool _isIOS;
   @override
   Widget build(BuildContext context) {
-    return CupertinoButton(
-      padding: EdgeInsets.zero,
-      child: Icon(CupertinoIcons.settings),
-      onPressed: () {
-        showCupertinoModalPopup(
-            context: context,
-            builder: (BuildContext context) {
-              return SettingSheet(onPressed);
-            });
-      },
-    );
-  }
-}
-
-class SettingSheet extends StatefulWidget {
-  SettingSheet(this.onPressed);
-  final VoidCallback onPressed;
-  @override
-  _SettingSheetState createState() => _SettingSheetState(onPressed);
-}
-
-class _SettingSheetState extends State<SettingSheet> {
-  _SettingSheetState(this.onPressed);
-  final VoidCallback onPressed;
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoActionSheet(
-      title: Text(XiaomingLocalizations.of(context).decimalDigits),
-      message: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          CupertinoSlider(
-            divisions: 8,
-            max: 9.0,
-            min: 1.0,
-            value: SettingData.fixedNum,
-            onChanged: (double d) {
-              setState(() {
-                SettingData.fixedNum = d;
-              });
-              SettingData.writeSettingData();
+    return _isIOS
+        ? CupertinoButton(
+            padding: EdgeInsets.zero,
+            child: Icon(CupertinoIcons.settings),
+            onPressed: () {
+              showCupertinoModalPopup(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SettingSheet(_onPressed);
+                  });
             },
-          ),
-          Text(SettingData.fixedNum.toString()),
-        ],
-      ),
-      actions: <Widget>[
-        CupertinoActionSheetAction(
-          onPressed: () {
-            Navigator.pop(context);
-            onPressed();
-          },
-          child: const Text("Delete All Message"),
-        ),
-        CupertinoActionSheetAction(
-          onPressed: () {},
-          child: Text('Language:  ${Localizations.localeOf(context).languageCode == 'zh' ? 'Chinese' : 'English'}'),
-        )
-      ],
-      cancelButton: CupertinoActionSheetAction(
-        child: const Text('Cancel'),
-        isDefaultAction: true,
-        onPressed: () => Navigator.pop(context),
-      ),
-    );
+          )
+        : IconButton(
+            padding: EdgeInsets.zero,
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SettingSheet(_onPressed);
+                  });
+            },
+          );
   }
 }
 
+//构造IOS风格导航栏按钮
 Widget buildTrailingBar(List<Widget> buttons) {
   return Row(
     mainAxisSize: MainAxisSize.min,
@@ -105,24 +66,37 @@ Widget buildTrailingBar(List<Widget> buttons) {
   );
 }
 
-Widget buildHelpButton(BuildContext context) {
-  return CupertinoButton(
-    padding: EdgeInsets.zero,
-    child: Semantics(
-      label: 'Help',
-      child: const Icon(CupertinoIcons.book),
-    ),
-    onPressed: () {
-      Navigator.of(context)
-          .push(CupertinoPageRoute(builder: (BuildContext context) {
-        return HelpView();
-      }));
-    },
-  );
+//顶部帮助按钮
+Widget buildHelpButton(BuildContext context, bool isIOS) {
+  return isIOS
+      ? CupertinoButton(
+          padding: EdgeInsets.zero,
+          child: Semantics(
+            label: 'Help',
+            child: const Icon(CupertinoIcons.book),
+          ),
+          onPressed: () {
+            Navigator.of(context)
+                .push(CupertinoPageRoute(builder: (BuildContext context) {
+              return HelpView();
+            }));
+          },
+        )
+      : IconButton(
+          icon: Icon(Icons.help),
+          padding: EdgeInsets.zero,
+          onPressed: () {
+            Navigator.of(context)
+                .push(CupertinoPageRoute(builder: (BuildContext context) {
+              return HelpView();
+            }));
+          },
+        );
 }
 
 ///创建便捷输入按钮
-Widget _buildTextButton(String label, OnCommit onPressed, {double width = 50.0}) {
+Widget _buildTextButton(String label, OnCommit onPressed,
+    {double width = 50.0}) {
   return LimitedBox(
     maxWidth: width,
     child: new FlatButton(
@@ -133,15 +107,16 @@ Widget _buildTextButton(String label, OnCommit onPressed, {double width = 50.0})
   );
 }
 
-///创建方便输入的按钮栏
+///创建跟随键盘弹出的便捷输入按钮栏
 Widget buildButtons(OnCommit onPressed) {
   return Column(children: <Widget>[
+    Divider(color: CupertinoColors.black,height: 1.0,),
     Flexible(
       child: CupertinoScrollbar(
         child: _buildMethodButtons(onPressed),
       ),
     ),
-    Divider(height: 1.0),
+    Divider(color: CupertinoColors.black,height: 1.0,),
     LimitedBox(
       maxHeight: 40,
       child: new Row(
@@ -156,7 +131,7 @@ Widget buildButtons(OnCommit onPressed) {
         ],
       ),
     ),
-    Divider(height: 1.0),
+    Divider(color: CupertinoColors.black,height: 1.0,),
     LimitedBox(
       maxHeight: 40,
       child: new Row(
@@ -170,10 +145,11 @@ Widget buildButtons(OnCommit onPressed) {
         ],
       ),
     ),
+    Divider(color: CupertinoColors.black,height: 1.0,),
   ]);
 }
 
-///构造方法按钮列表
+///构造内置方法及用户自定义方法的按钮列表
 Widget _buildMethodButtons(OnCommit onPressed) {
   return Provide<UserData>(
     builder: (context, child, ud) {
@@ -182,7 +158,8 @@ Widget _buildMethodButtons(OnCommit onPressed) {
         int i = 0;
         var blist = <Widget>[];
         ud.userFunctions.forEach((u) {
-          blist.add(_buildTextButton(u.funName + '(', onPressed, width: double.infinity));
+          blist.add(_buildTextButton(u.funName + '(', onPressed,
+              width: double.infinity));
           i++;
           if (i == 4) {
             list.add(Row(

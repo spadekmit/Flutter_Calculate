@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
-///单个输出文本的视图
+///主界面单个输出文本的视图
 class TextView extends StatelessWidget {
   TextView({this.text, this.animationController});
 
@@ -50,6 +50,7 @@ class TextView extends StatelessWidget {
   }
 }
 
+//主界面消息列表视图
 class TextListView extends StatefulWidget {
   TextListView(this.controller);
 
@@ -87,18 +88,4 @@ class _TextListViewState extends State<TextListView> with TickerProviderStateMix
       }
     );
   }
-}
-
-Widget buildTextListView({Stream stream}) {
-  List<TextView> list = <TextView>[];
-  return StreamBuilder<List<TextView>>(
-    stream: stream,
-    builder: (context, snapshot) {
-      return ListView.builder(
-        padding: const EdgeInsets.only(left: 5.0),
-        reverse: true,
-        itemBuilder: (context, index) => snapshot.data[index],
-      );
-    },
-  );
 }

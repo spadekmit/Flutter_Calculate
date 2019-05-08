@@ -7,9 +7,6 @@ import 'package:xiaoming/src/data/dbUtil.dart';
 import 'package:xiaoming/src/data/settingData.dart';
 
 class UserData with ChangeNotifier {
-  static String language = 'en';
-  static int nowPage = 0;
-  static BuildContext pageContext;
   Map<String, num> dbs; //存储浮点数变量
   Map<String, List<List<num>>> matrixs; //存储矩阵变量
   List<UserFunction> userFunctions; //存储用户自定义函数
@@ -260,7 +257,7 @@ class UserData with ChangeNotifier {
     } else if (matrixArithmetic.firstMatch(cmd) != null) {
       result = await _handleMatrixArithmetic(cmd.replaceAll(' ', ''));
     } else {
-      if (language == 'zh') result = "$command  为未知命令";
+      if (SettingData.language == 'zh') result = "$command  为未知命令";
       else result = "$command  is unknown command";
     }
     return result;
@@ -293,12 +290,12 @@ class UserData with ChangeNotifier {
           if (dnum != null) {
             list[index].add(dnum);
           } else {
-            if (language == 'zh') return '非法字符： $numraw';
+            if (SettingData.language == 'zh') return '非法字符： $numraw';
             else return "illegal character:  $numraw";
           }
         }
       } else {
-        if (language == 'zh') return '矩阵行数不一致';
+        if (SettingData.language == 'zh') return '矩阵行数不一致';
         else return "The number of rows in the matrix is inconsistent";
       }
       index++;
@@ -333,7 +330,7 @@ class UserData with ChangeNotifier {
           result =
               '$name = ' + re.toStringAsFixed(SettingData.fixedNum.round());
         } else {
-          if(language == 'zh') result = '该类型不能存储  $re';
+          if(SettingData.language == 'zh') result = '该类型不能存储  $re';
           else result = "This type cannot be stored";
         }
       } else {
@@ -370,20 +367,20 @@ class UserData with ChangeNotifier {
     switch (methodName) {
       case 'inv':
         if (vals.length != 1 || vals[0] is! List<List<num>>){
-          if(language == 'zh') throw FormatException('inv函数参数传递错误');
+          if(SettingData.language == 'zh') throw FormatException('inv函数参数传递错误');
           else throw FormatException('Function parameter transfer error: inv');
         }
           
         return MatrixUtil.getAdjoint(vals[0]);
       case 'tran':
         if (vals.length != 1 || vals[0] is! List<List<num>>){
-          if(language == 'zh') throw FormatException('tran函数参数传递错误');
+          if(SettingData.language == 'zh') throw FormatException('tran函数参数传递错误');
           else throw FormatException('Function parameter transfer error: tran');
         }
         return MatrixUtil.transList(vals[0]);
       case 'value':
         if (vals.length != 1 || vals[0] is! List<List<num>>){
-          if(language == 'zh') throw FormatException('value函数参数传递错误');
+          if(SettingData.language == 'zh') throw FormatException('value函数参数传递错误');
           else throw FormatException('Function parameter transfer error: value');
         }
         return MatrixUtil.getDetValue(vals[0]);
@@ -392,140 +389,112 @@ class UserData with ChangeNotifier {
             !(vals[0] is List<List<num>>) ||
             !(vals[1] is List<List<num>>) ||
             !(vals[2] is List<List<num>>)){
-          if(language == 'zh') throw FormatException('lagrange函数参数传递错误');
+          if(SettingData.language == 'zh') throw FormatException('lagrange函数参数传递错误');
           else throw FormatException('Function parameter transfer error: lagrange');
         }
         return CmdMethodUtil.lagrange(vals[0], vals[1], vals[2]);
       case 'sum':
         if (vals.length != 1 || vals[0] is! List<List<num>>){
-          if(language == 'zh') throw FormatException('sum函数参数传递错误');
+          if(SettingData.language == 'zh') throw FormatException('sum函数参数传递错误');
           else throw FormatException('Function parameter transfer error: sum');
         }
         return CmdMethodUtil.sum(vals[0]);
       case 'absSum':
         if (vals.length != 1 || vals[0] is! List<List<num>>){
-          if(language == 'zh') throw FormatException('absSum函数参数传递错误');
+          if(SettingData.language == 'zh') throw FormatException('absSum函数参数传递错误');
           else throw FormatException('Function parameter transfer error: absSum');
         }
         return CmdMethodUtil.absSum(vals[0]);
       case 'average':
         if (vals.length != 1 || vals[0] is! List<List<num>>){
-          if(language == 'zh') throw FormatException('average函数参数传递错误');
+          if(SettingData.language == 'zh') throw FormatException('average函数参数传递错误');
           else throw FormatException('Function parameter transfer error: average');
         }
         return CmdMethodUtil.average(vals[0]);
       case 'absAverage':
         if (vals.length != 1 || vals[0] is! List<List<num>>){
-          if(language == 'zh') throw FormatException('absAverage函数参数传递错误');
+          if(SettingData.language == 'zh') throw FormatException('absAverage函数参数传递错误');
           else throw FormatException('Function parameter transfer error: absAverage');
         }
         return CmdMethodUtil.absAverage(vals[0]);
       case 'factorial':
-        if (vals.length != 1 || vals[0] is! num){
-          if(language == 'zh') throw FormatException('factorial函数参数传递错误');
-          else throw FormatException('Function parameter transfer error: factorial');
-        }
+        if (vals.length != 1 || vals[0] is! num)
+          throw FormatException('factorial函数参数传递错误');
         return CmdMethodUtil.factorial(vals[0]);
 
       case 'sin':
-        if (vals.length != 1 || vals[0] is! num){
-          if(language == 'zh') throw FormatException('sin函数参数传递错误');
-          else throw FormatException('Function parameter transfer error: sin');
-        }
+        if (vals.length != 1 || vals[0] is! num)
+          throw FormatException('sin函数参数传递错误');
         return sin(CmdMethodUtil.degToRad(vals[0]));
 
       case 'cos':
-        if (vals.length != 1 || vals[0] is! num){
-          if(language == 'zh') throw FormatException('cos函数参数传递错误');
-          else throw FormatException('Function parameter transfer error: cos');
-        }
+        if (vals.length != 1 || vals[0] is! num)
+          throw FormatException('cos函数参数传递错误');
         return cos(CmdMethodUtil.degToRad(vals[0]));
 
       case 'tan':
-        if (vals.length != 1 || vals[0] is! num){
-          if(language == 'zh') throw FormatException('tan函数参数传递错误');
-          else throw FormatException('Function parameter transfer error: tan');
-        }
-        if (vals[0] == 90) {{
-          if(language == 'zh') throw FormatException('tan(90)为无穷大');
-          else throw FormatException('Tangent of 90 degrees is infinite');
-        }
+        if (vals.length != 1 || vals[0] is! num)
+          throw FormatException('tan函数参数传递错误');
+        if (vals[0] == 90) {
+          throw FormatException('tan(90)为无穷大');
         }
         return tan(CmdMethodUtil.degToRad(vals[0]));
 
       case 'asin':
-        if (vals.length != 1 || vals[0] is! num){
-          if(language == 'zh') throw FormatException('asin函数参数传递错误');
-          else throw FormatException('Function parameter transfer error: asin');
-        }
+        if (vals.length != 1 || vals[0] is! num)
+          throw FormatException('asin函数参数传递错误');
         return CmdMethodUtil.radToDeg(asin(vals[0]));
 
       case 'acos':
-        if (vals.length != 1 || vals[0] is! num){
-          if(language == 'zh') throw FormatException('acos函数参数传递错误');
-          else throw FormatException('Function parameter transfer error: acos');
-        }
+        if (vals.length != 1 || vals[0] is! num)
+          throw FormatException('acos函数参数传递错误');
         return CmdMethodUtil.radToDeg(acos(vals[0]));
 
       case 'atan':
-        if (vals.length != 1 || vals[0] is! num){
-          if(language == 'zh') throw FormatException('atan函数参数传递错误');
-          else throw FormatException('Function parameter transfer error: atan');
-        }
+        if (vals.length != 1 || vals[0] is! num)
+          throw FormatException('atan函数参数传递错误');
         return CmdMethodUtil.radToDeg(atan(vals[0]));
 
       case 'radToDeg':
-        if (vals.length != 1 || vals[0] is! num){
-          if(language == 'zh') throw FormatException('radToDeg函数参数传递错误');
-          else throw FormatException('Function parameter transfer error: radToDeg');
-        }
+        if (vals.length != 1 || vals[0] is! num)
+          throw FormatException('radToDeg函数参数传递错误');
         return CmdMethodUtil.radToDeg(vals[0]);
       case 'formatDeg':
-        if (vals.length != 1 || vals[0] is! num){
-          if(language == 'zh') throw FormatException('formatDeg函数参数传递错误');
-          else throw FormatException('Function parameter transfer error: formatDeg');
-        }
+        if (vals.length != 1 || vals[0] is! num)
+          throw FormatException('formatDeg函数参数传递错误');
         return CmdMethodUtil.formatDeg(vals[0]);
       case 'reForDeg':
-        if (vals.length != 1 || vals[0] is! num){
-          if(language == 'zh') throw FormatException('reForDeg函数参数传递错误');
-          else throw FormatException('Function parameter transfer error: reForDeg');
-        }
+        if (vals.length != 1 || vals[0] is! num)
+          throw FormatException('reForDeg函数参数传递错误');
         return CmdMethodUtil.reForDeg(vals[0]);
       case 'cofa':
         if (vals.length != 3 ||
             vals[0] is! List<List<num>> ||
             vals[1] is! num ||
             vals[2] is! num) {
-          if(language == 'zh') throw FormatException('cofa函数参数传递错误');
-          else throw FormatException('Function parameter transfer error: cofa');
+          throw FormatException('cofa函数参数传递错误');
         }
         return MatrixUtil.getConfactor(vals[0], vals[1], vals[2]);
       case 'upmat':
         if (vals.length != 1 || vals[0] is! List<List<num>>) {
-          if(language == 'zh') throw FormatException('upmat函数参数传递错误');
-          else throw FormatException('Function parameter transfer error: upmat');
+          throw FormatException('upmat函数参数传递错误');
         }
         return MatrixUtil.upperTriangular(vals[0]);
       case 'calculus':
         if (vals.length != 3) {
-          if(language == 'zh') throw FormatException('calculus函数参数传递错误');
-          else throw FormatException('Function parameter transfer error: calculus');
+          throw FormatException('积分函数参数数量错误');
         }
         if (vals[0] is! UserFunction || vals[1] is! num || vals[2] is! num) {
-          if(language == 'zh') throw FormatException('calculus函数参数传递错误');
-          else throw FormatException('Function parameter transfer error: calculus');
+          throw FormatException('积分函数参数类型传递错误');
         }
         return await CmdMethodUtil.handleCalculate(vals[0], vals[1], vals[2]);
       case 'roots':
         if (vals.length != 1 || vals[0] is! List<List<num>>) {
-          if(language == 'zh') throw FormatException('roots函数参数传递错误');
-          else throw FormatException('Function parameter transfer error: roots');
+          throw FormatException('多项式求根函数参数传递错误');
         }
         return CmdMethodUtil.polyomial(vals[0]);
       default:
-        if(language == 'zh') throw FormatException('$methodName 为未知命令');
-        else throw FormatException('$methodName is unkonwn command');
+        throw FormatException('$methodName 为未知命令');
     }
   }
 
@@ -550,8 +519,7 @@ class UserData with ChangeNotifier {
       funPara.add(para);
     }
     addUF(funName, funPara, cmds);
-    if (language == 'zh') return '已保存';
-    else return "The Saved";
+    return '已保存';
   }
 
   ///获取函数参数列
@@ -650,8 +618,7 @@ class UserData with ChangeNotifier {
           if (!matrixs.containsKey(str)) {
             if (!dbs.containsKey(str)) {
               if (!temp.containsKey(str)) {
-                if(language == 'zh') throw FormatException('未知的符号：  $str');
-                else throw FormatException('Unknown symbol:  $str');
+                throw FormatException('未知的符号：  $str');
               } else {
                 nums.add(temp[str]);
               }
@@ -784,8 +751,7 @@ class UserData with ChangeNotifier {
           case '-':
             return MatrixUtil.m2dMinus(num2, num1);
           case '^':
-            if(language == 'zh') throw FormatException('$num2 为矩阵不能进行指数运算');
-            else throw FormatException('$num2 is the matrix can not be exponential operation');
+            throw FormatException('$num2 为矩阵不能进行指数运算');
         }
       }
     } else {
@@ -801,8 +767,7 @@ class UserData with ChangeNotifier {
           case '-':
             return MatrixUtil.m2dMinus(num1, num2);
           case '^':
-            if (language == 'zh') throw FormatException('$num2 为矩阵不能进行指数运算');
-            else throw FormatException('$num2 is the matrix can not be exponential operation');
+            throw FormatException('$num2 为矩阵不能进行指数运算');
         }
       } else {
         //两个矩阵运算 ps:矩阵已重载运算符
@@ -816,8 +781,7 @@ class UserData with ChangeNotifier {
           case '-':
             return MatrixUtil.m2mMinus(num1, num2);
           case '^':
-            if (language == 'zh') throw FormatException('$num2 为矩阵不能进行指数运算');
-            else throw FormatException('$num2 is the matrix can not be exponential operation');
+            throw FormatException('$num2 为矩阵不能进行指数运算');
         }
       }
     }
@@ -850,8 +814,7 @@ class UserFunction {
     String result;
     List<dynamic> vals = await ud.getMethodValue(methodVals);
     if (vals.length != this.paras.length) {
-      if (UserData.language == 'zh') throw FormatException('$funName 方法的参数数量传递错误');
-      else throw FormatException('Error passing number of method parameters: $funName');
+      throw FormatException('$funName 方法的参数数量传递错误');
     }
     for (int i = 0; i < paras.length; i++) {
       UserData.ufTemp[paras[i]] = vals[i];

@@ -1,100 +1,151 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:xiaoming/src/data/appData.dart';
+import 'package:provide/provide.dart';
+import 'package:xiaoming/src/data/settingData.dart';
 import 'package:xiaoming/src/language/xiaomingLocalizations.dart';
 
 class HelpDetailRoute extends StatefulWidget {
-  HelpDetailRoute(this.index, {Key key}) : super(key: key);
+  HelpDetailRoute(this._index, {Key key}) : super(key: key);
 
-  final int index;
+  final int _index;
 
   @override
-  _HelpDetailRouteState createState() => _HelpDetailRouteState(index);
+  _HelpDetailRouteState createState() => _HelpDetailRouteState();
 }
 
 class _HelpDetailRouteState extends State<HelpDetailRoute> {
-  _HelpDetailRouteState(this.index);
-
-  final int index;
   Text text;
 
   @override
   void initState() {
-    UserData.nowPage = 2;
     super.initState();
+    SettingData.nowPage = 2;
   }
 
   @override
   Widget build(BuildContext context) {
+    SettingData.pageContext = context;
 
-    UserData.pageContext = context;
+    List<Widget> list = <Widget>[];
 
-    switch (index) {
+    switch (widget._index) {
       case 1:
-        text = Text(XiaomingLocalizations.of(context).helpTabData1);
+        list.addAll(<Widget>[
+          Text(XiaomingLocalizations.of(context).helpTabData1),
+          SizedBox(
+            height: 50.0,
+          ),
+          Card(
+            child: Image.asset(
+              'assets/image/inputData.png',
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+          SizedBox(
+            height: 50.0,
+          ),
+          Card(
+            child: Image.asset(
+              'assets/image/inputData2.png',
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+        ]);
         break;
       case 2:
-        text = Text(XiaomingLocalizations.of(context).helpTabData2);
+        list.addAll(<Widget>[
+          Text(XiaomingLocalizations.of(context).helpTabData2),
+        ]);
         break;
       case 3:
-        text = Text(XiaomingLocalizations.of(context).helpTabData3);
+        list.addAll(<Widget>[
+          Text(XiaomingLocalizations.of(context).helpTabData3),
+          SizedBox(
+            height: 50.0,
+          ),
+          Card(
+            child: Image.asset(
+              'assets/image/inputMethod.png',
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+          SizedBox(
+            height: 50.0,
+          ),
+          Card(
+            child: Image.asset(
+              'assets/image/invMatrix.png',
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+          SizedBox(
+            height: 50.0,
+          ),
+          Card(
+            child: Image.asset(
+              'assets/image/sin.png',
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+        ]);
         break;
       case 4:
-        text = Text(XiaomingLocalizations.of(context).helpTabData4);
+        list.addAll(<Widget>[
+          Text(XiaomingLocalizations.of(context).helpTabData4),
+        ]);
         break;
       case 5:
-        text = Text(XiaomingLocalizations.of(context).helpTabData5);
+        list.addAll(<Widget>[
+          Text(XiaomingLocalizations.of(context).helpTabData5),
+        ]);
         break;
       case 6:
-        text = Text(XiaomingLocalizations.of(context).helpTabData6);
+        list.addAll(<Widget>[
+          Text(XiaomingLocalizations.of(context).helpTabData6),
+        ]);
         break;
     }
 
-    return DefaultTextStyle(
-        style: const TextStyle(
-          fontFamily: '.SF UI Text',
-          inherit: false,
-          fontSize: 17.0,
-          color: CupertinoColors.black,
-        ),
-        child: new CupertinoPageScaffold(
-          backgroundColor: CupertinoColors.lightBackgroundGray,
-          navigationBar: const CupertinoNavigationBar(
-            middle: Text("HelpDetail"),
-            previousPageTitle: 'Help',
-          ),
-          child: ListView(
-              children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Card(
-                    margin: const EdgeInsets.all(20.0),
-                    elevation: 0.0,
-                    child: Container(
-                      padding: const EdgeInsets.all(20.0),
-                      child: text),
-                  ),
+    return Provide<SettingData>(
+      builder: (context, child, sd) {
+        return sd.theme == "IOS"
+            ? CupertinoPageScaffold(
+                backgroundColor: CupertinoColors.lightBackgroundGray,
+                navigationBar: const CupertinoNavigationBar(
+                  middle: Text("HelpDetail"),
+                  previousPageTitle: 'Help',
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Image.asset(
-                        'assets/image/help1.png',
-                        width: MediaQuery.of(context).size.width / 3,
-                        height: 200.0,
-                        fit: BoxFit.fitWidth,
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width / 12,
-                      ),
-                      Image.asset(
-                        'assets/image/help2.png',
-                        width: MediaQuery.of(context).size.width / 3,
-                        height: 200.0,
-                        fit: BoxFit.fitWidth,
-                      )
-                    ]),
-              ]),
-        ));
+                child: child,
+              )
+            : Scaffold(
+                backgroundColor: CupertinoColors.lightBackgroundGray,
+                appBar: AppBar(
+                  backgroundColor: Colors.blueGrey,
+                  title: Text("HelpDetail"),
+                  centerTitle: true,
+                ),
+                body: child,
+              );
+      },
+      child: Center(
+        child: Container(
+          padding: const EdgeInsets.all(20.0),
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DefaultTextStyle(
+                  style: const TextStyle(
+                    fontFamily: '.SF UI Text',
+                    fontWeight: FontWeight.w400,
+                    inherit: false,
+                    fontSize: 20.0,
+                    color: CupertinoColors.black,
+                  ),
+                  child: ListView(children: list)),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

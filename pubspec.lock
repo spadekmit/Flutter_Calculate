@@ -109,6 +109,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.15.8"
+  keyboard_visibility:
+    dependency: "direct main"
+    description:
+      name: keyboard_visibility
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.5.2"
   matcher:
     dependency: transitive
     description:
@@ -150,7 +157,7 @@ packages:
       name: petitparser
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.2.1"
+    version: "2.1.1"
   provide:
     dependency: "direct main"
     description:
@@ -246,7 +253,7 @@ packages:
       name: xml
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "3.4.1"
+    version: "3.3.1"
   yaml:
     dependency: transitive
     description:
