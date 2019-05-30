@@ -38,7 +38,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
       onChange: (bool visible) {
         if (visible) {
           if(this.mounted) {
-            _streamController.sink.add(200.0);
+            _streamController.sink.add(260.0);
           }
         } else {
           if(this.mounted) {

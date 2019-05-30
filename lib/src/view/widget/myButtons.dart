@@ -228,6 +228,7 @@ Widget _buildMethodButtons(OnCommit onPressed) {
           children: <Widget>[
             _buildTextButton('absAverage(', onPressed, width: double.infinity),
             _buildTextButton('radToDeg(', onPressed, width: double.infinity),
+            _buildTextButton('degToRad(', onPressed, width: double.infinity),
             _buildTextButton('lagrange(', onPressed, width: double.infinity),
           ],
         ));

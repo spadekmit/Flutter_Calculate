@@ -136,6 +136,12 @@ class UserData with ChangeNotifier {
         'radToDeg',
         'Usage: radToDeg(A), A must be a number Example: reForDeg(1) = 57.29578',
         "用法：radToDeg(A), A必须为数字 例：'reForDeg(1) = 57.29578 "),
+    new CmdMethod(
+        '角度转弧度',
+        'degrees to radians',
+        'degToRad',
+        'Usage: degToRad(A), A must be a number Example: degToRad(57.3) = 1.000074',
+        "用法：degToRad(A), A必须为数字 例：'reForDeg(57.3) =  1.000074"),
   ];
 
   ///加载用户自定义函数,浮点数和矩阵
@@ -459,6 +465,12 @@ class UserData with ChangeNotifier {
         if (vals.length != 1 || vals[0] is! num)
           throw FormatException('radToDeg函数参数传递错误');
         return CmdMethodUtil.radToDeg(vals[0]);
+
+      case 'degToRad':
+        if (vals.length != 1 || vals[0] is! num)
+          throw FormatException('degToRad函数参数传递错误');
+        return CmdMethodUtil.degToRad(vals[0]);
+
       case 'formatDeg':
         if (vals.length != 1 || vals[0] is! num)
           throw FormatException('formatDeg函数参数传递错误');

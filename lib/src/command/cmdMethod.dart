@@ -104,7 +104,7 @@ class CmdMethodUtil {
   }
 
   ///弧度转角度
-  static num radToDeg(double rad) {
+  static num radToDeg(num rad) {
     return (rad / pi) * 180;
   }
 
