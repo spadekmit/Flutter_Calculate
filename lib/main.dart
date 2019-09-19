@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:provide/provide.dart';
 import 'package:xiaoming/src/data/settingData.dart';
 import 'package:xiaoming/src/data/userData.dart';
-import 'package:xiaoming/src/view/route/app.dart';
+import 'package:xiaoming/src/view/app.dart';
 
 void main() {
   final userProviders = Providers()

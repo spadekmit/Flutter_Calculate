@@ -8,23 +8,22 @@ import 'package:xiaoming/src/view/route/functionsRoute.dart';
 import 'package:xiaoming/src/view/route/homeRoute.dart';
 
 class MyTabScaffold extends StatelessWidget {
-
   //创建IOS主题的底部导航栏
-  Widget _buildIOSTabScaffold() {
+  Widget _buildIOSTabScaffold(BuildContext context) {
     return CupertinoTabScaffold(
         key: Key("IOS"),
-        tabBar: CupertinoTabBar(items: const <BottomNavigationBarItem>[
+        tabBar: CupertinoTabBar(items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.message),
-            title: Text("Home"),
+            title: Text(XiaomingLocalizations.of(context).home),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.apps),
-            title: Text("Functions"),
+            title: Text(XiaomingLocalizations.of(context).functions),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.save),
-            title: Text("Saved"),
+            title: Text(XiaomingLocalizations.of(context).saved),
           ),
         ]),
         tabBuilder: (BuildContext context, int index) {
@@ -42,18 +41,21 @@ class MyTabScaffold extends StatelessWidget {
               return CupertinoTabView(builder: (BuildContext context) {
                 return IOSDataRoute();
               });
+            default:
+              return CupertinoTabView();
           }
         });
   }
 
   @override
   Widget build(BuildContext context) {
-    SettingData.language = Localizations.localeOf(context).languageCode; //记录当前语言代码
-
+    SettingData.language =
+        Localizations.localeOf(context).languageCode; //记录当前语言代码
     return Provide<SettingData>(
       //跟随主题切换界面
       builder: (context, child, sd) {
-        return WillPopScope(  //拦截系统导航栏返回键事件
+        return WillPopScope(
+          //拦截系统导航栏返回键事件
           onWillPop: () async {
             switch (SettingData.nowPage) {
               case 0:
@@ -107,26 +109,28 @@ class MyTabScaffold extends StatelessWidget {
                               ],
                             );
                     });
-                return isPop;
+                return Future.value(isPop);
                 break;
               case 1:
                 SettingData.nowPage = 0;
                 Navigator.pop(SettingData.pageContext);
-                return false;
+                return Future.value(false);
                 break;
               case 2:
                 Navigator.pop(SettingData.pageContext);
-                return false;
+                return Future.value(false);
                 break;
               case 3:
                 SettingData.nowPage = 0;
                 Navigator.pop(SettingData.pageContext);
-                return false;
+                return Future.value(false);
                 break;
+              default:
+                return Future.value(true);
             }
           },
           child: sd.theme == "IOS"
-              ? _buildIOSTabScaffold()
+              ? _buildIOSTabScaffold(context)
               : AndTabScaffold(),
         );
       },
@@ -152,29 +156,29 @@ class _AndTabScaffoldState extends State<AndTabScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: Key("Android"),
-        bottomNavigationBar: BottomNavigationBar(
+      key: Key("Android"),
+      bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedIndex,
-            onTap: (index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.message),
-                title: Text("Home"),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.apps),
-                title: Text("Functions"),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.save),
-                title: Text("Saved"),
-              ),
-            ]),
-        body: _bodys[_selectedIndex],
-      );
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.message),
+              title: Text(XiaomingLocalizations.of(context).home),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.apps),
+              title: Text(XiaomingLocalizations.of(context).functions),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.save),
+              title: Text(XiaomingLocalizations.of(context).saved),
+            ),
+          ]),
+      body: _bodys[_selectedIndex],
+    );
   }
 }

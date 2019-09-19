@@ -25,7 +25,8 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
   bool _isComposing = false; //判断是否有输入
   bool isComplete = true; //计算是否完成
   static bool _isInit = false;
-  final StreamController<double> _streamController = StreamController<double>.broadcast();
+  final StreamController<double> _streamController =
+      StreamController<double>.broadcast();
 
   ///初始化对象及加载数据
   @override
@@ -37,11 +38,11 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
     KeyboardVisibilityNotification().addNewListener(
       onChange: (bool visible) {
         if (visible) {
-          if(this.mounted) {
+          if (this.mounted) {
             _streamController.sink.add(200.0);
           }
         } else {
-          if(this.mounted) {
+          if (this.mounted) {
             _streamController.sink.add(0.0);
           }
         }
@@ -55,19 +56,11 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
     super.dispose();
     _textController.dispose();
     _streamController.close();
-
-    ///当切换主题时，主动调用animationController.dispose() 会触发多次dispose的异常
-    // for (TextView textView in _texts) {
-    //   if (textView.animationController != null) {
-    //     textView.animationController?.dispose();
-    //   }
-    // }
   }
 
   ///home界面布局
   @override
   Widget build(BuildContext context) {
-
     ///主界面布局
     return DefaultTextStyle(
       style: const TextStyle(
@@ -171,7 +164,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
                     ),
                     SettingButton(_deleteAllMessage, true),
                   ]),
-                  middle: Text("Home"),
+                  middle: Text(XiaomingLocalizations.of(context).home),
                 ),
                 resizeToAvoidBottomInset: true,
                 child: _buildList(),
@@ -181,7 +174,7 @@ class HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
                   backgroundColor: Colors.grey,
                   centerTitle: true,
                   key: Key("AndAppBar"),
-                  title: Text("Home"),
+                  title: Text(XiaomingLocalizations.of(context).home),
                   actions: <Widget>[
                     buildHelpButton(context, false),
                     const SizedBox(

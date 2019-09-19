@@ -11,36 +11,40 @@ class XiaomingLocalizations {
     'en': {
       'AppName': 'Computing assistant',
       'Buttons': 'Buttons',
-      'ButtonsHeight' : 'Buttons Height',
-      'ButtonsAutoExpanded' : 'ButtonsAutoExpanded',
+      'ButtonsHeight': 'Buttons Height',
+      'ButtonsAutoExpanded': 'ButtonsAutoExpanded',
       'calculate': 'calculate',
-      'cancel' : 'cancel',
+      'cancel': 'cancel',
       'CopyHint': 'The content has been copied to the clipboard',
       'decimal digits': 'Decimal Digits',
-      'delete' : 'delete',
-      'deleteAllMessage' : 'Please confirm if you want to delete all message',
-      'deleteAllData' : 'Please confirm if you want to delete all saved data and method',
-      'definite integral' : 'Definite Integral',
+      'delete': 'delete',
+      'deleteAllMessage': 'Please confirm if you want to delete all message',
+      'deleteAllData':
+          'Please confirm if you want to delete all saved data and method',
+      'definite integral': 'Definite Integral',
       'empty': 'empty',
-      'equations' : 'Equations',
-      'equationNotEmpty' : 'Equations cannot be empty',
-      'equationTip' : 'Tip: this page can be used to solve linear equations and higher-order unary equations',
+      'equations': 'Equations',
+      'equationNotEmpty': 'Equations cannot be empty',
+      'equationTip':
+          'Tip: this page can be used to solve linear equations and higher-order unary equations',
       'equaHint1':
           'A linear equation is one or more equations whose highest power is one',
       'equaHint2': 'Example 3x-2y+z=2,3y+5z=8,',
-      'equaHint3': 'Multiple equation are separated by commas， Parameter is x,y,z',
+      'equaHint3':
+          'Multiple equation are separated by commas， Parameter is x,y,z',
       'equaHint4':
           'Polynomials refer to equations of one variable multiple times',
       'equaHint5': "Example: x^2-2x+1",
-      'funName' : 'method name',
+      'funName': 'method name',
+      'Functions': 'Functions',
+      'Home': 'Home',
       'Help': 'HELP',
       'HelpTab1': 'Data input',
       'HelpTab2': 'Calculator',
       'HelpTab3': 'Method',
       'HelpTab4': 'Precision',
       'HelpTab5': 'Equation',
-      'HelpTabData1':
-          'You can assign a value directly to a variable in the input box. '
+      'HelpTabData1': 'You can assign a value directly to a variable in the input box. '
           'eg: a = 12 or r = [1,2,3;4,5,6;7,8,9]'
           '(This statement creates a matrix of three rows and three columns). '
           'The format of the matrix assignment statement is: '
@@ -50,8 +54,7 @@ class XiaomingLocalizations {
           'Above the input box is a comma and semicolon button for easy entry. '
           'Matrix and real numbers are automatically saved to the file, the same name data will be replaced'
           '(Enter a=2 will also replace the original a=[1,2,3;4,5,6])',
-      'HelpTabData2':
-          'This software supports addition, subtraction, multiplication and division between values, '
+      'HelpTabData2': 'This software supports addition, subtraction, multiplication and division between values, '
           'Matrix and value addition, subtraction, multiplication and division, '
           'Addition, subtraction, multiplication and division of matrices and matrices. '
           '(It must comply with the matrix operation rules, '
@@ -60,8 +63,7 @@ class XiaomingLocalizations {
           'To calculate a matrix, you need to assign the matrix to a variable first,'
           'Use this variable name to participate in the operation'
           'eg: b = [1,2;3,1] c = b + 2',
-      'HelpTabData3':
-          'Enter the function name and its parameters to call the function. Example: b=inv(a). Functions can be nested, '
+      'HelpTabData3': 'Enter the function name and its parameters to call the function. Example: b=inv(a). Functions can be nested, '
           'Example: c=tran(inv(a). The built-in function can also be called in the custom function. There is a button column at the top of the input box to facilitate the input of the function name'
           'Click the button in the upper left corner of the main interface to open the drawer. Click the saved function button in the drawer to open the function introduction interface, which has built-in functions.'
           'Detailed introduction, as well as the user\'s custom function. The format of the custom function is: Fun function name (parameter list, separated by commas): function body,'
@@ -73,8 +75,7 @@ class XiaomingLocalizations {
           'The decimal part will be automatically rounded to an integer and then factored. ',
       'HelpTabData4':
           'Click the Settings button on the main interface to open the settings interface, and slide the button to change the displayed decimal places.',
-      'HelpTabData5':
-          'There is a solution to the equations button on the drawer interface, click to enter the interface to solve the equations,'
+      'HelpTabData5': 'There is a solution to the equations button on the drawer interface, click to enter the interface to solve the equations,'
           'Entering a single equation is considered as a polynomial solution for all roots, and multiple equations are treated as linear equations. '
           'There is no convenient input field for the solution of the equation. It is recommended to solve the problem on the main interface. '
           'Linear equations can be input to the coefficient matrix a and the constant column b and then solved by inv(a)*b, '
@@ -83,53 +84,56 @@ class XiaomingLocalizations {
           'First define the integrand with Fun t(x):r = 2*x^3-7*x, then solve it with calculus(t,0,8) function, t is the integrand, and 0 to 8 is the integration interval.',
       'Hint': 'Hint',
       'InputHint': 'Input command',
-      'IntegralFunction' : 'Integral Function',
-      'IntegralVariable' : 'Variable Of Integration',
-      'IntegralRange' : 'Integrating Range',
-      'maximum' : 'Maximum number of saves',
-      'methodBody' : 'method body',
-      'newFun' : 'New Funtion',
-      'ok' : 'OK',
-      'outApp' : 'Whether to quit the app?',
-      'parameter' : 'parameter',
-      'quit' : 'quit',
-      'removeUF' : 'UserFuntion has been removed',
-      'removeData' : 'Data has been removed',
-      'sample' : 'Sample',
+      'IntegralFunction': 'Integral Function',
+      'IntegralVariable': 'Variable Of Integration',
+      'IntegralRange': 'Integrating Range',
+      'maximum': 'Maximum number of saves',
+      'methodBody': 'method body',
+      'newFun': 'New Funtion',
+      'ok': 'OK',
+      'outApp': 'Whether to quit the app?',
+      'parameter': 'parameter',
+      'quit': 'quit',
+      'removeUF': 'UserFuntion has been removed',
+      'removeData': 'Data has been removed',
+      'sample': 'Sample',
       'Setting': 'Setting',
-      'save' : 'save',
+      'save': 'save',
+      'Saved': 'Saved',
       'Saved function': 'Saved function',
       'Saved Data': 'Saved Data',
       'Solve equation': 'Solve equation',
       'Solve calculus': 'Solve calculus',
-      'sucSave' : 'successfully saved',
-      'undo' : 'UNDO',
-      'variable' : 'variable',
-      'variableNotEmpty' : 'Variable cannot be empty',
+      'sucSave': 'successfully saved',
+      'undo': 'UNDO',
+      'variable': 'variable',
+      'variableNotEmpty': 'Variable cannot be empty',
     },
     'zh': {
       'AppName': '计算小助手',
       'Buttons': '按钮',
-      'ButtonsHeight' : '按钮栏显示高度',
-      'ButtonsAutoExpanded' : '按钮栏自动展开',
+      'ButtonsHeight': '按钮栏显示高度',
+      'ButtonsAutoExpanded': '按钮栏自动展开',
       'calculate': '计算',
-      'cancel' : '取消',
+      'cancel': '取消',
       'CopyHint': '内容已复制到剪切板',
       'decimal digits': '小数保留位数',
-      'delete' : '删除',
-      'deleteAllMessage' : '请确认是否删除所有消息记录',
-      'deleteAllData' : '请确认是否要删除所有已保存的数据和方法',
-      'definite integral' : '定积分',
+      'delete': '删除',
+      'deleteAllMessage': '请确认是否删除所有消息记录',
+      'deleteAllData': '请确认是否要删除所有已保存的数据和方法',
+      'definite integral': '定积分',
       'empty': '清空',
-      'equations' : '方程',
-      'equationNotEmpty' : '方程组不能为空',
-      'equationTip' : '提示：本页面可求解线性方程组和一元高次方程',
+      'equations': '方程',
+      'equationNotEmpty': '方程组不能为空',
+      'equationTip': '提示：本页面可求解线性方程组和一元高次方程',
       'equaHint1': '输入方程系数求结果',
       'equaHint2': '如： x^2-2x+1=0 则输入 1,-2,1',
       'equaHint3': '3x1+4x2-x3=6   x2-4x3=-3   2x1-3x2+x3=0',
       'equaHint4': '则输入 3,4,-1,6;0,1,-4,-3;2,-3,1,0',
       'equaHint5': "例：'x^2-2x+1' ,变量栏输入x",
-      'funName' : '函数名',
+      'funName': '函数名',
+      'Functions': '功能',
+      'Home': '首页',
       'Hint': '提示',
       'Help': '帮助',
       'HelpTab1': '数据输入',
@@ -156,8 +160,7 @@ class XiaomingLocalizations {
           '计算矩阵时需先将矩阵赋值给某一变量，'
           '再用该变量名参与运算'
           '如： b = [1,2;3,1]  c = b + 2',
-      'HelpTabData3':
-          '输入函数名及其参数即可调用函数。例：b=inv(a).函数可以嵌套调用，'
+      'HelpTabData3': '输入函数名及其参数即可调用函数。例：b=inv(a).函数可以嵌套调用，'
           '例：c=tran(inv(a)。在自定义函数中也可以调用内置函数，输入框的上方有方便输入函数名的按钮列'
           '点击主界面左上角的按钮可以打开抽屉，点击抽屉中的保存的函数按钮可以打开函数介绍界面，里面有内置函数的'
           '详细介绍，还有用户的自定义函数。自定义函数的格式为： Fun 函数名（参数列表，用逗号分隔）：函数体，'
@@ -168,8 +171,7 @@ class XiaomingLocalizations {
           '， 例：test(3,2,-1)。注：示例中使用到的阶乘函数'
           '会自动将小数部分四舍五入成整数再求阶乘。',
       'HelpTabData4': '在主界面点击设置按钮即可打开设置界面，滑动按钮即可改变显示的小数位数',
-      'HelpTabData5':
-          '在抽屉界面有解方程组按钮，点击可进入到解方程组的界面，'
+      'HelpTabData5': '在抽屉界面有解方程组按钮，点击可进入到解方程组的界面，'
           '输入单个方程则视为多项式解求所有根，多个方程则视为线性方程组求解。'
           '因解方程界面没有便捷输入栏，推荐在主界面解求。'
           '线性方程组可输入系数阵a和常数列b再用inv（a）*b即可解求，'
@@ -177,28 +179,29 @@ class XiaomingLocalizations {
       'HelpTabData6':
           '首先用Fun t(x):r = 2*x^3-7*x 定义被积函数，然后使用calculus(t,0,8)函数求解，t为被积函数，0到8为积分区间',
       'InputHint': '输入命令',
-      'IntegralFunction' : '积分函数',
-      'IntegralVariable' : '积分变量',
-      'IntegralRange' : '积分区间',
-      'methodBody' : '函数体',
-      'maximum' : '历史记录条数',
-      'newFun' : '新的函数',
-      'ok' : '确认',
-      'outApp' : '是否退出应用？',
-      'parameter' : '参数',
-      'quit' : '退出',
-      'removeUF' : '自定义方法被移除',
-      'removeData' : '数据被移除',
-      'sample' : '示例',
+      'IntegralFunction': '积分函数',
+      'IntegralVariable': '积分变量',
+      'IntegralRange': '积分区间',
+      'methodBody': '函数体',
+      'maximum': '历史记录条数',
+      'newFun': '新的函数',
+      'ok': '确认',
+      'outApp': '是否退出应用？',
+      'parameter': '参数',
+      'quit': '退出',
+      'removeUF': '自定义方法被移除',
+      'removeData': '数据被移除',
+      'sample': '示例',
       'Setting': '设置',
-      'save' : '保存',
+      'save': '保存',
+      'Saved': '存储',
       'Saved function': '保存的函数',
       'Saved Data': '保存的数据',
       'Solve equation': '解方程',
-      'sucSave' : '保存成功',
-      'undo' : '撤销',
-      'variable' : '变量',
-      'variableNotEmpty' : '变量不能为空',
+      'sucSave': '保存成功',
+      'undo': '撤销',
+      'variable': '变量',
+      'variableNotEmpty': '变量不能为空',
     }
   };
 
@@ -288,6 +291,14 @@ class XiaomingLocalizations {
 
   get funName {
     return _localizedValues[locale.languageCode]['funName'];
+  }
+
+  get functions {
+    return _localizedValues[locale.languageCode]['Functions'];
+  }
+
+  get home {
+    return _localizedValues[locale.languageCode]['Home'];
   }
 
   get hint {
@@ -412,6 +423,10 @@ class XiaomingLocalizations {
 
   get save {
     return _localizedValues[locale.languageCode]['save'];
+  }
+
+  get saved {
+    return _localizedValues[locale.languageCode]['Saved'];
   }
 
   get savedData {
