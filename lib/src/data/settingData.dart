@@ -17,7 +17,7 @@ class SettingData with ChangeNotifier{
 
   SettingData() {
     _fixedNum = 6;
-    theme = "Android";
+    theme = "IOS";
     nowPage = 0;
     language = "en";
   }
